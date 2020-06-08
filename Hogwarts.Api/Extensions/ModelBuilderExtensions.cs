@@ -74,31 +74,18 @@ namespace Hogwarts.Api.Extensions
                 new HeadOfHouse { Id = 6, HouseId = 3, StaffId = 16 }
                 );
 
-            modelBuilder.Entity<Teacher>().HasData(
-                new Teacher { Id = 1, StaffId = 1 },
-                new Teacher { Id = 2, StaffId = 2 },
-                new Teacher { Id = 3, StaffId = 3 },
-                new Teacher { Id = 4, StaffId = 4 },
-                new Teacher { Id = 5, StaffId = 5 },
-                new Teacher { Id = 6, StaffId = 6 },
-                new Teacher { Id = 7, StaffId = 7 },
-                new Teacher { Id = 8, StaffId = 8 },
-                new Teacher { Id = 9, StaffId = 9 },
-                new Teacher { Id = 10, StaffId = 10 },
-                new Teacher { Id = 11, StaffId = 11 }
-                );
-
-            modelBuilder.Entity<TeacherCourse>().HasData(
-                new TeacherCourse { CourseId = 3, TeacherId = 1 },
-                new TeacherCourse { CourseId = 8, TeacherId = 3 },
-                new TeacherCourse { CourseId = 5, TeacherId = 1 },
-                new TeacherCourse { CourseId = 3, TeacherId = 2 },
-                new TeacherCourse { CourseId = 1, TeacherId = 5 },
-                new TeacherCourse { CourseId = 2, TeacherId = 6 },
-                new TeacherCourse { CourseId = 4, TeacherId = 11 },
-                new TeacherCourse { CourseId = 5, TeacherId = 8 },
-                new TeacherCourse { CourseId = 5, TeacherId = 4 },
-                new TeacherCourse { CourseId = 5, TeacherId = 10 }
+            
+            modelBuilder.Entity<StaffCourse>().HasData(
+                new StaffCourse { CourseId = 3, StaffId = 1 },
+                new StaffCourse { CourseId = 8, StaffId = 3 },
+                new StaffCourse { CourseId = 5, StaffId = 1 },
+                new StaffCourse { CourseId = 3, StaffId = 2 },
+                new StaffCourse { CourseId = 1, StaffId = 5 },
+                new StaffCourse { CourseId = 2, StaffId = 6 },
+                new StaffCourse { CourseId = 4, StaffId = 11 },
+                new StaffCourse { CourseId = 5, StaffId = 8 },
+                new StaffCourse { CourseId = 5, StaffId = 4 },
+                new StaffCourse { CourseId = 5, StaffId = 10 }
                 );
 
             modelBuilder.Entity<Role>().HasData(

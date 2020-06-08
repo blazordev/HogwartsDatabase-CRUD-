@@ -22,11 +22,9 @@ namespace Hogwarts.Api.DbContexts
         public DbSet<House> Houses { get; set; }
         public DbSet<Staff> Staff { get; set; }
         public DbSet<Student> Students { get; set; }
-        public DbSet<Course> Courses { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Course> Courses { get; set; }        
         public DbSet<HeadOfHouse> HeadOfHouses { get; set; }
-        public DbSet<TeacherCourse> TeachersCourse { get; set; }
-        public DbSet<RetrievedTeacherObject> RetrievedTeacherRecords { get; set; }
+        public DbSet<StaffCourse> StaffCourse { get; set; }       
         public DbSet<Role> Roles { get; set; }
         public DbSet<StaffRole> StaffRoles { get; set; }
 
@@ -35,16 +33,16 @@ namespace Hogwarts.Api.DbContexts
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<TeacherCourse>()
-                .HasKey(tc => new { tc.CourseId, tc.TeacherId });
-            modelBuilder.Entity<TeacherCourse>()
-                .HasOne(tc => tc.Teacher)
-                .WithMany(t => t.TeachersCourses)
-                .HasForeignKey(tc => tc.TeacherId);
-            modelBuilder.Entity<TeacherCourse>()
+            modelBuilder.Entity<StaffCourse>()
+                .HasKey(tc => new { tc.CourseId, tc.StaffId });
+            modelBuilder.Entity<StaffCourse>()
+                .HasOne(sc => sc.Staff)
+                .WithMany(s => s.StaffCourse)
+                .HasForeignKey(sc => sc.StaffId);
+            modelBuilder.Entity<StaffCourse>()
                 .HasOne(tc => tc.Course)
-                .WithMany(c => c.TeacherCourse)
-                .HasForeignKey(tc => tc.CourseId);
+                .WithMany(c => c.StaffCourse)
+                .HasForeignKey(sc => sc.CourseId);
             modelBuilder.Entity<StaffRole>()
                 .HasKey(sr => new { sr.StaffId, sr.RoleId });
             modelBuilder.Entity<StaffRole>()

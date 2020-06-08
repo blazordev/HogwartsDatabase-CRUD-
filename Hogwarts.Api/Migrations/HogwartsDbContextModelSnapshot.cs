@@ -18,27 +18,6 @@ namespace Hogwarts.Api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Hogwarts.Api.Models.RetrievedTeacherObject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MiddleNames")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RetrievedTeacherRecords");
-                });
-
             modelBuilder.Entity("Hogwarts.Data.Course", b =>
                 {
                     b.Property<int>("Id")
@@ -47,6 +26,7 @@ namespace Hogwarts.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -167,6 +147,7 @@ namespace Hogwarts.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -211,6 +192,7 @@ namespace Hogwarts.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -268,13 +250,17 @@ namespace Hogwarts.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("ImageLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("MiddleNames")
                         .HasColumnType("nvarchar(max)");
@@ -295,7 +281,8 @@ namespace Hogwarts.Api.Migrations
                         {
                             Id = 2,
                             FirstName = "Minerva",
-                            LastName = "McGonagall"
+                            LastName = "McGonagall",
+                            MiddleNames = ""
                         },
                         new
                         {
@@ -308,85 +295,166 @@ namespace Hogwarts.Api.Migrations
                         {
                             Id = 4,
                             FirstName = "Severus",
-                            LastName = "Snape"
+                            LastName = "Snape",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 5,
                             FirstName = "Cuthbert",
-                            LastName = "Binns"
+                            LastName = "Binns",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 6,
                             FirstName = "Charity",
-                            LastName = "Burbage"
+                            LastName = "Burbage",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 7,
                             FirstName = "Alecto",
-                            LastName = "Carrow"
+                            LastName = "Carrow",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 8,
                             FirstName = "Remus",
-                            LastName = "Lupin"
+                            LastName = "Lupin",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 9,
                             FirstName = "Filius",
-                            LastName = "Flitwick"
+                            LastName = "Flitwick",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 10,
                             FirstName = "Alastor",
-                            LastName = "Moody"
+                            LastName = "Moody",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 11,
                             FirstName = "Wilhelmina",
-                            LastName = "Grubbly-Plank"
+                            LastName = "Grubbly-Plank",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 12,
                             FirstName = "Rubeus",
-                            LastName = "Hagrid"
+                            LastName = "Hagrid",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 13,
                             FirstName = "Rolanda",
-                            LastName = "Hooch"
+                            LastName = "Hooch",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 14,
                             FirstName = "Horace",
-                            LastName = "Slughorn"
+                            LastName = "Slughorn",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 15,
                             FirstName = "Silvanus",
-                            LastName = "Kettleburn"
+                            LastName = "Kettleburn",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 16,
                             FirstName = "Pomona",
-                            LastName = "Sprout"
+                            LastName = "Sprout",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 17,
                             FirstName = "Argus",
-                            LastName = "Filch"
+                            LastName = "Filch",
+                            MiddleNames = ""
+                        });
+                });
+
+            modelBuilder.Entity("Hogwarts.Data.StaffCourse", b =>
+                {
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StaffId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CourseId", "StaffId");
+
+                    b.HasIndex("StaffId");
+
+                    b.ToTable("StaffCourse");
+
+                    b.HasData(
+                        new
+                        {
+                            CourseId = 3,
+                            StaffId = 1
+                        },
+                        new
+                        {
+                            CourseId = 8,
+                            StaffId = 3
+                        },
+                        new
+                        {
+                            CourseId = 5,
+                            StaffId = 1
+                        },
+                        new
+                        {
+                            CourseId = 3,
+                            StaffId = 2
+                        },
+                        new
+                        {
+                            CourseId = 1,
+                            StaffId = 5
+                        },
+                        new
+                        {
+                            CourseId = 2,
+                            StaffId = 6
+                        },
+                        new
+                        {
+                            CourseId = 4,
+                            StaffId = 11
+                        },
+                        new
+                        {
+                            CourseId = 5,
+                            StaffId = 8
+                        },
+                        new
+                        {
+                            CourseId = 5,
+                            StaffId = 4
+                        },
+                        new
+                        {
+                            CourseId = 5,
+                            StaffId = 10
                         });
                 });
 
@@ -555,7 +623,9 @@ namespace Hogwarts.Api.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<int>("HouseId")
                         .HasColumnType("int");
@@ -564,7 +634,9 @@ namespace Hogwarts.Api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<string>("MiddleNames")
                         .HasColumnType("nvarchar(max)");
@@ -597,211 +669,80 @@ namespace Hogwarts.Api.Migrations
                             Id = 3,
                             FirstName = "Hannah",
                             HouseId = 3,
-                            LastName = "Abbott"
+                            LastName = "Abbott",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 4,
                             FirstName = "Katie",
                             HouseId = 1,
-                            LastName = "Bell"
+                            LastName = "Bell",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 5,
                             FirstName = "Susan",
                             HouseId = 3,
-                            LastName = "Bones"
+                            LastName = "Bones",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 6,
                             FirstName = "Terry",
                             HouseId = 4,
-                            LastName = "Boot"
+                            LastName = "Boot",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 7,
                             FirstName = "Lavender",
                             HouseId = 1,
-                            LastName = "Brown"
+                            LastName = "Brown",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 8,
                             FirstName = "Cho",
                             HouseId = 4,
-                            LastName = "Chang"
+                            LastName = "Chang",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 9,
                             FirstName = "Michael",
                             HouseId = 4,
-                            LastName = "Corner"
+                            LastName = "Corner",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 10,
                             FirstName = "Justin",
                             HouseId = 3,
-                            LastName = "Finch-Fletchley"
+                            LastName = "Finch-Fletchley",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 11,
                             FirstName = "Anthony",
                             HouseId = 4,
-                            LastName = "Goldstein"
+                            LastName = "Goldstein",
+                            MiddleNames = ""
                         },
                         new
                         {
                             Id = 12,
                             FirstName = "Padma",
                             HouseId = 4,
-                            LastName = "Patil"
-                        });
-                });
-
-            modelBuilder.Entity("Hogwarts.Data.Teacher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("StaffId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StaffId");
-
-                    b.ToTable("Teachers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            StaffId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            StaffId = 2
-                        },
-                        new
-                        {
-                            Id = 3,
-                            StaffId = 3
-                        },
-                        new
-                        {
-                            Id = 4,
-                            StaffId = 4
-                        },
-                        new
-                        {
-                            Id = 5,
-                            StaffId = 5
-                        },
-                        new
-                        {
-                            Id = 6,
-                            StaffId = 6
-                        },
-                        new
-                        {
-                            Id = 7,
-                            StaffId = 7
-                        },
-                        new
-                        {
-                            Id = 8,
-                            StaffId = 8
-                        },
-                        new
-                        {
-                            Id = 9,
-                            StaffId = 9
-                        },
-                        new
-                        {
-                            Id = 10,
-                            StaffId = 10
-                        },
-                        new
-                        {
-                            Id = 11,
-                            StaffId = 11
-                        });
-                });
-
-            modelBuilder.Entity("Hogwarts.Data.TeacherCourse", b =>
-                {
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TeacherId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CourseId", "TeacherId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("TeachersCourse");
-
-                    b.HasData(
-                        new
-                        {
-                            CourseId = 3,
-                            TeacherId = 1
-                        },
-                        new
-                        {
-                            CourseId = 8,
-                            TeacherId = 3
-                        },
-                        new
-                        {
-                            CourseId = 5,
-                            TeacherId = 1
-                        },
-                        new
-                        {
-                            CourseId = 3,
-                            TeacherId = 2
-                        },
-                        new
-                        {
-                            CourseId = 1,
-                            TeacherId = 5
-                        },
-                        new
-                        {
-                            CourseId = 2,
-                            TeacherId = 6
-                        },
-                        new
-                        {
-                            CourseId = 4,
-                            TeacherId = 11
-                        },
-                        new
-                        {
-                            CourseId = 5,
-                            TeacherId = 8
-                        },
-                        new
-                        {
-                            CourseId = 5,
-                            TeacherId = 4
-                        },
-                        new
-                        {
-                            CourseId = 5,
-                            TeacherId = 10
+                            LastName = "Patil",
+                            MiddleNames = ""
                         });
                 });
 
@@ -815,6 +756,21 @@ namespace Hogwarts.Api.Migrations
 
                     b.HasOne("Hogwarts.Data.Staff", "Staff")
                         .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Hogwarts.Data.StaffCourse", b =>
+                {
+                    b.HasOne("Hogwarts.Data.Course", "Course")
+                        .WithMany("StaffCourse")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hogwarts.Data.Staff", "Staff")
+                        .WithMany("StaffCourse")
                         .HasForeignKey("StaffId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -840,30 +796,6 @@ namespace Hogwarts.Api.Migrations
                     b.HasOne("Hogwarts.Data.House", "House")
                         .WithMany("Students")
                         .HasForeignKey("HouseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Hogwarts.Data.Teacher", b =>
-                {
-                    b.HasOne("Hogwarts.Data.Staff", "Staff")
-                        .WithMany()
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Hogwarts.Data.TeacherCourse", b =>
-                {
-                    b.HasOne("Hogwarts.Data.Course", "Course")
-                        .WithMany("TeacherCourse")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hogwarts.Data.Teacher", "Teacher")
-                        .WithMany("TeachersCourses")
-                        .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -12,7 +12,7 @@ namespace Hogwarts.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,7 +25,7 @@ namespace Hogwarts.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     MascotImageLink = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -34,27 +34,12 @@ namespace Hogwarts.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RetrievedTeacherRecords",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    MiddleNames = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RetrievedTeacherRecords", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -68,9 +53,9 @@ namespace Hogwarts.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     MiddleNames = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
                     ImageLink = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -84,9 +69,9 @@ namespace Hogwarts.Api.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     MiddleNames = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(maxLength: 50, nullable: false),
                     ImageLink = table.Column<string>(nullable: true),
                     HouseId = table.Column<int>(nullable: false)
                 },
@@ -128,6 +113,30 @@ namespace Hogwarts.Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "StaffCourse",
+                columns: table => new
+                {
+                    StaffId = table.Column<int>(nullable: false),
+                    CourseId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StaffCourse", x => new { x.CourseId, x.StaffId });
+                    table.ForeignKey(
+                        name: "FK_StaffCourse_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_StaffCourse_Staff_StaffId",
+                        column: x => x.StaffId,
+                        principalTable: "Staff",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StaffRoles",
                 columns: table => new
                 {
@@ -147,49 +156,6 @@ namespace Hogwarts.Api.Migrations
                         name: "FK_StaffRoles_Staff_StaffId",
                         column: x => x.StaffId,
                         principalTable: "Staff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teachers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    StaffId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teachers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Teachers_Staff_StaffId",
-                        column: x => x.StaffId,
-                        principalTable: "Staff",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "TeachersCourse",
-                columns: table => new
-                {
-                    TeacherId = table.Column<int>(nullable: false),
-                    CourseId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TeachersCourse", x => new { x.CourseId, x.TeacherId });
-                    table.ForeignKey(
-                        name: "FK_TeachersCourse_Courses_CourseId",
-                        column: x => x.CourseId,
-                        principalTable: "Courses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_TeachersCourse_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -240,23 +206,23 @@ namespace Hogwarts.Api.Migrations
                 columns: new[] { "Id", "FirstName", "ImageLink", "LastName", "MiddleNames" },
                 values: new object[,]
                 {
-                    { 15, "Silvanus", null, "Kettleburn", null },
-                    { 14, "Horace", null, "Slughorn", null },
-                    { 13, "Rolanda", null, "Hooch", null },
-                    { 12, "Rubeus", null, "Hagrid", null },
-                    { 11, "Wilhelmina", null, "Grubbly-Plank", null },
-                    { 10, "Alastor", null, "Moody", null },
-                    { 9, "Filius", null, "Flitwick", null },
-                    { 7, "Alecto", null, "Carrow", null },
-                    { 6, "Charity", null, "Burbage", null },
-                    { 5, "Cuthbert", null, "Binns", null },
-                    { 4, "Severus", null, "Snape", null },
+                    { 15, "Silvanus", null, "Kettleburn", "" },
+                    { 14, "Horace", null, "Slughorn", "" },
+                    { 13, "Rolanda", null, "Hooch", "" },
+                    { 12, "Rubeus", null, "Hagrid", "" },
+                    { 11, "Wilhelmina", null, "Grubbly-Plank", "" },
+                    { 10, "Alastor", null, "Moody", "" },
+                    { 9, "Filius", null, "Flitwick", "" },
+                    { 7, "Alecto", null, "Carrow", "" },
+                    { 6, "Charity", null, "Burbage", "" },
+                    { 5, "Cuthbert", null, "Binns", "" },
+                    { 4, "Severus", null, "Snape", "" },
                     { 3, "Sybill", null, "Trelawny", "Patricia" },
-                    { 2, "Minerva", null, "McGonagall", null },
+                    { 2, "Minerva", null, "McGonagall", "" },
                     { 1, "Albus", null, "Dumbledore", "Percival Wulfric Brian" },
-                    { 16, "Pomona", null, "Sprout", null },
-                    { 8, "Remus", null, "Lupin", null },
-                    { 17, "Argus", null, "Filch", null }
+                    { 16, "Pomona", null, "Sprout", "" },
+                    { 8, "Remus", null, "Lupin", "" },
+                    { 17, "Argus", null, "Filch", "" }
                 });
 
             migrationBuilder.InsertData(
@@ -264,12 +230,29 @@ namespace Hogwarts.Api.Migrations
                 columns: new[] { "Id", "HouseId", "StaffId" },
                 values: new object[,]
                 {
-                    { 1, 1, 1 },
-                    { 2, 1, 2 },
-                    { 5, 4, 9 },
-                    { 4, 2, 14 },
+                    { 6, 3, 16 },
                     { 3, 2, 4 },
-                    { 6, 3, 16 }
+                    { 4, 2, 14 },
+                    { 5, 4, 9 },
+                    { 2, 1, 2 },
+                    { 1, 1, 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StaffCourse",
+                columns: new[] { "CourseId", "StaffId" },
+                values: new object[,]
+                {
+                    { 5, 4 },
+                    { 2, 6 },
+                    { 8, 3 },
+                    { 5, 8 },
+                    { 3, 2 },
+                    { 5, 10 },
+                    { 5, 1 },
+                    { 1, 5 },
+                    { 4, 11 },
+                    { 3, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -277,34 +260,34 @@ namespace Hogwarts.Api.Migrations
                 columns: new[] { "StaffId", "RoleId" },
                 values: new object[,]
                 {
-                    { 14, 3 },
-                    { 4, 3 },
-                    { 16, 6 },
-                    { 5, 3 },
-                    { 6, 3 },
-                    { 7, 2 },
                     { 16, 3 },
-                    { 7, 3 },
-                    { 9, 3 },
-                    { 9, 6 },
-                    { 4, 1 },
-                    { 10, 3 },
-                    { 11, 3 },
-                    { 12, 3 },
-                    { 12, 5 },
-                    { 13, 3 },
+                    { 6, 3 },
                     { 15, 3 },
+                    { 7, 2 },
                     { 14, 6 },
-                    { 4, 6 },
+                    { 7, 3 },
+                    { 14, 3 },
+                    { 9, 3 },
+                    { 12, 5 },
+                    { 12, 3 },
+                    { 9, 6 },
+                    { 11, 3 },
+                    { 5, 3 },
+                    { 13, 3 },
+                    { 10, 3 },
                     { 17, 8 },
-                    { 3, 3 },
+                    { 4, 3 },
+                    { 4, 6 },
                     { 1, 1 },
                     { 1, 3 },
-                    { 1, 6 },
-                    { 2, 2 },
                     { 2, 1 },
-                    { 2, 3 },
-                    { 2, 6 }
+                    { 2, 2 },
+                    { 1, 6 },
+                    { 2, 6 },
+                    { 3, 3 },
+                    { 16, 6 },
+                    { 4, 1 },
+                    { 2, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -312,52 +295,18 @@ namespace Hogwarts.Api.Migrations
                 columns: new[] { "Id", "FirstName", "HouseId", "ImageLink", "LastName", "MiddleNames" },
                 values: new object[,]
                 {
-                    { 3, "Hannah", 3, null, "Abbott", null },
-                    { 9, "Michael", 4, null, "Corner", null },
-                    { 5, "Susan", 3, null, "Bones", null },
-                    { 10, "Justin", 3, null, "Finch-Fletchley", null },
-                    { 6, "Terry", 4, null, "Boot", null },
-                    { 7, "Lavender", 1, null, "Brown", null },
-                    { 4, "Katie", 1, null, "Bell", null },
-                    { 8, "Cho", 4, null, "Chang", null },
+                    { 3, "Hannah", 3, null, "Abbott", "" },
+                    { 4, "Katie", 1, null, "Bell", "" },
+                    { 7, "Lavender", 1, null, "Brown", "" },
                     { 2, "Draco", 2, null, "Malfoy", "Lucious" },
-                    { 11, "Anthony", 4, null, "Goldstein", null },
-                    { 1, "Ronald", 1, null, "Weasely", "Bilius" },
-                    { 12, "Padma", 4, null, "Patil", null }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Teachers",
-                columns: new[] { "Id", "StaffId" },
-                values: new object[,]
-                {
-                    { 11, 11 },
-                    { 3, 3 },
-                    { 8, 8 },
-                    { 7, 7 },
-                    { 1, 1 },
-                    { 6, 6 },
-                    { 5, 5 },
-                    { 4, 4 },
-                    { 2, 2 },
-                    { 10, 10 },
-                    { 9, 9 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "TeachersCourse",
-                columns: new[] { "CourseId", "TeacherId" },
-                values: new object[,]
-                {
-                    { 3, 1 },
-                    { 5, 1 },
-                    { 3, 2 },
-                    { 5, 4 },
-                    { 1, 5 },
-                    { 2, 6 },
-                    { 5, 8 },
-                    { 5, 10 },
-                    { 4, 11 }
+                    { 5, "Susan", 3, null, "Bones", "" },
+                    { 12, "Padma", 4, null, "Patil", "" },
+                    { 6, "Terry", 4, null, "Boot", "" },
+                    { 8, "Cho", 4, null, "Chang", "" },
+                    { 9, "Michael", 4, null, "Corner", "" },
+                    { 11, "Anthony", 4, null, "Goldstein", "" },
+                    { 10, "Justin", 3, null, "Finch-Fletchley", "" },
+                    { 1, "Ronald", 1, null, "Weasely", "Bilius" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -371,6 +320,11 @@ namespace Hogwarts.Api.Migrations
                 column: "StaffId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_StaffCourse_StaffId",
+                table: "StaffCourse",
+                column: "StaffId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_StaffRoles_RoleId",
                 table: "StaffRoles",
                 column: "RoleId");
@@ -379,16 +333,6 @@ namespace Hogwarts.Api.Migrations
                 name: "IX_Students_HouseId",
                 table: "Students",
                 column: "HouseId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Teachers_StaffId",
-                table: "Teachers",
-                column: "StaffId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeachersCourse_TeacherId",
-                table: "TeachersCourse",
-                column: "TeacherId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -397,7 +341,7 @@ namespace Hogwarts.Api.Migrations
                 name: "HeadOfHouses");
 
             migrationBuilder.DropTable(
-                name: "RetrievedTeacherRecords");
+                name: "StaffCourse");
 
             migrationBuilder.DropTable(
                 name: "StaffRoles");
@@ -406,22 +350,16 @@ namespace Hogwarts.Api.Migrations
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "TeachersCourse");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Roles");
 
             migrationBuilder.DropTable(
-                name: "Houses");
-
-            migrationBuilder.DropTable(
-                name: "Courses");
-
-            migrationBuilder.DropTable(
-                name: "Teachers");
-
-            migrationBuilder.DropTable(
                 name: "Staff");
+
+            migrationBuilder.DropTable(
+                name: "Houses");
         }
     }
 }

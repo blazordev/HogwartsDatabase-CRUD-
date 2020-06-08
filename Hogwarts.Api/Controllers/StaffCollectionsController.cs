@@ -56,7 +56,7 @@ namespace Hogwarts.Api.Controllers
             var staffEntities = _mapper.Map<IEnumerable<Staff>>(staffForCreationDto);
             foreach (var staffEntity in staffEntities)
             {
-                _repo.AddStaffWithRoles(staffEntity);
+                _repo.AddStaff(staffEntity);
                 _repo.Save();
             }
             var staffCollectionToReturn = _mapper.Map<IEnumerable<StaffDto>>(staffEntities);

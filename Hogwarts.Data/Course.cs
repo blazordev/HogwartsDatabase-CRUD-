@@ -7,7 +7,7 @@ namespace Hogwarts.Data
     {
         public int Id { get; set; }
         [Required] public string Name { get; set; }
-        public IEnumerable<TeacherCourse> TeacherCourse { get; set; } = new List<TeacherCourse>();
+        public IEnumerable<StaffCourse> StaffCourse { get; set; } = new List<StaffCourse>();
         
     }
 }

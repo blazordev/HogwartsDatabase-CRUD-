@@ -15,8 +15,8 @@ namespace Hogwarts.Api.Models
         public string MiddleNames { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
-        public IEnumerable<int> RoleIds { get; set; }       
+      
+            
 
 
     }

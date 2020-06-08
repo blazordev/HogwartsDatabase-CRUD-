@@ -66,7 +66,6 @@ namespace Hogwarts.Api
             services.AddScoped<StudentLibraryRepository>();
             services.AddScoped<CourseLibraryRepository>();
             services.AddScoped<StaffLibraryRepository>();
-            services.AddScoped<TeacherObjectRepository>();
             services.AddScoped<RoleRepository>();
 
         }

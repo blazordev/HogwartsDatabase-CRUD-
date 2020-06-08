@@ -36,10 +36,7 @@ namespace Hogwarts.Api.Services
             }
             return _context.Roles.FirstOrDefault(r => r.Id == roleId);
         }
-        public void AddRoleToStaff(int staffId, int roleId)
-        {
-            _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
-        }
+        
         public bool RoleExists(int roleId)
         {
             if (String.IsNullOrWhiteSpace(roleId.ToString()))

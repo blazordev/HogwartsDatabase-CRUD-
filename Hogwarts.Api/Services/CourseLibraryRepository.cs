@@ -39,6 +39,17 @@ namespace Hogwarts.Api.Services
             return (_context.SaveChanges() >= 0);
         }
 
+        public bool CourseExists(int courseId)
+        {
+            if (String.IsNullOrWhiteSpace(courseId.ToString()))
+            {
+                throw new ArgumentNullException(nameof(courseId));
+            }
+            return _context.Courses.Any(c => c.Id == courseId);
+        }
+
+        
+
 
     }
 }

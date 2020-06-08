@@ -5,10 +5,10 @@ using System.Text;
 
 namespace Hogwarts.Data
 {
-    public class TeacherCourse
+    public class StaffCourse
     {
-        [Required] public int TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        [Required] public int StaffId { get; set; }
+        public Staff Staff { get; set; }
         [Required] public int CourseId { get; set; }
         public Course Course { get; set; }
     }

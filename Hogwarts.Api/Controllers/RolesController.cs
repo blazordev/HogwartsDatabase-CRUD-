@@ -56,18 +56,7 @@ namespace Hogwarts.Api.Controllers
             return CreatedAtRoute("GetRole", new { id = roleToReturn.Id }, roleToReturn);
         }
 
-        //POSTL api/staff/5/role/6
-        [HttpPost("staff/{staffId}/role/{roleId}")]
-        public ActionResult<RoleDto>AssignRoleToStaff(int staffId, int roleId)
-        {
-            if (!_roleRepository.RoleExists(roleId) || !_staffRepository.StaffExists(staffId))
-            {
-                return NotFound();
-            }
-            _roleRepository.AddRoleToStaff(staffId, roleId);
-            _roleRepository.Save();
-            return Ok();
-        }
+       
 
 
 

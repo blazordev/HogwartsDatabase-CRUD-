@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.ResourceParameters
 {
-    public class StaffResourceParameter
+    public class StaffResourceParameters
     {
         public string SearchQuery { get; set; }
         public int RoleId { get; set; }

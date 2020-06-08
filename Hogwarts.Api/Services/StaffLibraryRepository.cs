@@ -42,46 +42,51 @@ namespace Hogwarts.Api.Services
             return _context.Staff;
         }
 
-        public IEnumerable<Staff> GetAllStaff(StaffResourceParameter staffResourceParameter)
+        public IEnumerable<Staff> GetAllStaff(StaffResourceParameters staffResourceParameters)
         {
-            if (String.IsNullOrWhiteSpace(staffResourceParameter.SearchQuery)
-                && String.IsNullOrWhiteSpace(staffResourceParameter.RoleId.ToString()))
+            if (staffResourceParameters == null)
+            {
+                throw new ArgumentNullException(nameof(staffResourceParameters));
+            }
+            if (string.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery)
+                && staffResourceParameters.RoleId == 0)
             {
                 return GetAllStaff();
             }
-            var staffCollection = _context.Staff as IQueryable<Staff>;
-            if (!String.IsNullOrWhiteSpace(staffResourceParameter.RoleId.ToString()))
+            var staffToReturn = new List<Staff>();
+            var staffCollection = _context.Staff.ToList();
+            if (staffResourceParameters.RoleId != 0)
             {
-                var roleId = staffResourceParameter.RoleId;
-                var staffRoles = _context.StaffRoles.Where(sr => sr.RoleId == roleId);
-                staffCollection = staffCollection.Where(s => staffRoles.All(sr => sr.StaffId == s.Id));
+                var roleId = staffResourceParameters.RoleId;
+                var staffRoles = _context.StaffRoles;
+                foreach (var staff in staffCollection)
+                {
+                    foreach (var role in staffRoles)
+                    {
+                        if (role.RoleId == roleId && staff.Id == role.StaffId)
+                        {
+                            staffToReturn.Add(staff);
+                            break;
+                        }
+                    }                    
+                }
+                
             }
-            if (!String.IsNullOrWhiteSpace(staffResourceParameter.SearchQuery))
+            if (!String.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery))
             {
-                var queryString = staffResourceParameter.SearchQuery.Trim();
-                staffCollection = staffCollection.Where(s => s.FirstName.Contains(queryString)
-                            || s.MiddleNames.Contains(queryString)
-                            || s.LastName.Contains(queryString));
+                var queryString = staffResourceParameters.SearchQuery.ToLower().Trim();
+                staffToReturn = staffToReturn.Where(s => s.FirstName.ToLower().Contains(queryString)
+                            || s.MiddleNames.ToLower().Contains(queryString)
+                            || s.LastName.ToLower().Contains(queryString)).ToList();
             }
-            return staffCollection.ToList();
+            
+            return staffToReturn;
         }
 
-        public void AddStaffWithRoles(Staff staff)
+        public void AddStaff(Staff staff)
         {
             _context.Staff.Add(staff);
-            foreach (var role in staff.StaffRoles)
-            {
-                if (role.RoleId == 3)
-                {
-                    var teacher = new Teacher { StaffId = staff.Id };
-                    _context.Teachers.Add(teacher);
-                }
-                if (role.RoleId == 6)
-                {
-                    var headOfHouse = new HeadOfHouse { StaffId = staff.Id };
-                    _context.HeadOfHouses.Add(headOfHouse);
-                }
-            }
+            
         }
 
         public bool StaffExists(int staffId)
@@ -100,6 +105,15 @@ namespace Hogwarts.Api.Services
             return (_context.SaveChanges() >= 0);
         }
 
+        public void AddRoleToStaff(int staffId, int roleId)
+        {
+            _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
+        }
+
+        public void AddCourseToStaff(int staffId, int courseId)
+        {
+            _context.StaffCourse.Add(new StaffCourse { CourseId = courseId, StaffId = staffId });
+        }
 
 
 

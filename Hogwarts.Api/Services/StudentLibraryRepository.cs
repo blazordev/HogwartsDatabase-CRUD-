@@ -54,10 +54,10 @@ namespace Hogwarts.Api.Services
             }
             if(!String.IsNullOrWhiteSpace(studentResourceParameter.SearchQuery))
             {
-                var searchQuery = studentResourceParameter.SearchQuery.Trim();
-                collection = collection.Where(s => s.FirstName.Contains(searchQuery)
-                || s.MiddleNames.Contains(searchQuery)
-                || s.LastName.Contains(searchQuery));
+                var searchQuery = studentResourceParameter.SearchQuery.ToLower().Trim();
+                collection = collection.Where(s => s.FirstName.ToLower().Contains(searchQuery)
+                || s.MiddleNames.ToLower().Contains(searchQuery)
+                || s.LastName.ToLower().Contains(searchQuery));
             }
             return collection.ToList();
         }

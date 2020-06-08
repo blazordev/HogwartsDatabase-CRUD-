@@ -11,7 +11,7 @@ namespace Hogwarts.Data
         [Required]
         [MaxLength(50)]
         public string FirstName { get; set; }
-        public string MiddleNames { get; set; }
+        public string MiddleNames { get; set; } = "";
         [Required]
         [MaxLength(50)]
         public string LastName { get; set; }
