@@ -68,9 +68,9 @@ namespace Hogwarts.Api.Services
                             staffToReturn.Add(staff);
                             break;
                         }
-                    }                    
+                    }
                 }
-                
+
             }
             if (!String.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery))
             {
@@ -79,14 +79,14 @@ namespace Hogwarts.Api.Services
                             || s.MiddleNames.ToLower().Contains(queryString)
                             || s.LastName.ToLower().Contains(queryString)).ToList();
             }
-            
+
             return staffToReturn;
         }
 
         public void AddStaff(Staff staff)
         {
             _context.Staff.Add(staff);
-            
+
         }
 
         public bool StaffExists(int staffId)
@@ -109,12 +109,43 @@ namespace Hogwarts.Api.Services
         {
             _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
         }
-
+        public void AddRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds)
+        {
+            foreach (var roleId in roleIds)
+            {
+                _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
+            }
+        }
         public void AddCourseToStaff(int staffId, int courseId)
         {
             _context.StaffCourse.Add(new StaffCourse { CourseId = courseId, StaffId = staffId });
         }
 
+        public void AssignCourseCollectionToStaff(int staffId, IEnumerable<int> courseIds)
+        {
+            foreach (var courseId in courseIds)
+            {
+                _context.StaffCourse.Add(
+                    new StaffCourse { CourseId = courseId, StaffId = staffId });
+            }
+
+        }
+        public void AddHouseToStaff(int staffId, int houseId)
+        {
+            _context.HeadOfHouses.Add(new HeadOfHouse { HouseId = houseId, StaffId = staffId });
+        }
+
+        public bool IsTeacher(int staffId)
+        {
+            var staffRole = _context.StaffRoles.Where(sr => sr.StaffId == staffId);
+            return staffRole.Any(sr => sr.RoleId == 3); // headofhouse
+        }
+
+        public bool IsHeadOfHouse(int staffId)
+        {
+            var staffRole = _context.StaffRoles.Where(sr => sr.StaffId == staffId);
+            return staffRole.Any(sr => sr.RoleId == 6); //headofhouse
+        }
 
 
 

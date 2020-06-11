@@ -46,9 +46,26 @@ namespace Hogwarts.Api.Services
             return _context.Roles.Any(r => r.Id == roleId);
         }
 
+        public IEnumerable<Role> GetRolesForStaff(int staffId)
+        {
+            var staffRoles = _context.StaffRoles.Where(sr => sr.StaffId == staffId);
+            var rolesToReturn = new List<Role>();
+            foreach (var staffRole in staffRoles)
+            {
+                var role = _context.Roles.FirstOrDefault(r => r.Id == staffRole.RoleId);
+                rolesToReturn.Add(role);
+            }
+            return rolesToReturn;
+        }
+
         public bool Save()
         {
             return _context.SaveChanges() >= 0;
+        }
+
+        public bool HasRoleAlready(int staffId, int roleId)
+        {
+            return _context.StaffRoles.Any(sr => sr.StaffId == staffId && sr.RoleId == roleId);
         }
     }
 }

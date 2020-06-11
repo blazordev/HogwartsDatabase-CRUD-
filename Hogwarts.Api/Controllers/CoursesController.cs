@@ -46,7 +46,7 @@ namespace Hogwarts.Api.Controllers
             _coursesRepo.Add(courseEntity);
             _coursesRepo.Save();
             var courseToReturn = _mapper.Map<CourseDto>(courseEntity);
-            return CreatedAtRoute("GetCourse", new { id = courseToReturn.Id }, courseToReturn);
+            return CreatedAtRoute("GetCourse", new { staffId = courseToReturn.Id }, courseToReturn);
         }       
 
 

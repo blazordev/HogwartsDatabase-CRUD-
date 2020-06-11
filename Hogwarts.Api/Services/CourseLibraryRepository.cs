@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Hogwarts.Api.Controllers;
 
 namespace Hogwarts.Api.Services
 {
@@ -46,6 +48,20 @@ namespace Hogwarts.Api.Services
                 throw new ArgumentNullException(nameof(courseId));
             }
             return _context.Courses.Any(c => c.Id == courseId);
+        }
+        
+        
+        public IEnumerable<Course> GetCoursesForStaffmember(int staffId)
+        {
+            //Prettify this into a join
+            var staffCourseList = _context.StaffCourse.Where(sc => sc.StaffId == staffId);
+            var coursesToReturn = new List<Course>();
+            foreach (var staffCourse in staffCourseList)
+            {
+                coursesToReturn.Add(_context.Courses.FirstOrDefault(c => c.Id == staffCourse.CourseId));
+            }
+            return coursesToReturn;
+
         }
 
         

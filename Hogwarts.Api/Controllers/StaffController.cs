@@ -56,44 +56,59 @@ namespace Hogwarts.Api.Controllers
         //POST: api/staff
         [HttpPost]
         public ActionResult<StaffDto> CreateStaff(StaffForCreationDto staff)
-        {          
-            var staffEntity = _mapper.Map<Staff>(staff);            
+        {
+            var staffEntity = _mapper.Map<Staff>(staff);
+            //first Add staff
             _staffRepo.AddStaff(staffEntity);
+            var createdStaffId = staffEntity.Id;
+            if (staff.RoleIds != null)
+            {
+                _staffRepo.AddRoleCollectionToStaff(createdStaffId, staff.RoleIds);
+
+                if (!String.IsNullOrEmpty(staff.HouseId.ToString()))
+                {
+                    //if role is HeadOfHouse, add house to staff
+                    if (_staffRepo.IsHeadOfHouse(createdStaffId))
+                    {
+                        _staffRepo.AddHouseToStaff(createdStaffId, staff.HouseId);
+                    }
+                    else
+                    {
+                        return BadRequest("StaffMember must have Role HeadOfHouse to assign House");
+                    }
+                }
+                if (staff.CourseIds != null)
+                {
+                    //if role is Teacher, add courses to staff
+                    if (_staffRepo.IsTeacher(createdStaffId))
+                    {
+                        _staffRepo.AssignCourseCollectionToStaff(staffEntity.Id, staff.CourseIds);
+                    }
+                    else
+                    {
+                        return BadRequest("Staffmember must have role Teacher to assign Courses");
+                    }
+                }
+            }
+            //if all goes well
             _staffRepo.Save();
             return CreatedAtRoute("GetStaff",
-                new { id = staffEntity.Id },
+                new { staffId = createdStaffId },
                 _mapper.Map<StaffDto>(staffEntity));
         }
 
-        //POST api/staff/5/role/6
-        [HttpPost("{staffId}/role/{roleId}")]
-        public ActionResult<StaffDto> AssignRoleToStaff(int staffId, int roleId)
+        [HttpGet("{staffId}/courses")]
+        public ActionResult<IEnumerable<CourseDto>> GetCoursesForStaff(int staffId)
         {
-            if (!_roleRepo.RoleExists(roleId) || !_staffRepo.StaffExists(staffId))
-            {
-                return NotFound();
-            }
-            _staffRepo.AddRoleToStaff(staffId, roleId);
-            _roleRepo.Save();
             var staffEntity = _staffRepo.GetStaffById(staffId);
-            return CreatedAtRoute("GetStaff",
-               new { id = staffId },
-               _mapper.Map<StaffDto>(staffEntity));// with link of newly created role
-        }
-
-        //POST api/staff/5/role/6
-        [HttpPost("{staffId}/course/{courseId}")]
-        public ActionResult AssignCourseToStaff(int staffId, int courseId)
-        {
-            if (!_courseRepo.CourseExists(courseId) || !_staffRepo.StaffExists(staffId))
+            if (staffEntity == null)
             {
                 return NotFound();
             }
-            _staffRepo.AddCourseToStaff(staffId, courseId);
-            _roleRepo.Save();
-            return Ok("Course assigned to Staffmember");
+            var courses = _courseRepo.GetCoursesForStaffmember(staffId);
+            return Ok(_mapper.Map<IEnumerable<CourseDto>>(courses));
         }
-
 
     }
 }
+

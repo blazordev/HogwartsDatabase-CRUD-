@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Hogwarts.Api.Controllers
 {
     [Route("api/Roles")]
+    [ApiController]
     public class RolesController : Controller
     {
         RoleRepository _roleRepository;
@@ -53,7 +54,7 @@ namespace Hogwarts.Api.Controllers
             _roleRepository.AddRole(roleEntity);
             _roleRepository.Save();
             var roleToReturn = _mapper.Map<RoleDto>(roleEntity);
-            return CreatedAtRoute("GetRole", new { id = roleToReturn.Id }, roleToReturn);
+            return CreatedAtRoute("GetRole", new { staffId = roleToReturn.Id }, roleToReturn);
         }
 
        
