@@ -6,6 +6,7 @@ using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
 using Hogwarts.Data;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -57,8 +58,26 @@ namespace Hogwarts.Api.Controllers
             return CreatedAtRoute("GetRole", new { staffId = roleToReturn.Id }, roleToReturn);
         }
 
-       
-
+        [HttpPatch("{roleId}")]
+        public ActionResult<RoleDto> PartiallyUpdateRole(int roleId,
+            JsonPatchDocument<RoleForEditDto> patchDocument)
+        {
+            var roleFromRepo = _roleRepository.GetRoleById(roleId);
+            if (roleFromRepo == null)
+            {
+                return NotFound();
+            }
+            var roleToPatch = _mapper.Map<RoleForEditDto>(roleFromRepo);
+            patchDocument.ApplyTo(roleToPatch, ModelState);
+            if(!TryValidateModel(roleToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+            _mapper.Map(roleToPatch, roleFromRepo);
+            _roleRepository.UpdateRole(roleId);
+            _roleRepository.Save();
+            return Ok(roleFromRepo);
+        }
 
 
     }

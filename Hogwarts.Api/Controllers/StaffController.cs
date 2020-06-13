@@ -11,6 +11,7 @@ using Hogwarts.Api.Services;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -63,7 +64,7 @@ namespace Hogwarts.Api.Controllers
             var createdStaffId = staffEntity.Id;
             if (staff.RoleIds != null)
             {
-                _staffRepo.AddRoleCollectionToStaff(createdStaffId, staff.RoleIds);
+                _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.RoleIds);
 
                 if (!String.IsNullOrEmpty(staff.HouseId.ToString()))
                 {
@@ -108,7 +109,27 @@ namespace Hogwarts.Api.Controllers
             var courses = _courseRepo.GetCoursesForStaffmember(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courses));
         }
+        [HttpPatch("{staffId}")]
+        public ActionResult<StaffDto> PartiallyEditStaff(int staffId,
+            JsonPatchDocument<StaffForEditDto> patchDocument)
+        {
+            var staffFromRepo = _staffRepo.GetStaffById(staffId);
+            if (staffFromRepo == null)
+            {
+                return NotFound();
+            }
+            var staffToPatch = _mapper.Map<StaffForEditDto>(staffFromRepo);
+            patchDocument.ApplyTo(staffToPatch, ModelState);
+            if(!TryValidateModel(staffToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
 
+            _mapper.Map(staffToPatch, staffFromRepo);
+            _staffRepo.UpdateStaff(staffFromRepo);
+            _staffRepo.Save();
+            return Ok(_mapper.Map<StaffDto>(staffFromRepo));
+        }
     }
 }
 

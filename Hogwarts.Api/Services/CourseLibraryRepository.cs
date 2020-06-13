@@ -50,6 +50,10 @@ namespace Hogwarts.Api.Services
             return _context.Courses.Any(c => c.Id == courseId);
         }
         
+        public void UpdateCourse(Course course)
+        {
+            //no code needed for update in current repo
+        }
         
         public IEnumerable<Course> GetCoursesForStaffmember(int staffId)
         {

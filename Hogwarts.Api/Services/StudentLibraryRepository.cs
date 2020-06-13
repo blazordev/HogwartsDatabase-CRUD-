@@ -91,6 +91,10 @@ namespace Hogwarts.Api.Services
             }
             _context.Students.Add(student);
         }
+        public void UpdateStudent(Student student)
+        {
+            //no code needed
+        }
         public bool Save()
         {
             return (_context.SaveChanges() >= 0);

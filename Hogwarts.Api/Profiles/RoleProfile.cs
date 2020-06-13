@@ -14,6 +14,8 @@ namespace Hogwarts.Api.Profiles
         {
             CreateMap<RoleForCreationDto,Role>();
             CreateMap<Role,RoleDto>();
+            CreateMap<RoleForEditDto,Role>().ReverseMap();            
+
         }
     }
 }

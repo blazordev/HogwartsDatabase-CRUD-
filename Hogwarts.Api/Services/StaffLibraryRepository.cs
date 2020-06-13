@@ -98,7 +98,10 @@ namespace Hogwarts.Api.Services
 
             return _context.Staff.Any(s => s.Id == staffId);
         }
-
+        public void UpdateStaff(Staff staff)
+        {
+            //nothing needed here
+        }
 
         public bool Save()
         {
@@ -109,7 +112,7 @@ namespace Hogwarts.Api.Services
         {
             _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
         }
-        public void AddRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds)
+        public void AssignRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds)
         {
             foreach (var roleId in roleIds)
             {

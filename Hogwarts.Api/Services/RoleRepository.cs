@@ -57,6 +57,10 @@ namespace Hogwarts.Api.Services
             }
             return rolesToReturn;
         }
+        public void UpdateRole(int roleId)
+        {
+            //no code needed
+        }
 
         public bool Save()
         {

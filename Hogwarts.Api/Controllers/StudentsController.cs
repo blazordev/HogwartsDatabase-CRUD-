@@ -11,6 +11,7 @@ using Hogwarts.Api.Services;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -37,7 +38,7 @@ namespace Hogwarts.Api.Controllers
         }
 
         // GET: api/Students/5
-        [HttpGet("{studentId}", Name ="GetStudent")]
+        [HttpGet("{studentId}", Name = "GetStudent")]
         public ActionResult<StudentDto> GetStudent(int studentId)
         {
             var studentFromRepo = _repo.GetStudentById(studentId);
@@ -50,7 +51,7 @@ namespace Hogwarts.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<StudentDto>CreateStudent(StudentForCreationDto student)
+        public ActionResult<StudentDto> CreateStudent(StudentForCreationDto student)
         {
             var studentEntity = _mapper.Map<Student>(student);
             _repo.AddStudent(studentEntity);
@@ -59,6 +60,29 @@ namespace Hogwarts.Api.Controllers
             return CreatedAtRoute("GetStudent", new { studentId = studentToReturn.Id },
                 studentToReturn);
 
+        }
+
+        [HttpPatch("{studentId}")]
+        public ActionResult<StudentDto> PartiallyUpdateStudent(int studentId,
+            JsonPatchDocument<StudentForEditDto> patchDocument)
+        {
+            var studentEntity = _repo.GetStudentById(studentId);
+            if (studentEntity == null)
+            {
+                return NotFound();
+            }
+            
+            var studentToPatch = _mapper.Map<StudentForEditDto>(studentEntity);
+            patchDocument.ApplyTo(studentToPatch, ModelState);
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _mapper.Map(studentToPatch, studentEntity);
+            _repo.UpdateStudent(studentEntity);
+            _repo.Save();
+            return Ok(_mapper.Map<StudentDto>(studentEntity));
         }
 
     }

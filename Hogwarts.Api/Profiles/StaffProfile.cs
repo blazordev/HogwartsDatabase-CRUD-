@@ -14,7 +14,8 @@ namespace Hogwarts.Api.Profiles
         {
             CreateMap<Staff, StaffDto>();
             CreateMap<StaffForCreationDto, Staff>();
-                
+            CreateMap<Staff, StaffForEditDto>().ReverseMap();
+            
         }
     }
 }
