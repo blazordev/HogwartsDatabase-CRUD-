@@ -71,10 +71,10 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            
+
             var studentToPatch = _mapper.Map<StudentForEditDto>(studentEntity);
             patchDocument.ApplyTo(studentToPatch, ModelState);
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -83,6 +83,19 @@ namespace Hogwarts.Api.Controllers
             _repo.UpdateStudent(studentEntity);
             _repo.Save();
             return Ok(_mapper.Map<StudentDto>(studentEntity));
+        }
+
+        [HttpDelete("{studentId}")]
+        public ActionResult DeleteStudent(int studentId)
+        {
+            var studentFromRepo = _repo.GetStudentById(studentId);
+            if (studentFromRepo == null)
+            {
+                return NotFound();
+            }
+            _repo.DeleteStudent(studentFromRepo);
+            var deleted = _repo.Save();
+            return NoContent();
         }
 
     }

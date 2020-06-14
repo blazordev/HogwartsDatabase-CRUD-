@@ -2,6 +2,7 @@
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,10 +84,20 @@ namespace Hogwarts.Api.Services
             return staffToReturn;
         }
 
+        public StaffRole GetStaffRoleEntity(int staffId, int roleId)
+        {
+            return _context.StaffRoles.FirstOrDefault(sr =>
+                 sr.StaffId == staffId && sr.RoleId == roleId);
+        }
+
+        public void DeleteStaffRoleRelationship(StaffRole staffRoleFromRepo)
+        {
+            _context.StaffRoles.Remove(staffRoleFromRepo);
+        }        
+
         public void AddStaff(Staff staff)
         {
             _context.Staff.Add(staff);
-
         }
 
         public bool StaffExists(int staffId)
@@ -150,7 +161,9 @@ namespace Hogwarts.Api.Services
             return staffRole.Any(sr => sr.RoleId == 6); //headofhouse
         }
 
-
-
+        public void DeleteStaff(Staff staffFromRepo)
+        { 
+            _context.Staff.Remove(staffFromRepo);
+        }
     }
 }

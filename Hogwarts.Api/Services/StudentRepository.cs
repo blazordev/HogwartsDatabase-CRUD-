@@ -91,6 +91,12 @@ namespace Hogwarts.Api.Services
             }
             _context.Students.Add(student);
         }
+
+        public void DeleteStudent(Student studentFromRepo)
+        {
+            _context.Students.Remove(studentFromRepo);
+        }
+
         public void UpdateStudent(Student student)
         {
             //no code needed

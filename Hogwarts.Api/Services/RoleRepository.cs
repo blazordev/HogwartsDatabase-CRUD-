@@ -71,5 +71,10 @@ namespace Hogwarts.Api.Services
         {
             return _context.StaffRoles.Any(sr => sr.StaffId == staffId && sr.RoleId == roleId);
         }
+
+        public void DeleteRole(Role roleFromRepo)
+        {
+            _context.Roles.Remove(roleFromRepo);
+        }
     }
 }

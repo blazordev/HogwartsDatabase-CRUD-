@@ -57,5 +57,18 @@ namespace Hogwarts.Api.Controllers
                new { staffId = staffId },
                _mapper.Map<StaffDto>(roleToReturn));
         }
+
+        [HttpDelete("{staffId}/{roleId}")]
+        public ActionResult UnassignRoleFromStaff(int staffId, int roleId)
+        {
+            var staffRoleFromRepo = _staffRepo.GetStaffRoleEntity(staffId, roleId);
+            if (staffRoleFromRepo == null)
+            {
+                return NotFound();
+            }
+            _staffRepo.DeleteStaffRoleRelationship(staffRoleFromRepo);
+            var deleted = _staffRepo.Save();
+            return NoContent();
+        }
     }
 }

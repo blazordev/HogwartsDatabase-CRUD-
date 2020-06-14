@@ -19,8 +19,5 @@ namespace Hogwarts.Api.Models
         public int HouseId { get; set; }
         public IEnumerable<int> CourseIds { get; set; } = new List<int>();
       
-            
-
-
     }
 }

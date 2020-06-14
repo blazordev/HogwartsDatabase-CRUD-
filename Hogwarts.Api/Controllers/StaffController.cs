@@ -130,6 +130,19 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.Save();
             return Ok(_mapper.Map<StaffDto>(staffFromRepo));
         }
+
+        [HttpDelete("{staffId}")]
+        public ActionResult DeleteStaff(int staffId)
+        {
+            var staffFromRepo = _staffRepo.GetStaffById(staffId);
+            if (staffFromRepo == null)
+            {
+                return NotFound();
+            }
+            _staffRepo.DeleteStaff(staffFromRepo);
+            _staffRepo.Save();
+            return NoContent();
+        }
     }
 }
 

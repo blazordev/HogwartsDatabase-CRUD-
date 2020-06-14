@@ -78,7 +78,18 @@ namespace Hogwarts.Api.Controllers
             _roleRepository.Save();
             return Ok(roleFromRepo);
         }
-
+        [HttpDelete("{roleId}")]
+        public ActionResult DeleteRole(int staffId)
+        {
+            var roleFromRepo = _roleRepository.GetRoleById(staffId);
+            if (roleFromRepo == null)
+            {
+                return NotFound();
+            }
+            _roleRepository.DeleteRole(roleFromRepo);
+            _roleRepository.Save();
+            return NoContent();
+        }
 
     }
 }
