@@ -10,11 +10,11 @@ using Hogwarts.Api.Controllers;
 
 namespace Hogwarts.Api.Services
 {
-    public class CourseLibraryRepository
+    public class CourseRepository
     {
         private HogwartsDbContext _context;
 
-        public CourseLibraryRepository(HogwartsDbContext context)
+        public CourseRepository(HogwartsDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

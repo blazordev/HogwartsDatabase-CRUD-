@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class StudentLibraryRepository
+    public class StudentRepository
     {
         private HogwartsDbContext _context;
         private IMapper _mapper;
 
-        public StudentLibraryRepository(HogwartsDbContext context, IMapper mapper)
+        public StudentRepository(HogwartsDbContext context, IMapper mapper)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

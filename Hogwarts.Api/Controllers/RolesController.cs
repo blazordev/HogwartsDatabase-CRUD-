@@ -18,10 +18,10 @@ namespace Hogwarts.Api.Controllers
     public class RolesController : Controller
     {
         RoleRepository _roleRepository;
-        private StaffLibraryRepository _staffRepository;
+        private StaffRepository _staffRepository;
         IMapper _mapper;
         public RolesController(IMapper mapper, RoleRepository roleRepository,
-            StaffLibraryRepository staffRepository)
+            StaffRepository staffRepository)
         {
             _mapper = mapper;
             _roleRepository = roleRepository;

@@ -19,10 +19,10 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private StudentLibraryRepository _repo;
+        private StudentRepository _repo;
         private IMapper _mapper;
 
-        public StudentsController(StudentLibraryRepository repo, IMapper mapper)
+        public StudentsController(StudentRepository repo, IMapper mapper)
         {
             _repo = repo ?? throw new ArgumentException(nameof(repo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

@@ -68,10 +68,10 @@ namespace Hogwarts.Api
 
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<HouseLibraryRepository>();
-            services.AddScoped<StudentLibraryRepository>();
-            services.AddScoped<CourseLibraryRepository>();
-            services.AddScoped<StaffLibraryRepository>();
+            services.AddScoped<HouseRepository>();
+            services.AddScoped<StudentRepository>();
+            services.AddScoped<CourseRepository>();
+            services.AddScoped<StaffRepository>();
             services.AddScoped<RoleRepository>();
 
         }

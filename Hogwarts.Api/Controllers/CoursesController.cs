@@ -13,10 +13,10 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
-        private CourseLibraryRepository _coursesRepo;
+        private CourseRepository _coursesRepo;
         private IMapper _mapper;
 
-        public CoursesController(CourseLibraryRepository coursesRepo, IMapper mapper)
+        public CoursesController(CourseRepository coursesRepo, IMapper mapper)
         {
             _coursesRepo = coursesRepo ?? throw new ArgumentNullException(nameof(coursesRepo));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));

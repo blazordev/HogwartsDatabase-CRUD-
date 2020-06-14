@@ -17,10 +17,10 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class HousesController : ControllerBase
     {
-        private readonly HouseLibraryRepository _repo;
+        private readonly HouseRepository _repo;
         private readonly IMapper _mapper;
 
-        public HousesController(HouseLibraryRepository repo, IMapper mapper)
+        public HousesController(HouseRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;

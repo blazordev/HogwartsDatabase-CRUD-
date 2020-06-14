@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class HouseLibraryRepository
+    public class HouseRepository
     {
         private HogwartsDbContext _context;
 
-        public HouseLibraryRepository(HogwartsDbContext context)
+        public HouseRepository(HogwartsDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

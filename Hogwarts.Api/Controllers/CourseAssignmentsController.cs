@@ -15,12 +15,12 @@ namespace Hogwarts.Api.Controllers
     public class CourseAssignmentsController : ControllerBase
     {
         private IMapper _mapper;
-        private CourseLibraryRepository _courseRepo;
-        private StaffLibraryRepository _staffRepo;
+        private CourseRepository _courseRepo;
+        private StaffRepository _staffRepo;
 
         public CourseAssignmentsController(IMapper mapper,
-            CourseLibraryRepository courseRepo,
-            StaffLibraryRepository staffRepo)
+            CourseRepository courseRepo,
+            StaffRepository staffRepo)
         {
             _mapper = mapper;
             _courseRepo = courseRepo;

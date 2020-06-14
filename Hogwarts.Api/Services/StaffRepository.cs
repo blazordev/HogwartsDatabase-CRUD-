@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class StaffLibraryRepository
+    public class StaffRepository
     {
         private HogwartsDbContext _context;
 
-        public StaffLibraryRepository(HogwartsDbContext context)
+        public StaffRepository(HogwartsDbContext context)
         {
             _context = context;
         }

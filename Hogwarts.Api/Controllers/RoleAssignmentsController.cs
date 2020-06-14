@@ -14,11 +14,11 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class RoleAssignmentsController : ControllerBase
     {
-        private StaffLibraryRepository _staffRepo;
+        private StaffRepository _staffRepo;
         private RoleRepository _roleRepo;
         private IMapper _mapper;
 
-        public RoleAssignmentsController(StaffLibraryRepository staffRepo,
+        public RoleAssignmentsController(StaffRepository staffRepo,
             RoleRepository roleRepo,
             IMapper mapper)
         {

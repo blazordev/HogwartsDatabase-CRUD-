@@ -19,13 +19,13 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
-        private StaffLibraryRepository _staffRepo;
+        private StaffRepository _staffRepo;
         private RoleRepository _roleRepo;
-        private CourseLibraryRepository _courseRepo;
+        private CourseRepository _courseRepo;
         private IMapper _mapper;
 
-        public StaffController(StaffLibraryRepository staffRepo,
-            RoleRepository roleRepo, IMapper mapper, CourseLibraryRepository courseRepo)
+        public StaffController(StaffRepository staffRepo,
+            RoleRepository roleRepo, IMapper mapper, CourseRepository courseRepo)
         {
             _staffRepo = staffRepo;
             _roleRepo = roleRepo;

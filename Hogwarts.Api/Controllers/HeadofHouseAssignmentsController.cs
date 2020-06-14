@@ -15,13 +15,13 @@ namespace Hogwarts.Api.Controllers
     public class HeadofHouseAssignmentsController : ControllerBase
     {
         private IMapper _mapper;
-        private StaffLibraryRepository _staffRepo;
-        private HouseLibraryRepository _houseRepo;
+        private StaffRepository _staffRepo;
+        private HouseRepository _houseRepo;
         
 
         public HeadofHouseAssignmentsController(IMapper mapper,
-            StaffLibraryRepository staffRepo, 
-            HouseLibraryRepository houseRepo)
+            StaffRepository staffRepo, 
+            HouseRepository houseRepo)
         {
             _mapper = mapper;
             _staffRepo = staffRepo;

@@ -18,9 +18,9 @@ namespace Hogwarts.Api.Controllers
     public class StudentCollectionsController : Controller
     {
         private IMapper _mapper;
-        private StudentLibraryRepository _repo;
+        private StudentRepository _repo;
 
-        public StudentCollectionsController(IMapper mapper, StudentLibraryRepository repo)
+        public StudentCollectionsController(IMapper mapper, StudentRepository repo)
         {
             _mapper = mapper;
             _repo = repo;
