@@ -38,6 +38,16 @@ namespace Hogwarts.Api.Controllers
             var courseEntities = _courseRepo.GetCoursesForStaffmember(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courseEntities));
         }
+        [HttpGet("Courses/{courseId}", Name = "GetAllStaffForCourse")]
+        public ActionResult<IEnumerable<CourseDto>> GetAllStaffForCourse(int courseId)
+        {
+            if (!_courseRepo.CourseExists(courseId))
+            {
+                return NotFound();
+            }
+            var staffEntities = _staffRepo.GetStaffForCourse(courseId);
+            return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffEntities));
+        }
 
         //POST api/staffId/courseId
         [HttpPost("{staffId}/{courseId}")]

@@ -68,8 +68,9 @@ namespace Hogwarts.Api.Services
 
         }
 
-        
-
-
+        public void DeleteCourse(Course courseToDelete)
+        {
+            _context.Courses.Remove(courseToDelete);
+        }
     }
 }

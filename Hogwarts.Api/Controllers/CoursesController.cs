@@ -75,5 +75,18 @@ namespace Hogwarts.Api.Controllers
             return Ok(_mapper.Map<CourseDto>(courseFromRepo));
         }
 
+        [HttpDelete("{courseId}")]
+        public ActionResult DeleteCourse(int courseId)
+        {
+            var courseToDelete = _coursesRepo.GetCourseById(courseId);
+            if(courseToDelete == null)
+            {
+                return NotFound();
+            }
+            _coursesRepo.DeleteCourse(courseToDelete);
+            _coursesRepo.Save();
+            return NoContent();
+        }
+
     }
 }
