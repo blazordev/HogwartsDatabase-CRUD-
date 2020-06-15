@@ -40,6 +40,12 @@ namespace Hogwarts.Api.Services
             return _context.Houses.FirstOrDefault(h => h.Id == houseId);
         }
 
+        public House GetHouseOfHeadOfHouse(int staffId)
+        {
+            var headOfHouse = _context.HeadOfHouses.FirstOrDefault(h => h.StaffId == staffId);
+            return _context.Houses.FirstOrDefault(h =>
+            h.Id == headOfHouse.HouseId);
+        }
 
         public IEnumerable<HeadOfHouse> GetHeadsOfHouse(int houseId)
         {
@@ -51,8 +57,12 @@ namespace Hogwarts.Api.Services
                 .Where(h => h.HouseId == houseId)
                 .ToList();
         }
+        public HeadOfHouse GetHeadOfHouse(int staffId, int houseId)
+        {
+            return _context.HeadOfHouses.FirstOrDefault(h =>
+            h.StaffId == staffId && h.HouseId == houseId);
+        }
 
-        
 
     }
 

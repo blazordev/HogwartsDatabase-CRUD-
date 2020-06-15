@@ -28,9 +28,9 @@ namespace Hogwarts.Api.Controllers
         }
         //api/roleAssignmets/staff/2
         [HttpGet("staff/{staffId}", Name = "GetRolesForStaff")]
-        public ActionResult<IEnumerable<RoleDto>>GetRolesForStaff(int staffId)
+        public ActionResult<IEnumerable<RoleDto>> GetRolesForStaff(int staffId)
         {
-            if(!_staffRepo.StaffExists(staffId))
+            if (!_staffRepo.StaffExists(staffId))
             {
                 return NotFound();
             }
@@ -46,16 +46,13 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            if(_roleRepo.HasRoleAlready(staffId, roleId))
+            if (_roleRepo.HasRoleAlready(staffId, roleId))
             {
                 return Conflict("Staffmember already has that role");
             }
             _staffRepo.AddRoleToStaff(staffId, roleId);
             _staffRepo.Save();
-            var roleToReturn = _roleRepo.GetRoleById(staffId);
-            return CreatedAtRoute("GetRolesForStaff",
-               new { staffId = staffId },
-               _mapper.Map<StaffDto>(roleToReturn));
+            return NoContent();
         }
 
         [HttpDelete("{staffId}/{roleId}")]

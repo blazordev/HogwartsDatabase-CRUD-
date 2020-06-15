@@ -26,14 +26,37 @@ namespace Hogwarts.Api.Controllers
             _mapper = mapper;
             _staffRepo = staffRepo;
             _houseRepo = houseRepo;
-            
+        }
+        //GET house of Staff
+        [HttpGet("staff/{staffId}")]
+        public ActionResult<HouseDto> GetHouseForStaff(int staffId)
+        {
+            if(!_staffRepo.StaffExists(staffId) || !_staffRepo.IsHeadOfHouse(staffId))
+            {
+                return NotFound();
+            }
+            var houseToReturn = _houseRepo.GetHouseOfHeadOfHouse(staffId);
+            return Ok(_mapper.Map<HouseDto>(houseToReturn));
+        }
+
+        //Get staff who are Headof particular house
+        [HttpGet("houses/{houseId}")]
+        public ActionResult<IEnumerable<StaffDto>> GetHeadsOfHouse(int houseId)
+        {
+            if (!_houseRepo.HouseExists(houseId))
+            {
+                return NotFound();
+            }
+            var staffToReturn = _staffRepo.GetHeadsOfHouse(houseId);
+            return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffToReturn));
         }
 
         //POST api/staffId/houseId
+
         [HttpPost("{staffId}/{houseId}")]
         public ActionResult<StaffDto> AssignHouseToStaff(int staffId, int houseId)
         {           
-            if (_staffRepo.StaffExists(staffId) || !_houseRepo.HouseExists(houseId))
+            if (!_staffRepo.StaffExists(staffId) || !_houseRepo.HouseExists(houseId))
             {
                 return NotFound();
             }
@@ -46,6 +69,21 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.Save();
 
             return Ok(); 
+        }
+
+        [HttpDelete("{staffId}/{houseId}")]
+        public ActionResult<StaffDto> UnassignHouseFromStaff(int staffId, int houseId)
+        {
+            var headOfHouseEntity = _houseRepo.GetHeadOfHouse(staffId, houseId);
+            if (headOfHouseEntity == null)
+            {
+                return NotFound();
+            }
+            
+            _staffRepo.DeleteStaffHouseRelationship(headOfHouseEntity);
+            _staffRepo.Save();
+
+            return Ok();
         }
     }
 }

@@ -84,6 +84,22 @@ namespace Hogwarts.Api.Services
             return staffToReturn;
         }
 
+        public IEnumerable<Staff> GetHeadsOfHouse(int houseId)
+        {
+            var headsHousesCollection = _context.HeadOfHouses.Where(h => h.HouseId == houseId);
+            var staffToReturn = new List<Staff>();
+            foreach (var headHouse in headsHousesCollection)
+            {
+                staffToReturn.Add(_context.Staff.FirstOrDefault(s => s.Id == headHouse.StaffId));
+            }
+            return staffToReturn;
+
+        }
+
+        public void DeleteStaffHouseRelationship(HeadOfHouse headOfHouse)
+        {
+            _context.HeadOfHouses.Remove(headOfHouse);
+        }
         public IEnumerable<Staff> GetStaffForCourse(int courseId)
         {
             var staffCourseCollection = _context.StaffCourse.Where(sc => sc.CourseId == courseId);
