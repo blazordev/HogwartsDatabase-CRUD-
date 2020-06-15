@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,17 +38,17 @@ namespace Hogwarts.Api.Controllers
             var courseEntities = _courseRepo.GetCoursesForStaffmember(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courseEntities));
         }
-      
+
         //POST api/staffId/courseId
         [HttpPost("{staffId}/{courseId}")]
         public ActionResult<StaffDto> AssignCourseToStaff(int staffId, int courseId)
-        {            
+        {
             var staffEntity = _staffRepo.GetStaffById(staffId);
             if (staffEntity == null || !_courseRepo.CourseExists(courseId))
             {
                 return NotFound();
             }
-            if(!_staffRepo.IsTeacher(staffEntity.Id))
+            if (!_staffRepo.IsTeacher(staffEntity.Id))
             {
                 return BadRequest("Staffmember must be assigned Role Teacher before assigning to them a course");
             }
@@ -55,7 +56,20 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.Save();
 
             return CreatedAtRoute("GetAssignedCoursesForStaff", new { staffId = staffId },
-                _mapper.Map<StaffDto>(staffEntity)); 
+                _mapper.Map<StaffDto>(staffEntity));
+        }
+
+        [HttpDelete("{staffId}/{courseId}")]
+        public ActionResult UnassignCourseFromStaff(int staffId, int courseId)
+        {
+            var staffCourse = _staffRepo.GetStaffCourseById(staffId, courseId);
+            if (staffCourse == null)
+            {
+                return NotFound();
+            }
+            _staffRepo.DeleteStaffCourseRelationship(staffCourse);
+            _staffRepo.Save();
+            return NoContent();
         }
     }
 }
