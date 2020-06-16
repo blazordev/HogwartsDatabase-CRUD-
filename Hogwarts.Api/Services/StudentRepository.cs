@@ -1,6 +1,7 @@
 ﻿
 using AutoMapper;
 using Hogwarts.Api.DbContexts;
+using Hogwarts.Api.Helpers;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
@@ -34,32 +35,30 @@ namespace Hogwarts.Api.Services
             return _context.Students.ToList();
         }
 
-        public IEnumerable<Student>GetStudents(
-            StudentResourceParameters studentResourceParameter)
+        public PagedList<Student>GetStudents(
+            StudentsResourceParameters studentResourceParameters)
         {
-            if(studentResourceParameter == null)
+            if(studentResourceParameters == null)
             {
-                throw new ArgumentNullException(nameof(studentResourceParameter));
+                throw new ArgumentNullException(nameof(studentResourceParameters));
             }
-            if(String.IsNullOrWhiteSpace(studentResourceParameter.HouseName)
-                && String.IsNullOrEmpty(studentResourceParameter.SearchQuery))
-            {
-                return GetStudents();
-            }
+            
             var collection = _context.Students as IQueryable<Student>;
-            if(!String.IsNullOrWhiteSpace(studentResourceParameter.HouseName))
+            if(!String.IsNullOrWhiteSpace(studentResourceParameters.HouseName))
             {
-                var houseName = studentResourceParameter.HouseName.Trim();
+                var houseName = studentResourceParameters.HouseName.Trim();
                 collection = collection.Where(s => s.House.Name == houseName);
             }
-            if(!String.IsNullOrWhiteSpace(studentResourceParameter.SearchQuery))
+            if(!String.IsNullOrWhiteSpace(studentResourceParameters.SearchQuery))
             {
-                var searchQuery = studentResourceParameter.SearchQuery.ToLower().Trim();
+                var searchQuery = studentResourceParameters.SearchQuery.ToLower().Trim();
                 collection = collection.Where(s => s.FirstName.ToLower().Contains(searchQuery)
                 || s.MiddleNames.ToLower().Contains(searchQuery)
                 || s.LastName.ToLower().Contains(searchQuery));
             }
-            return collection.ToList();
+            return PagedList<Student>.Create(collection,
+                studentResourceParameters.PageNumber,
+                studentResourceParameters.PageSize);
         }
         public IEnumerable<Student> GetStudents(IEnumerable<int> studentIds)
         {

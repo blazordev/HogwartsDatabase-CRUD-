@@ -12,6 +12,8 @@ using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
+using Hogwarts.Api.Helpers;
+using System.Text.Json;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -29,11 +31,32 @@ namespace Hogwarts.Api.Controllers
         }
 
         // GET: api/students
-        [HttpGet]
+        [HttpGet(Name = "GetStudents")]
         public IActionResult GetStudents(
-            [FromQuery] StudentResourceParameters studentResourceParameters)
+            [FromQuery] StudentsResourceParameters studentsResourceParameters)
         {
-            var studentsFromRepo = _repo.GetStudents(studentResourceParameters);
+            var studentsFromRepo = _repo.GetStudents(studentsResourceParameters);
+            
+            var previousPageLink = studentsFromRepo.HasPrevious ?
+                CreateStudentsResourceUri(studentsResourceParameters,
+                ResourceUriType.PreviousPage) : null;
+
+            var nextPageLink = studentsFromRepo.HasNext ?
+                CreateStudentsResourceUri(studentsResourceParameters,
+                ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = studentsFromRepo.TotalCount,
+                pageSize = studentsFromRepo.PageSize,
+                currentPage = studentsFromRepo.CurrentPage,
+                totalPages = studentsFromRepo.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(paginationMetadata));
             return base.Ok(_mapper.Map<IEnumerable<StudentDto>>(studentsFromRepo));
         }
 
@@ -96,6 +119,44 @@ namespace Hogwarts.Api.Controllers
             _repo.DeleteStudent(studentFromRepo);
             var deleted = _repo.Save();
             return NoContent();
+        }
+
+        private string CreateStudentsResourceUri(
+           StudentsResourceParameters studentsResourceParameters,
+           ResourceUriType type)
+        {
+            switch (type)
+            {
+                case ResourceUriType.PreviousPage:
+                    return Url.Link("GetStudents",
+                      new
+                      {
+                          pageNumber = studentsResourceParameters.PageNumber - 1,
+                          pageSize = studentsResourceParameters.PageSize,
+                          mainCategory = studentsResourceParameters.HouseName,
+                          searchQuery = studentsResourceParameters.SearchQuery
+                      });
+                case ResourceUriType.NextPage:
+                    return Url.Link("GetStudents",
+                      new
+                      {
+                          pageNumber = studentsResourceParameters.PageNumber + 1,
+                          pageSize = studentsResourceParameters.PageSize,
+                          mainCategory = studentsResourceParameters.HouseName,
+                          searchQuery = studentsResourceParameters.SearchQuery
+                      });
+
+                default:
+                    return Url.Link("GetStudents",
+                    new
+                    {
+                        pageNumber = studentsResourceParameters.PageNumber,
+                        pageSize = studentsResourceParameters.PageSize,
+                        mainCategory = studentsResourceParameters.HouseName,
+                        searchQuery = studentsResourceParameters.SearchQuery
+                    });
+            }
+
         }
 
     }

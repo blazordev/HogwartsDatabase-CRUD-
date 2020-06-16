@@ -38,6 +38,17 @@ namespace Hogwarts.Api.Services
                 .ToList();
         }
 
+        public IEnumerable<Staff> GetStaffCollection(IEnumerable<int> staffIds)
+        {
+            return _context.Staff.Where(s => staffIds.Contains(s.Id))
+                .ToList();
+        }
+
+        public void DeleteStaffCollection(IEnumerable<Staff> staffEntities)
+        {
+            _context.Staff.RemoveRange(staffEntities);
+        }
+
         public IEnumerable<Staff> GetAllStaff()
         {
             return _context.Staff;
@@ -103,14 +114,13 @@ namespace Hogwarts.Api.Services
         public IEnumerable<Staff> GetStaffForCourse(int courseId)
         {
             var staffCourseCollection = _context.StaffCourse.Where(sc => sc.CourseId == courseId);
-            var staffToReturn = new List<Staff>(); 
+            var staffToReturn = new List<Staff>();
             foreach (var staffCourse in staffCourseCollection)
             {
                 staffToReturn.Add(_context.Staff.FirstOrDefault(s => s.Id == staffCourse.StaffId));
             }
             return staffToReturn;
         }
-
         public void DeleteStaffCourseRelationship(StaffCourse staffCourse)
         {
             _context.StaffCourse.Remove(staffCourse);
@@ -131,7 +141,7 @@ namespace Hogwarts.Api.Services
         public void DeleteStaffRoleRelationship(StaffRole staffRoleFromRepo)
         {
             _context.StaffRoles.Remove(staffRoleFromRepo);
-        }        
+        }
 
         public void AddStaff(Staff staff)
         {
@@ -200,7 +210,7 @@ namespace Hogwarts.Api.Services
         }
 
         public void DeleteStaff(Staff staffFromRepo)
-        { 
+        {
             _context.Staff.Remove(staffFromRepo);
         }
     }

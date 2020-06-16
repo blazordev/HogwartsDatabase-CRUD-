@@ -5,9 +5,18 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.ResourceParameters
 {
-    public class StudentResourceParameters
+    public class StudentsResourceParameters
     {
+        const int maxPageSize = 25;
         public string HouseName { get; set; }
         public string SearchQuery { get; set; }
+        public int PageNumber { get; set; } = 1;
+
+        private int _pageSize = 10;
+        public int PageSize
+        {
+            get => _pageSize;
+            set => _pageSize = (value > maxPageSize) ? maxPageSize : value;
+        }
     }
 }
