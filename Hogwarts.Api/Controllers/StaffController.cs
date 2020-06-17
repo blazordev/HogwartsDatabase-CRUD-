@@ -12,6 +12,8 @@ using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
+using Hogwarts.Api.Helpers;
+using System.Text.Json;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -34,16 +36,37 @@ namespace Hogwarts.Api.Controllers
         }
 
         // GET: api/Staff
-        [HttpGet]
+        [HttpGet(Name = "GetStaff")]
         public ActionResult<IEnumerable<StaffDto>> GetStaff(
             [FromQuery] StaffResourceParameters staffResourceParameters)
         {
             var staffFromRepo = _staffRepo.GetAllStaff(staffResourceParameters);
+
+            var previousPageLink = staffFromRepo.HasPrevious ?
+                CreateStaffResourceUri(staffResourceParameters,
+                ResourceUriType.PreviousPage) : null;
+
+            var nextPageLink = staffFromRepo.HasNext ?
+                CreateStaffResourceUri(staffResourceParameters,
+                ResourceUriType.NextPage) : null;
+
+            var paginationMetadata = new
+            {
+                totalCount = staffFromRepo.TotalCount,
+                pageSize = staffFromRepo.PageSize,
+                currentPage = staffFromRepo.CurrentPage,
+                totalPages = staffFromRepo.TotalPages,
+                previousPageLink,
+                nextPageLink
+            };
+
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(paginationMetadata));
             return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffFromRepo));
         }
 
         // GET: api/Staffs/5
-        [HttpGet("{id}", Name = "GetStaff")]
+        [HttpGet("{id}", Name = "GetStaffMember")]
         public ActionResult<StaffDto> GetStaff(int id)
         {
             var staffFromRepo = _staffRepo.GetStaffById(id);
@@ -93,7 +116,7 @@ namespace Hogwarts.Api.Controllers
             }
             //if all goes well
             _staffRepo.Save();
-            return CreatedAtRoute("GetStaff",
+            return CreatedAtRoute("GetStaffMember",
                 new { staffId = createdStaffId },
                 _mapper.Map<StaffDto>(staffEntity));
         }
@@ -120,7 +143,7 @@ namespace Hogwarts.Api.Controllers
             }
             var staffToPatch = _mapper.Map<StaffForEditDto>(staffFromRepo);
             patchDocument.ApplyTo(staffToPatch, ModelState);
-            if(!TryValidateModel(staffToPatch))
+            if (!TryValidateModel(staffToPatch))
             {
                 return ValidationProblem(ModelState);
             }
@@ -142,6 +165,42 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.DeleteStaff(staffFromRepo);
             _staffRepo.Save();
             return NoContent();
+        }
+        private string CreateStaffResourceUri(
+           StaffResourceParameters staffResourceParameters,
+           ResourceUriType type)
+        {
+            switch (type)
+            {
+                case ResourceUriType.PreviousPage:
+                    return Url.Link("GetStaff",
+                      new
+                      {
+                          pageNumber = staffResourceParameters.PageNumber - 1,
+                          pageSize = staffResourceParameters.PageSize,
+                          mainCategory = staffResourceParameters.RoleId,
+                          searchQuery = staffResourceParameters.SearchQuery
+                      });
+                case ResourceUriType.NextPage:
+                    return Url.Link("GetStaff",
+                      new
+                      {
+                          pageNumber = staffResourceParameters.PageNumber + 1,
+                          pageSize = staffResourceParameters.PageSize,
+                          mainCategory = staffResourceParameters.RoleId,
+                          searchQuery = staffResourceParameters.SearchQuery
+                      });
+
+                default:
+                    return Url.Link("GetStaff",
+                    new
+                    {
+                        pageNumber = staffResourceParameters.PageNumber,
+                        pageSize = staffResourceParameters.PageSize,
+                        mainCategory = staffResourceParameters.RoleId,
+                        searchQuery = staffResourceParameters.SearchQuery
+                    });
+            }
         }
     }
 }

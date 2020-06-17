@@ -1,4 +1,5 @@
 ﻿using Hogwarts.Api.DbContexts;
+using Hogwarts.Api.Helpers;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Data;
@@ -54,45 +55,31 @@ namespace Hogwarts.Api.Services
             return _context.Staff;
         }
 
-        public IEnumerable<Staff> GetAllStaff(StaffResourceParameters staffResourceParameters)
+        public PagedList<Staff> GetAllStaff(StaffResourceParameters staffResourceParameters)
         {
             if (staffResourceParameters == null)
             {
                 throw new ArgumentNullException(nameof(staffResourceParameters));
             }
-            if (string.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery)
-                && staffResourceParameters.RoleId == 0)
-            {
-                return GetAllStaff();
-            }
-            var staffToReturn = new List<Staff>();
-            var staffCollection = _context.Staff.ToList();
+            var staffToReturn = _context.Staff as IQueryable<Staff>;
             if (staffResourceParameters.RoleId != 0)
             {
                 var roleId = staffResourceParameters.RoleId;
-                var staffRoles = _context.StaffRoles;
-                foreach (var staff in staffCollection)
-                {
-                    foreach (var role in staffRoles)
-                    {
-                        if (role.RoleId == roleId && staff.Id == role.StaffId)
-                        {
-                            staffToReturn.Add(staff);
-                            break;
-                        }
-                    }
-                }
-
+                staffToReturn = _context.StaffRoles
+                    .Include(sr => sr.Staff)
+                    .Where(sr => sr.RoleId == roleId)
+                    .Select(sr => sr.Staff);
             }
             if (!String.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery))
             {
                 var queryString = staffResourceParameters.SearchQuery.ToLower().Trim();
                 staffToReturn = staffToReturn.Where(s => s.FirstName.ToLower().Contains(queryString)
                             || s.MiddleNames.ToLower().Contains(queryString)
-                            || s.LastName.ToLower().Contains(queryString)).ToList();
+                            || s.LastName.ToLower().Contains(queryString));
             }
-
-            return staffToReturn;
+            return PagedList<Staff>.Create(staffToReturn,
+                staffResourceParameters.PageNumber,
+                staffResourceParameters.PageSize);
         }
 
         public IEnumerable<Staff> GetHeadsOfHouse(int houseId)
@@ -104,7 +91,6 @@ namespace Hogwarts.Api.Services
                 staffToReturn.Add(_context.Staff.FirstOrDefault(s => s.Id == headHouse.StaffId));
             }
             return staffToReturn;
-
         }
 
         public void DeleteStaffHouseRelationship(HeadOfHouse headOfHouse)
