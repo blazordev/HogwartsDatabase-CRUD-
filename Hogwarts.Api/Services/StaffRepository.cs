@@ -4,7 +4,6 @@ using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Sqlite.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
