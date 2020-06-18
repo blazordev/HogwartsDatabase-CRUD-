@@ -12,7 +12,10 @@ namespace Hogwarts.Api.Profiles
     {
         public StaffProfile()
         {
-            CreateMap<Staff, StaffDto>();
+            CreateMap<Staff, StaffDto>()
+                .ForMember(
+                    dest => dest.RoleNames,
+                    opt => opt.MapFrom(src => src.StaffRoles.Select(sr => sr.Role.Name)));
             CreateMap<StaffForCreationDto, Staff>();
             CreateMap<Staff, StaffForEditDto>().ReverseMap();
             

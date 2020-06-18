@@ -26,23 +26,18 @@ namespace Hogwarts.Api.Services
             {
                 throw new ArgumentNullException(nameof(staffId));
             }
-            return _context.Staff.FirstOrDefault(s => s.Id == staffId);
+            return _context.Staff
+                .Include(s => s.StaffRoles)
+                .ThenInclude(sr => sr.Role)
+                .FirstOrDefault(s => s.Id == staffId);
         }
-        public IEnumerable<Staff> GetStaff(IEnumerable<int> staffIds)
-        {
-            if (staffIds == null)
-            {
-                throw new ArgumentNullException(nameof(staffIds));
-            }
-            return _context.Staff.Where(s => staffIds.Contains(s.Id))
-                .OrderBy(s => s.FirstName)
-                .OrderBy(s => s.LastName)
-                .ToList();
-        }
+        
 
         public IEnumerable<Staff> GetStaffCollection(IEnumerable<int> staffIds)
         {
             return _context.Staff.Where(s => staffIds.Contains(s.Id))
+                .OrderBy(s => s.FirstName)
+                .OrderBy(s => s.LastName)
                 .ToList();
         }
 

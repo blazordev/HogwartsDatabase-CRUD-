@@ -13,7 +13,7 @@ namespace Hogwarts.Api.Models
         public string MiddleNames { get; set; }
         public string LastName { get; set; }
         public string ImageLink { get; set; }
-        public HouseDto House { get; set; }
+        public string HouseName { get; set; }
         
         
         

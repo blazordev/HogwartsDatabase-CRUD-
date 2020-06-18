@@ -76,9 +76,9 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            var rolesToReturn = _mapper.Map<IEnumerable<RoleDto>>(_roleRepo.GetRolesForStaff(id));
+         
             var staffToReturn = _mapper.Map<StaffDto>(staffFromRepo);
-            staffToReturn.Roles = rolesToReturn;
+          
             return Ok(staffToReturn);
         }
         //POST: api/staff
