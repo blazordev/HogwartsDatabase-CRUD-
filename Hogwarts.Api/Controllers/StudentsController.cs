@@ -84,6 +84,17 @@ namespace Hogwarts.Api.Controllers
                 studentToReturn);
 
         }
+        [HttpPut("{studentId:int}")]
+        public ActionResult<StudentDto> UpdateStudent([FromRoute] int studentId,
+            [FromBody] StudentForEditDto student)
+        {
+            var studentEntityFromRepo = _repo.GetStudentById(studentId);
+            if (studentEntityFromRepo == null) return NotFound();
+            _mapper.Map(student, studentEntityFromRepo);
+            _repo.UpdateStudent(studentEntityFromRepo);
+            _repo.Save();
+            return Ok(_mapper.Map<StudentDto>(studentEntityFromRepo));
+        }
 
         [HttpPatch("{studentId}")]
         public ActionResult<StudentDto> PartiallyUpdateStudent(int studentId,

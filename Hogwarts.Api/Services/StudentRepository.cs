@@ -56,6 +56,8 @@ namespace Hogwarts.Api.Services
                 || s.MiddleNames.ToLower().Contains(searchQuery)
                 || s.LastName.ToLower().Contains(searchQuery));
             }
+            if (studentResourceParameters.IncludeHouse) collection = collection.Include(s => s.House);
+            
             return PagedList<Student>.Create(collection,
                 studentResourceParameters.PageNumber,
                 studentResourceParameters.PageSize);
@@ -79,7 +81,8 @@ namespace Hogwarts.Api.Services
             {
                 throw new ArgumentNullException(nameof(studentId));
             }
-            return _context.Students.FirstOrDefault(s => s.Id == studentId);
+            return _context.Students.Include(s => s.House)
+                .FirstOrDefault(s => s.Id == studentId);
         }
 
         public void AddStudent(Student student)

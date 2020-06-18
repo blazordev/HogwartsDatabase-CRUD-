@@ -62,10 +62,11 @@ namespace Hogwarts.Api.Controllers
 
             Response.Headers.Add("X-Pagination",
                 JsonSerializer.Serialize(paginationMetadata));
+
             return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffFromRepo));
         }
 
-        // GET: api/Staffs/5
+        // GET: api/Staff/5
         [HttpGet("{id}", Name = "GetStaffMember")]
         public ActionResult<StaffDto> GetStaff(int id)
         {
@@ -75,7 +76,10 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<StaffDto>(staffFromRepo));
+            var rolesToReturn = _mapper.Map<IEnumerable<RoleDto>>(_roleRepo.GetRolesForStaff(id));
+            var staffToReturn = _mapper.Map<StaffDto>(staffFromRepo);
+            staffToReturn.Roles = rolesToReturn;
+            return Ok(staffToReturn);
         }
         //POST: api/staff
         [HttpPost]
@@ -131,6 +135,17 @@ namespace Hogwarts.Api.Controllers
             }
             var courses = _courseRepo.GetCoursesForStaffmember(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courses));
+        }
+        [HttpPut("{staffId}")]
+        public ActionResult<StaffDto> EditStaff([FromRoute] int staffId,
+            [FromBody] StaffForEditDto staff)
+        {
+            var staffEntityToEdit = _staffRepo.GetStaffById(staffId);
+            if (staffEntityToEdit == null) return NotFound();
+            _mapper.Map(staff, staffEntityToEdit);
+            _staffRepo.UpdateStaff(staffEntityToEdit);
+            _staffRepo.Save();
+            return Ok(_mapper.Map<StaffDto>(staffEntityToEdit));
         }
         [HttpPatch("{staffId}")]
         public ActionResult<StaffDto> PartiallyEditStaff(int staffId,

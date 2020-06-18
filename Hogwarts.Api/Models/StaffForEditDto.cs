@@ -10,7 +10,7 @@ namespace Hogwarts.Api.Models
     {
         [Required]
         public string FirstName { get; set; }
-        public string MiddleNames { get; set; }
+        public string MiddleNames { get; set; } = "";
         [Required]
         public string LastName { get; set; }
     }

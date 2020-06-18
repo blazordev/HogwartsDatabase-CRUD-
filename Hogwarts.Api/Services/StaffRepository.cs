@@ -4,6 +4,7 @@ using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Sqlite.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,9 +67,10 @@ namespace Hogwarts.Api.Services
             {
                 var roleId = staffResourceParameters.RoleId;
                 staffToReturn = _context.StaffRoles
-                    .Include(sr => sr.Staff)
                     .Where(sr => sr.RoleId == roleId)
+                    .Include(sr => sr.Staff)                    
                     .Select(sr => sr.Staff);
+                                
             }
             if (!String.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery))
             {
@@ -77,6 +79,10 @@ namespace Hogwarts.Api.Services
                             || s.MiddleNames.ToLower().Contains(queryString)
                             || s.LastName.ToLower().Contains(queryString));
             }
+
+            staffToReturn = staffToReturn
+                .Include(s => s.StaffRoles)
+                .ThenInclude(sr => sr.Role);
             return PagedList<Staff>.Create(staffToReturn,
                 staffResourceParameters.PageNumber,
                 staffResourceParameters.PageSize);

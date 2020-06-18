@@ -49,7 +49,17 @@ namespace Hogwarts.Api.Controllers
             var courseToReturn = _mapper.Map<CourseDto>(courseEntity);
             return CreatedAtRoute("GetCourse", new { staffId = courseToReturn.Id }, courseToReturn);
         }
-
+        [HttpPut("{courseId}")]
+        public ActionResult<CourseDto> EditCourse([FromRoute] int courseId, 
+            [FromBody] CourseForEditDto course)
+        {
+            var courseToEdit = _coursesRepo.GetCourseById(courseId);
+            if (courseToEdit == null) return NotFound();
+            _mapper.Map(course, courseToEdit);
+            _coursesRepo.UpdateCourse(courseToEdit);
+            _coursesRepo.Save();
+            return Ok(_mapper.Map<CourseDto>(courseToEdit));
+        }
         [HttpPatch("{courseId}")]
         public ActionResult<CourseDto> PartiallyEditCourse(int courseId,
             JsonPatchDocument<CourseForEditDto> patchDocument)
