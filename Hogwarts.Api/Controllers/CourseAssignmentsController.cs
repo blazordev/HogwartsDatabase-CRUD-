@@ -31,54 +31,54 @@ namespace Hogwarts.Api.Controllers
         [HttpGet("Staff/{staffId}", Name = "GetAssignedCoursesForStaff")]
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetAssignedCoursesForStaff(int staffId)
         {
-            if (!_staffRepo.StaffExists(staffId) || !_staffRepo.IsTeacher(staffId))
+            if (!await _staffRepo.StaffExistsAsync(staffId) || !await _staffRepo.IsTeacherAsync(staffId))
             {
                 return NotFound();
             }
             var courseEntities = await _courseRepo.GetCoursesForStaffmemberAsync(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courseEntities));
         }
-        //[HttpGet("Courses/{courseId}", Name = "GetAllStaffForCourse")]
-        //public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllStaffForCourse(int courseId)
-        //{
-        //    if (!_courseRepo.CourseExistsAsync(courseId).Result)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var staffEntities = await _staffRepo.GetStaffForCourseAsync(courseId);
-        //    return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffEntities));
-        //}
+        [HttpGet("Courses/{courseId}", Name = "GetAllStaffForCourse")]
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllStaffForCourse(int courseId)
+        {
+            if (!_courseRepo.CourseExistsAsync(courseId).Result)
+            {
+                return NotFound();
+            }
+            var staffEntities = await _staffRepo.GetStaffForCourseAsync(courseId);
+            return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffEntities));
+        }
 
         //POST api/staffId/courseId
         [HttpPost("{staffId}/{courseId}")]
-        public ActionResult<StaffDto> AssignCourseToStaff(int staffId, int courseId)
+        public async Task<ActionResult<StaffDto>> AssignCourseToStaff(int staffId, int courseId)
         {
-            var staffEntity = _staffRepo.GetStaffById(staffId);
+            var staffEntity = _staffRepo.GetStaffByIdAsync(staffId);
             if (staffEntity == null || !_courseRepo.CourseExistsAsync(courseId).Result)
             {
                 return NotFound();
             }
-            if (!_staffRepo.IsTeacher(staffEntity.Id))
+            if (!await _staffRepo.IsTeacherAsync(staffEntity.Id))
             {
                 return BadRequest("Staffmember must be assigned Role Teacher before assigning to them a course");
             }
             _staffRepo.AddCourseToStaff(staffId, courseId);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
 
             return CreatedAtRoute("GetAssignedCoursesForStaff", new { staffId = staffId },
                 _mapper.Map<StaffDto>(staffEntity));
         }
 
         [HttpDelete("{staffId}/{courseId}")]
-        public ActionResult UnassignCourseFromStaff(int staffId, int courseId)
+        public async Task<ActionResult> UnassignCourseFromStaff(int staffId, int courseId)
         {
-            var staffCourse = _staffRepo.GetStaffCourseById(staffId, courseId);
+            var staffCourse = await _staffRepo.GetStaffCourseById(staffId, courseId);
             if (staffCourse == null)
             {
                 return NotFound();
             }
             _staffRepo.DeleteStaffCourseRelationship(staffCourse);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return NoContent();
         }
     }

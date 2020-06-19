@@ -27,7 +27,7 @@ namespace Hogwarts.Api.Controllers
         }
         //GET: api/StudentCollections/id,id,id...
         [HttpGet("({ids})", Name = "GetStudentCollection")]
-        public ActionResult<IEnumerable<StudentDto>> GetStudentCollection(
+        public async Task<ActionResult<IEnumerable<StudentDto>>> GetStudentCollection(
             [FromRoute]
             //have to do our own model-binding since .net core cant auto-bind arrays from string
         [ModelBinder(BinderType = typeof(ArrayModelBinder))]
@@ -40,7 +40,7 @@ namespace Hogwarts.Api.Controllers
             {
                 return BadRequest();
             }
-            var studentEntities = _repo.GetStudents(ids);
+            var studentEntities = await _repo.GetStudentsAsync(ids);
             //check if any are missing
             if (studentEntities.Count() != ids.Count())
             {
@@ -51,7 +51,7 @@ namespace Hogwarts.Api.Controllers
         }
         // POST: api/StudentCollections
         [HttpPost]
-        public ActionResult<IEnumerable<StudentDto>> CreateStudentCollection(
+        public async Task<ActionResult<IEnumerable<StudentDto>>> CreateStudentCollection(
             IEnumerable<StudentForCreationDto> studentCollection)
         {
             var studentEntities = _mapper.Map<IEnumerable<Student>>(studentCollection);
@@ -59,7 +59,7 @@ namespace Hogwarts.Api.Controllers
             {
                 _repo.AddStudent(student);
             }
-            _repo.Save();
+            await _repo.SaveAsync();
 
             var studentCollectionToReturn = _mapper.Map<IEnumerable<StudentDto>>(studentEntities);
             var idsAsString = string.Join(",", studentCollectionToReturn.Select(a => a.Id));

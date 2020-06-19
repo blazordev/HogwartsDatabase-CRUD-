@@ -2,16 +2,17 @@
 using Hogwarts.Api.Helpers;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.ResourceParameters;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class StaffRepository
+    public class StaffRepository : IStaffRepository
     {
         private HogwartsDbContext _context;
 
@@ -19,43 +20,30 @@ namespace Hogwarts.Api.Services
         {
             _context = context;
         }
-        public Staff GetStaffById(int staffId)
-        {
-            if (String.IsNullOrWhiteSpace(staffId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(staffId));
-            }
-            return _context.Staff
+        public async Task<Staff> GetStaffByIdAsync(int staffId)
+        {            
+            return await _context.Staff
                 .Include(s => s.StaffRoles)
                 .ThenInclude(sr => sr.Role)
-                .FirstOrDefault(s => s.Id == staffId);
+                .FirstOrDefaultAsync(s => s.Id == staffId);
         }
-        
-
-        public IEnumerable<Staff> GetStaffCollection(IEnumerable<int> staffIds)
+        public async Task<IEnumerable<Staff>> GetStaffCollectionAsync(IEnumerable<int> staffIds)
         {
-            return _context.Staff.Where(s => staffIds.Contains(s.Id))
+            return await _context.Staff.Where(s => staffIds.Contains(s.Id))
                 .OrderBy(s => s.FirstName)
                 .OrderBy(s => s.LastName)
-                .ToList();
+                .ToListAsync();
         }
-
         public void DeleteStaffCollection(IEnumerable<Staff> staffEntities)
         {
             _context.Staff.RemoveRange(staffEntities);
         }
-
-        public IEnumerable<Staff> GetAllStaff()
+        public async Task<IEnumerable<Staff>> GetAllStaffAsync()
         {
-            return _context.Staff;
+            return await _context.Staff.ToListAsync();
         }
-
-        public PagedList<Staff> GetAllStaff(StaffResourceParameters staffResourceParameters)
-        {
-            if (staffResourceParameters == null)
-            {
-                throw new ArgumentNullException(nameof(staffResourceParameters));
-            }
+        public PagedList<Staff> GetAllStaffAsync(StaffResourceParameters staffResourceParameters)
+        {            
             var staffToReturn = _context.Staff as IQueryable<Staff>;
             if (staffResourceParameters.RoleId != 0)
             {
@@ -73,92 +61,70 @@ namespace Hogwarts.Api.Services
                             || s.MiddleNames.ToLower().Contains(queryString)
                             || s.LastName.ToLower().Contains(queryString));
             }
-
-            staffToReturn = staffToReturn
+            var staffListToReturn = staffToReturn
                 .Include(s => s.StaffRoles)
-                .ThenInclude(sr => sr.Role);
-            return PagedList<Staff>.Create(staffToReturn,
+                .ThenInclude(sr => sr.Role).ToListAsync();
+             
+                return PagedList<Staff>.Create(staffToReturn,
                 staffResourceParameters.PageNumber,
-                staffResourceParameters.PageSize);
+                staffResourceParameters.PageSize);          
         }
-
-        public IEnumerable<Staff> GetHeadsOfHouse(int houseId)
+        public async Task<IEnumerable<Staff>> GetHeadsOfHouseAsync(int houseId)
         {
-            var headsHousesCollection = _context.HeadOfHouses.Where(h => h.HouseId == houseId);
-            var staffToReturn = new List<Staff>();
-            foreach (var headHouse in headsHousesCollection)
-            {
-                staffToReturn.Add(_context.Staff.FirstOrDefault(s => s.Id == headHouse.StaffId));
-            }
-            return staffToReturn;
+            return await _context.HeadOfHouses.Include(h => h.Staff).
+                Where(h => h.HouseId == houseId).Select(h => h.Staff).ToListAsync();
         }
-
         public void DeleteStaffHouseRelationship(HeadOfHouse headOfHouse)
         {
             _context.HeadOfHouses.Remove(headOfHouse);
         }
-        public IEnumerable<Staff> GetStaffForCourseAsync(int courseId)
+        public async Task<IEnumerable<Staff>> GetStaffForCourseAsync(int courseId)
         {
-            var staffCourseCollection = _context.StaffCourse.Where(sc => sc.CourseId == courseId);
-            var staffToReturn = new List<Staff>();
-            foreach (var staffCourse in staffCourseCollection)
-            {
-                staffToReturn.Add(_context.Staff.FirstOrDefault(s => s.Id == staffCourse.StaffId));
-            }
-            return staffToReturn;
+            return await _context.StaffCourse
+                .Include(sc => sc.Staff)
+                .Where(sc => sc.CourseId == courseId)
+                .Select(sc => sc.Staff).ToListAsync();
         }
         public void DeleteStaffCourseRelationship(StaffCourse staffCourse)
         {
             _context.StaffCourse.Remove(staffCourse);
         }
-
-        public StaffCourse GetStaffCourseById(int staffId, int courseId)
+        public async Task<StaffCourse> GetStaffCourseById(int staffId, int courseId)
         {
-            return _context.StaffCourse.FirstOrDefault(sc =>
+            return await _context.StaffCourse.FirstOrDefaultAsync(sc =>
             sc.StaffId == staffId && sc.CourseId == courseId);
         }
-
-        public StaffRole GetStaffRoleEntity(int staffId, int roleId)
+        public async Task<StaffRole> GetStaffRoleEntityAsync(int staffId, int roleId)
         {
-            return _context.StaffRoles.FirstOrDefault(sr =>
+            return await _context.StaffRoles.FirstOrDefaultAsync(sr =>
                  sr.StaffId == staffId && sr.RoleId == roleId);
         }
-
         public void DeleteStaffRoleRelationship(StaffRole staffRoleFromRepo)
         {
             _context.StaffRoles.Remove(staffRoleFromRepo);
         }
-
         public void AddStaff(Staff staff)
         {
             _context.Staff.Add(staff);
         }
-
-        public bool StaffExists(int staffId)
+        public async Task<bool> StaffExistsAsync(int staffId)
         {
-            if (String.IsNullOrWhiteSpace(staffId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(staffId));
-            }
-
-            return _context.Staff.Any(s => s.Id == staffId);
+            return await _context.Staff.AnyAsync(s => s.Id == staffId);
         }
         public void UpdateStaff(Staff staff)
         {
             //nothing needed here
         }
-
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return (_context.SaveChanges() >= 0);
+            return (await _context.SaveChangesAsync() >= 0);
         }
-
         public void AddRoleToStaff(int staffId, int roleId)
         {
             _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
         }
         public void AssignRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds)
-        {
+        {            
             foreach (var roleId in roleIds)
             {
                 _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
@@ -168,7 +134,6 @@ namespace Hogwarts.Api.Services
         {
             _context.StaffCourse.Add(new StaffCourse { CourseId = courseId, StaffId = staffId });
         }
-
         public void AssignCourseCollectionToStaff(int staffId, IEnumerable<int> courseIds)
         {
             foreach (var courseId in courseIds)
@@ -176,25 +141,21 @@ namespace Hogwarts.Api.Services
                 _context.StaffCourse.Add(
                     new StaffCourse { CourseId = courseId, StaffId = staffId });
             }
-
         }
         public void AddHouseToStaff(int staffId, int houseId)
         {
             _context.HeadOfHouses.Add(new HeadOfHouse { HouseId = houseId, StaffId = staffId });
         }
-
-        public bool IsTeacher(int staffId)
+        public async Task<bool> IsTeacherAsync(int staffId)
         {
-            var staffRole = _context.StaffRoles.Where(sr => sr.StaffId == staffId);
-            return staffRole.Any(sr => sr.RoleId == 3); // headofhouse
+            return await _context.StaffRoles
+                .AnyAsync(sr => sr.StaffId == staffId && sr.RoleId == 3);           
         }
-
-        public bool IsHeadOfHouse(int staffId)
+        public async Task<bool> IsHeadOfHouseAsync(int staffId)
         {
-            var staffRole = _context.StaffRoles.Where(sr => sr.StaffId == staffId);
-            return staffRole.Any(sr => sr.RoleId == 6); //headofhouse
+            return await _context.StaffRoles
+                .AnyAsync(sr => sr.StaffId == staffId && sr.RoleId == 6);
         }
-
         public void DeleteStaff(Staff staffFromRepo)
         {
             _context.Staff.Remove(staffFromRepo);

@@ -62,9 +62,9 @@ namespace Hogwarts.Api.Controllers
 
         // GET: api/Students/5
         [HttpGet("{studentId}", Name = "GetStudent")]
-        public ActionResult<StudentDto> GetStudent(int studentId)
+        public async Task<ActionResult<StudentDto>> GetStudent(int studentId)
         {
-            var studentFromRepo = _repo.GetStudentById(studentId);
+            var studentFromRepo = await _repo.GetStudentByIdAsync(studentId);
 
             if (studentFromRepo == null)
             {
@@ -74,61 +74,59 @@ namespace Hogwarts.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<StudentDto> CreateStudent(StudentForCreationDto student)
+        public async Task<ActionResult<StudentDto>> CreateStudent(StudentForCreationDto student)
         {
             var studentEntity = _mapper.Map<Student>(student);
             _repo.AddStudent(studentEntity);
-            _repo.Save();
+            await _repo.SaveAsync();
             var studentToReturn = _mapper.Map<StudentDto>(studentEntity);
             return CreatedAtRoute("GetStudent", new { studentId = studentToReturn.Id },
                 studentToReturn);
 
         }
         [HttpPut("{studentId:int}")]
-        public ActionResult<StudentDto> UpdateStudent([FromRoute] int studentId,
+        public async Task<ActionResult<StudentDto>> UpdateStudent([FromRoute] int studentId,
             [FromBody] StudentForEditDto student)
         {
-            var studentEntityFromRepo = _repo.GetStudentById(studentId);
+            var studentEntityFromRepo = await _repo.GetStudentByIdAsync(studentId);
             if (studentEntityFromRepo == null) return NotFound();
             _mapper.Map(student, studentEntityFromRepo);
             _repo.UpdateStudent(studentEntityFromRepo);
-            _repo.Save();
+            await _repo.SaveAsync();
             return Ok(_mapper.Map<StudentDto>(studentEntityFromRepo));
         }
 
         [HttpPatch("{studentId}")]
-        public ActionResult<StudentDto> PartiallyUpdateStudent(int studentId,
+        public async Task<ActionResult<StudentDto>> PartiallyUpdateStudent(int studentId,
             JsonPatchDocument<StudentForEditDto> patchDocument)
         {
-            var studentEntity = _repo.GetStudentById(studentId);
+            var studentEntity = await _repo.GetStudentByIdAsync(studentId);
             if (studentEntity == null)
             {
                 return NotFound();
             }
-
             var studentToPatch = _mapper.Map<StudentForEditDto>(studentEntity);
             patchDocument.ApplyTo(studentToPatch, ModelState);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
             _mapper.Map(studentToPatch, studentEntity);
             _repo.UpdateStudent(studentEntity);
-            _repo.Save();
+            await _repo.SaveAsync();
             return Ok(_mapper.Map<StudentDto>(studentEntity));
         }
 
         [HttpDelete("{studentId}")]
-        public ActionResult DeleteStudent(int studentId)
+        public async Task<ActionResult> DeleteStudent(int studentId)
         {
-            var studentFromRepo = _repo.GetStudentById(studentId);
+            var studentFromRepo = await _repo.GetStudentByIdAsync(studentId);
             if (studentFromRepo == null)
             {
                 return NotFound();
             }
             _repo.DeleteStudent(studentFromRepo);
-            var deleted = _repo.Save();
+            await _repo.SaveAsync();
             return NoContent();
         }
 

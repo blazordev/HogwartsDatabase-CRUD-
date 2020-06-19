@@ -3,6 +3,7 @@ using AutoMapper;
 using Hogwarts.Api.DbContexts;
 using Hogwarts.Api.Helpers;
 using Hogwarts.Api.ResourceParameters;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class StudentRepository
+    public class StudentRepository : IStudentRepository
     {
         private HogwartsDbContext _context;
         private IMapper _mapper;
@@ -22,19 +23,14 @@ namespace Hogwarts.Api.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public bool StudentExist(int studentId)
-        {
-            if(String.IsNullOrWhiteSpace(studentId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(studentId));
-            }
-            return _context.Students.Any(s => s.Id == studentId);
+        public async Task<bool> StudentExistAsync(int studentId)
+        {            
+            return await _context.Students.AnyAsync(s => s.Id == studentId);
         }
-        public IEnumerable<Student> GetStudents()
+        public async Task<IEnumerable<Student>> GetStudentsAsync()
         {
-            return _context.Students.ToList();
+            return await _context.Students.ToListAsync();
         }
-
         public PagedList<Student>GetStudents(
             StudentsResourceParameters studentResourceParameters)
         {
@@ -62,50 +58,34 @@ namespace Hogwarts.Api.Services
                 studentResourceParameters.PageNumber,
                 studentResourceParameters.PageSize);
         }
-        public IEnumerable<Student> GetStudents(IEnumerable<int> studentIds)
-        {
-            if (studentIds == null)
-            {
-                throw new ArgumentNullException(nameof(studentIds));
-            }
-
-            return _context.Students.Where(s => studentIds.Contains(s.Id))
+        public async Task<IEnumerable<Student>> GetStudentsAsync(IEnumerable<int> studentIds)
+        {           
+            return await _context.Students.Where(s => studentIds.Contains(s.Id))
                 .OrderBy(s => s.FirstName)
                 .OrderBy(s => s.LastName)
-                .ToList();
+                .ToListAsync();
         }
 
-        public Student GetStudentById(int studentId)
-        {
-            if(String.IsNullOrEmpty(studentId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(studentId));
-            }
-            return _context.Students.Include(s => s.House)
-                .FirstOrDefault(s => s.Id == studentId);
+        public async Task<Student> GetStudentByIdAsync(int studentId)
+        {            
+            return await _context.Students.Include(s => s.House)
+                .FirstOrDefaultAsync(s => s.Id == studentId);
         }
-
         public void AddStudent(Student student)
-        {
-            if(student == null)
-            {
-                throw new ArgumentNullException(nameof(student));
-            }
+        {            
             _context.Students.Add(student);
         }
-
         public void DeleteStudent(Student studentFromRepo)
         {
             _context.Students.Remove(studentFromRepo);
         }
-
         public void UpdateStudent(Student student)
         {
             //no code needed
         }
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return (_context.SaveChanges() >= 0);
+            return (await _context.SaveChangesAsync() >= 0);
         }
     }
 }

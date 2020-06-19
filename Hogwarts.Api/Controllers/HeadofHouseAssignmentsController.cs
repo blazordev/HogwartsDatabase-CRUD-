@@ -31,7 +31,7 @@ namespace Hogwarts.Api.Controllers
         [HttpGet("staff/{staffId}")]
         public async Task<ActionResult<HouseDto>> GetHouseForStaff(int staffId)
         {
-            if(!_staffRepo.StaffExists(staffId) || !_staffRepo.IsHeadOfHouse(staffId))
+            if(! await _staffRepo.StaffExistsAsync(staffId) || ! await _staffRepo.IsHeadOfHouseAsync(staffId))
             {
                 return NotFound();
             }
@@ -47,26 +47,26 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            var staffToReturn = _staffRepo.GetHeadsOfHouse(houseId);
+            var staffToReturn = _staffRepo.GetHeadsOfHouseAsync(houseId);
             return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffToReturn));
         }
 
         //POST api/staffId/houseId
 
         [HttpPost("{staffId}/{houseId}")]
-        public ActionResult<StaffDto> AssignHouseToStaff(int staffId, int houseId)
+        public async Task<ActionResult<StaffDto>> AssignHouseToStaff(int staffId, int houseId)
         {           
-            if (!_staffRepo.StaffExists(staffId) || !_houseRepo.HouseExistsAsync(houseId).Result)
+            if (!await _staffRepo.StaffExistsAsync(staffId) || !await _houseRepo.HouseExistsAsync(houseId))
             {
                 return NotFound();
             }
-            if (!_staffRepo.IsHeadOfHouse(staffId))
+            if (! await _staffRepo.IsHeadOfHouseAsync(staffId))
             {
                 return BadRequest("Staffmember must be assigned " +
                     "Role HeadOfHouse before assigning to them a House");
             }
             _staffRepo.AddHouseToStaff(staffId, houseId);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
 
             return Ok(); 
         }
@@ -80,7 +80,7 @@ namespace Hogwarts.Api.Controllers
                 return NotFound();
             }            
             _staffRepo.DeleteStaffHouseRelationship(headOfHouseEntity);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
 
             return Ok();
         }

@@ -26,23 +26,22 @@ namespace Hogwarts.Api.Controllers
 
         //DELETE api/StaffCollections/id,id,id
         [HttpDelete("({ids})")]
-        public ActionResult DeleteStaffCollection([FromRoute]
+        public async Task<ActionResult> DeleteStaffCollection([FromRoute]
             [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
         {
             if(ids == null)
             {
                 return BadRequest();
             }
-            var staffEntities = _staffRepo.GetStaffCollection(ids);
+            var staffEntities = await _staffRepo.GetStaffCollectionAsync(ids);
 
             if (ids.Count() != staffEntities.Count())
             {
                 return NotFound();
             }
             _staffRepo.DeleteStaffCollection(staffEntities);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return NoContent();
-
         }
     }
 }

@@ -38,9 +38,9 @@ namespace Hogwarts.Api.Controllers
         }
         // GET api/roles/5
         [HttpGet("{id}", Name = "GetRole")]
-        public ActionResult<RoleDto> GetRole(int id)
+        public async Task<ActionResult<RoleDto>> GetRole(int id)
         {
-            var roleEntity = _roleRepository.GetRoleByIdAsync(id);
+            var roleEntity = await _roleRepository.GetRoleByIdAsync(id);
             if (roleEntity == null)
             {
                 return NotFound();

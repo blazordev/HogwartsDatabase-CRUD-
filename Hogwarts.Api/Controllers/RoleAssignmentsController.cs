@@ -40,9 +40,9 @@ namespace Hogwarts.Api.Controllers
 
         //POST api/RoleAssignments/staffId/roleId/
         [HttpPost("{staffId}/{roleId}")]
-        public ActionResult<StaffDto> AssignRoleToStaff(int staffId, int roleId)
+        public async Task<ActionResult<StaffDto>> AssignRoleToStaff(int staffId, int roleId)
         {
-            if (!_roleRepo.RoleExistsAsync(roleId).Result || !_staffRepo.StaffExists(staffId))
+            if (!await _roleRepo.RoleExistsAsync(roleId) || !await _staffRepo.StaffExistsAsync(staffId))
             {
                 return NotFound();
             }
@@ -51,20 +51,20 @@ namespace Hogwarts.Api.Controllers
                 return Conflict("Staffmember already has that role");
             }
             _staffRepo.AddRoleToStaff(staffId, roleId);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return NoContent();
         }
 
         [HttpDelete("{staffId}/{roleId}")]
-        public ActionResult UnassignRoleFromStaff(int staffId, int roleId)
+        public async Task<ActionResult> UnassignRoleFromStaff(int staffId, int roleId)
         {
-            var staffRoleFromRepo = _staffRepo.GetStaffRoleEntity(staffId, roleId);
+            var staffRoleFromRepo = await _staffRepo.GetStaffRoleEntityAsync(staffId, roleId);
             if (staffRoleFromRepo == null)
             {
                 return NotFound();
             }
             _staffRepo.DeleteStaffRoleRelationship(staffRoleFromRepo);
-            var deleted = _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return NoContent();
         }
     }

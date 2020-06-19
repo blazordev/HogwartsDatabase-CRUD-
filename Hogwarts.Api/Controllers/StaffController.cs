@@ -40,7 +40,7 @@ namespace Hogwarts.Api.Controllers
         public ActionResult<IEnumerable<StaffDto>> GetStaff(
             [FromQuery] StaffResourceParameters staffResourceParameters)
         {
-            var staffFromRepo = _staffRepo.GetAllStaff(staffResourceParameters);
+            var staffFromRepo = _staffRepo.GetAllStaffAsync(staffResourceParameters);
 
             var previousPageLink = staffFromRepo.HasPrevious ?
                 CreateStaffResourceUri(staffResourceParameters,
@@ -68,22 +68,20 @@ namespace Hogwarts.Api.Controllers
 
         // GET: api/Staff/5
         [HttpGet("{id}", Name = "GetStaffMember")]
-        public ActionResult<StaffDto> GetStaff(int id)
+        public async Task<ActionResult<StaffDto>> GetStaff(int id)
         {
-            var staffFromRepo = _staffRepo.GetStaffById(id);
-
+            var staffFromRepo = await _staffRepo.GetStaffByIdAsync(id);
             if (staffFromRepo == null)
             {
                 return NotFound();
-            }
-         
+            }         
             var staffToReturn = _mapper.Map<StaffDto>(staffFromRepo);
           
             return Ok(staffToReturn);
         }
         //POST: api/staff
         [HttpPost]
-        public ActionResult<StaffDto> CreateStaff(StaffForCreationDto staff)
+        public async Task<ActionResult<StaffDto>> CreateStaff(StaffForCreationDto staff)
         {
             var staffEntity = _mapper.Map<Staff>(staff);
             //first Add staff
@@ -96,7 +94,7 @@ namespace Hogwarts.Api.Controllers
                 if (!String.IsNullOrEmpty(staff.HouseId.ToString()))
                 {
                     //if role is HeadOfHouse, add house to staff
-                    if (_staffRepo.IsHeadOfHouse(createdStaffId))
+                    if (await _staffRepo.IsHeadOfHouseAsync(createdStaffId))
                     {
                         _staffRepo.AddHouseToStaff(createdStaffId, staff.HouseId);
                     }
@@ -108,7 +106,7 @@ namespace Hogwarts.Api.Controllers
                 if (staff.CourseIds != null)
                 {
                     //if role is Teacher, add courses to staff
-                    if (_staffRepo.IsTeacher(createdStaffId))
+                    if (await _staffRepo.IsTeacherAsync(createdStaffId))
                     {
                         _staffRepo.AssignCourseCollectionToStaff(staffEntity.Id, staff.CourseIds);
                     }
@@ -119,7 +117,7 @@ namespace Hogwarts.Api.Controllers
                 }
             }
             //if all goes well
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return CreatedAtRoute("GetStaffMember",
                 new { staffId = createdStaffId },
                 _mapper.Map<StaffDto>(staffEntity));
@@ -128,7 +126,7 @@ namespace Hogwarts.Api.Controllers
         [HttpGet("{staffId}/courses")]
         public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesForStaff(int staffId)
         {
-            var staffEntity = _staffRepo.GetStaffById(staffId);
+            var staffEntity = _staffRepo.GetStaffByIdAsync(staffId);
             if (staffEntity == null)
             {
                 return NotFound();
@@ -136,22 +134,23 @@ namespace Hogwarts.Api.Controllers
             var courses = await  _courseRepo.GetCoursesForStaffmemberAsync(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courses));
         }
+
         [HttpPut("{staffId}")]
-        public ActionResult<StaffDto> EditStaff([FromRoute] int staffId,
+        public async Task<ActionResult<StaffDto>> EditStaff([FromRoute] int staffId,
             [FromBody] StaffForEditDto staff)
         {
-            var staffEntityToEdit = _staffRepo.GetStaffById(staffId);
+            var staffEntityToEdit = await _staffRepo.GetStaffByIdAsync(staffId);
             if (staffEntityToEdit == null) return NotFound();
             _mapper.Map(staff, staffEntityToEdit);
             _staffRepo.UpdateStaff(staffEntityToEdit);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return Ok(_mapper.Map<StaffDto>(staffEntityToEdit));
         }
         [HttpPatch("{staffId}")]
-        public ActionResult<StaffDto> PartiallyEditStaff(int staffId,
+        public async Task<ActionResult<StaffDto>> PartiallyEditStaff(int staffId,
             JsonPatchDocument<StaffForEditDto> patchDocument)
         {
-            var staffFromRepo = _staffRepo.GetStaffById(staffId);
+            var staffFromRepo = await _staffRepo.GetStaffByIdAsync(staffId);
             if (staffFromRepo == null)
             {
                 return NotFound();
@@ -165,20 +164,20 @@ namespace Hogwarts.Api.Controllers
 
             _mapper.Map(staffToPatch, staffFromRepo);
             _staffRepo.UpdateStaff(staffFromRepo);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return Ok(_mapper.Map<StaffDto>(staffFromRepo));
         }
 
         [HttpDelete("{staffId}")]
-        public ActionResult DeleteStaff(int staffId)
+        public async Task<ActionResult> DeleteStaff(int staffId)
         {
-            var staffFromRepo = _staffRepo.GetStaffById(staffId);
+            var staffFromRepo = await _staffRepo.GetStaffByIdAsync(staffId);
             if (staffFromRepo == null)
             {
                 return NotFound();
             }
             _staffRepo.DeleteStaff(staffFromRepo);
-            _staffRepo.Save();
+            await _staffRepo.SaveAsync();
             return NoContent();
         }
         private string CreateStaffResourceUri(

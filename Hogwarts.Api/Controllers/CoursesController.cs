@@ -19,8 +19,8 @@ namespace Hogwarts.Api.Controllers
 
         public CoursesController(CourseRepository coursesRepo, IMapper mapper)
         {
-            _coursesRepo = coursesRepo ?? throw new ArgumentNullException(nameof(coursesRepo));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _coursesRepo = coursesRepo;
+            _mapper = mapper;
         }
 
         // GET: api/courses 
