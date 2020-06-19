@@ -40,10 +40,7 @@ namespace Hogwarts.Api.Services
                 .Where(sr => sr.StaffId == staffId)
                 .Select(sr => sr.Role).ToListAsync();            
         }
-        public async Task UpdateRoleAsync(int roleId)
-        {
-            //no code needed
-        }
+        
         public async Task<bool> SaveAsync()
         {
             return (await _context.SaveChangesAsync() >= 0);
@@ -54,10 +51,13 @@ namespace Hogwarts.Api.Services
             return await _context.StaffRoles
                 .AnyAsync(sr => sr.StaffId == staffId && sr.RoleId == roleId);
         }
-
         public void DeleteRole(Role roleFromRepo)
         {
             _context.Roles.Remove(roleFromRepo);
+        }
+        public void UpdateRole(int roleId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

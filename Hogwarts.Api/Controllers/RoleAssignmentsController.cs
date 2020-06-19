@@ -28,9 +28,9 @@ namespace Hogwarts.Api.Controllers
         }
         //api/roleAssignmets/staff/2
         [HttpGet("staff/{staffId}", Name = "GetRolesForStaff")]
-        public ActionResult<IEnumerable<RoleDto>> GetRolesForStaff(int staffId)
+        public async Task<ActionResult<IEnumerable<RoleDto>>> GetRolesForStaff(int staffId)
         {
-            if (!_staffRepo.StaffExists(staffId))
+            if (!await _staffRepo.StaffExistsAsync(staffId))
             {
                 return NotFound();
             }

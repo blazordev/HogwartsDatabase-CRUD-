@@ -75,7 +75,7 @@ namespace Hogwarts.Api.Controllers
                 return ValidationProblem(ModelState);
             }
             _mapper.Map(roleToPatch, roleFromRepo);
-            await _roleRepository.UpdateRoleAsync(roleId);
+            _roleRepository.UpdateRole(roleId);
             await _roleRepository.SaveAsync();
             return Ok(roleFromRepo);
         }
