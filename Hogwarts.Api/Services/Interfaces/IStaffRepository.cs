@@ -14,7 +14,7 @@ namespace Hogwarts.Api.Services.Interfaces
         public Task<IEnumerable<Staff>> GetStaffCollectionAsync(IEnumerable<int> staffIds);
         public void DeleteStaffCollection(IEnumerable<Staff> staffEntities);
         public Task<IEnumerable<Staff>> GetAllStaffAsync();
-        public PagedList<Staff> GetAllStaffAsync(StaffResourceParameters staffResourceParameters);
+        public Task<IEnumerable<Staff>> GetAllStaffAsync(StaffResourceParameters staffResourceParameters);
         public Task<IEnumerable<Staff>> GetHeadsOfHouseAsync(int houseId);
         public void DeleteStaffHouseRelationship(HeadOfHouse headOfHouse);
         public Task<IEnumerable<Staff>> GetStaffForCourseAsync(int courseId);

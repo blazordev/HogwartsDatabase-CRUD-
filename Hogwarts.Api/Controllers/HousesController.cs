@@ -28,9 +28,9 @@ namespace Hogwarts.Api.Controllers
         }
         [HttpGet]
         [HttpHead]
-        public ActionResult<IEnumerable<HouseDto>> GetAllHouses()
+        public async Task<ActionResult<IEnumerable<HouseDto>>> GetAllHouses()
         {
-            var housesFromRepo = _repo.GetAllHousesAsync();
+            var housesFromRepo = await _repo.GetAllHousesAsync();
             if(housesFromRepo == null)
             {
                 return NotFound();

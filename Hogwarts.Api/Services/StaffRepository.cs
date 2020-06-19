@@ -21,7 +21,7 @@ namespace Hogwarts.Api.Services
             _context = context;
         }
         public async Task<Staff> GetStaffByIdAsync(int staffId)
-        {            
+        {
             return await _context.Staff
                 .Include(s => s.StaffRoles)
                 .ThenInclude(sr => sr.Role)
@@ -42,17 +42,16 @@ namespace Hogwarts.Api.Services
         {
             return await _context.Staff.ToListAsync();
         }
-        public PagedList<Staff> GetAllStaffAsync(StaffResourceParameters staffResourceParameters)
-        {            
+        public async Task<IEnumerable<Staff>> GetAllStaffAsync(StaffResourceParameters staffResourceParameters)
+        {
             var staffToReturn = _context.Staff as IQueryable<Staff>;
             if (staffResourceParameters.RoleId != 0)
             {
                 var roleId = staffResourceParameters.RoleId;
                 staffToReturn = _context.StaffRoles
                     .Where(sr => sr.RoleId == roleId)
-                    .Include(sr => sr.Staff)                    
+                    .Include(sr => sr.Staff)
                     .Select(sr => sr.Staff);
-                                
             }
             if (!String.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery))
             {
@@ -61,13 +60,12 @@ namespace Hogwarts.Api.Services
                             || s.MiddleNames.ToLower().Contains(queryString)
                             || s.LastName.ToLower().Contains(queryString));
             }
-            var staffListToReturn = staffToReturn
-                .Include(s => s.StaffRoles)
-                .ThenInclude(sr => sr.Role).ToListAsync();
-             
-                return PagedList<Staff>.Create(staffToReturn,
-                staffResourceParameters.PageNumber,
-                staffResourceParameters.PageSize);          
+         
+            var pageSize = staffResourceParameters.PageSize;
+            var pageNumber = staffResourceParameters.PageNumber;
+            return await staffToReturn.Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize).Include(s => s.StaffRoles)
+               .ThenInclude(sr => sr.Role).ToListAsync(); 
         }
         public async Task<IEnumerable<Staff>> GetHeadsOfHouseAsync(int houseId)
         {
@@ -124,7 +122,7 @@ namespace Hogwarts.Api.Services
             _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
         }
         public void AssignRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds)
-        {            
+        {
             foreach (var roleId in roleIds)
             {
                 _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
@@ -149,7 +147,7 @@ namespace Hogwarts.Api.Services
         public async Task<bool> IsTeacherAsync(int staffId)
         {
             return await _context.StaffRoles
-                .AnyAsync(sr => sr.StaffId == staffId && sr.RoleId == 3);           
+                .AnyAsync(sr => sr.StaffId == staffId && sr.RoleId == 3);
         }
         public async Task<bool> IsHeadOfHouseAsync(int staffId)
         {

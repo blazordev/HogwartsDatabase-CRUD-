@@ -38,32 +38,10 @@ namespace Hogwarts.Api.Controllers
 
         // GET: api/Staff
         [HttpGet(Name = "GetStaff")]
-        public ActionResult<IEnumerable<StaffDto>> GetStaff(
+        public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaff(
             [FromQuery] StaffResourceParameters staffResourceParameters)
         {
-            var staffFromRepo = _staffRepo.GetAllStaffAsync(staffResourceParameters);
-
-            var previousPageLink = staffFromRepo.HasPrevious ?
-                CreateStaffResourceUri(staffResourceParameters,
-                ResourceUriType.PreviousPage) : null;
-
-            var nextPageLink = staffFromRepo.HasNext ?
-                CreateStaffResourceUri(staffResourceParameters,
-                ResourceUriType.NextPage) : null;
-
-            var paginationMetadata = new
-            {
-                totalCount = staffFromRepo.TotalCount,
-                pageSize = staffFromRepo.PageSize,
-                currentPage = staffFromRepo.CurrentPage,
-                totalPages = staffFromRepo.TotalPages,
-                previousPageLink,
-                nextPageLink
-            };
-
-            Response.Headers.Add("X-Pagination",
-                JsonSerializer.Serialize(paginationMetadata));
-
+            var staffFromRepo = await _staffRepo.GetAllStaffAsync(staffResourceParameters);           
             return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffFromRepo));
         }
 
@@ -181,42 +159,8 @@ namespace Hogwarts.Api.Controllers
             await _staffRepo.SaveAsync();
             return NoContent();
         }
-        private string CreateStaffResourceUri(
-           StaffResourceParameters staffResourceParameters,
-           ResourceUriType type)
-        {
-            switch (type)
-            {
-                case ResourceUriType.PreviousPage:
-                    return Url.Link("GetStaff",
-                      new
-                      {
-                          pageNumber = staffResourceParameters.PageNumber - 1,
-                          pageSize = staffResourceParameters.PageSize,
-                          mainCategory = staffResourceParameters.RoleId,
-                          searchQuery = staffResourceParameters.SearchQuery
-                      });
-                case ResourceUriType.NextPage:
-                    return Url.Link("GetStaff",
-                      new
-                      {
-                          pageNumber = staffResourceParameters.PageNumber + 1,
-                          pageSize = staffResourceParameters.PageSize,
-                          mainCategory = staffResourceParameters.RoleId,
-                          searchQuery = staffResourceParameters.SearchQuery
-                      });
-
-                default:
-                    return Url.Link("GetStaff",
-                    new
-                    {
-                        pageNumber = staffResourceParameters.PageNumber,
-                        pageSize = staffResourceParameters.PageSize,
-                        mainCategory = staffResourceParameters.RoleId,
-                        searchQuery = staffResourceParameters.SearchQuery
-                    });
-            }
-        }
+       
+        
     }
 }
 
