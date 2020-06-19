@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Hogwarts.Api.Services
 {
@@ -97,7 +97,7 @@ namespace Hogwarts.Api.Services
         {
             _context.HeadOfHouses.Remove(headOfHouse);
         }
-        public IEnumerable<Staff> GetStaffForCourse(int courseId)
+        public IEnumerable<Staff> GetStaffForCourseAsync(int courseId)
         {
             var staffCourseCollection = _context.StaffCourse.Where(sc => sc.CourseId == courseId);
             var staffToReturn = new List<Staff>();

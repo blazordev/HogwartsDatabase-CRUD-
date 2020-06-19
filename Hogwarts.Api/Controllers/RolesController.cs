@@ -27,20 +27,20 @@ namespace Hogwarts.Api.Controllers
             _roleRepository = roleRepository;
             _staffRepository = staffRepository;
         }
-        public ActionResult<IEnumerable<RoleDto>> GetRoles()
+        public async Task<ActionResult<IEnumerable<RoleDto>>> GetRoles()
         {
-            var rolesToReturn = _mapper.Map<IEnumerable<RoleDto>>(_roleRepository.GetRoles());
-            if (rolesToReturn == null)
+            var roleEntities = await _roleRepository.GetRolesAsync();
+            if (roleEntities == null)
             {
                 return NotFound();
             }
-            return Ok(rolesToReturn);
+            return Ok(_mapper.Map<RoleDto>(roleEntities));
         }
         // GET api/roles/5
         [HttpGet("{id}", Name = "GetRole")]
         public ActionResult<RoleDto> GetRole(int id)
         {
-            var roleEntity = _roleRepository.GetRoleById(id);
+            var roleEntity = _roleRepository.GetRoleByIdAsync(id);
             if (roleEntity == null)
             {
                 return NotFound();
@@ -49,20 +49,21 @@ namespace Hogwarts.Api.Controllers
         }
         // POST: api/roles
         [HttpPost]
-        public ActionResult<RoleDto> CreateRole([FromBody] RoleForCreationDto roleForCreation)
+        public async Task<ActionResult<RoleDto>> CreateRole(
+            [FromBody] RoleForCreationDto roleForCreation)
         {
             var roleEntity = _mapper.Map<Role>(roleForCreation);
             _roleRepository.AddRole(roleEntity);
-            _roleRepository.Save();
+            await _roleRepository.SaveAsync();
             var roleToReturn = _mapper.Map<RoleDto>(roleEntity);
             return CreatedAtRoute("GetRole", new { staffId = roleToReturn.Id }, roleToReturn);
         }
 
         [HttpPatch("{roleId}")]
-        public ActionResult<RoleDto> PartiallyUpdateRole(int roleId,
+        public async Task<ActionResult<RoleDto>> PartiallyUpdateRole(int roleId,
             JsonPatchDocument<RoleForEditDto> patchDocument)
         {
-            var roleFromRepo = _roleRepository.GetRoleById(roleId);
+            var roleFromRepo = await _roleRepository.GetRoleByIdAsync(roleId);
             if (roleFromRepo == null)
             {
                 return NotFound();
@@ -74,20 +75,20 @@ namespace Hogwarts.Api.Controllers
                 return ValidationProblem(ModelState);
             }
             _mapper.Map(roleToPatch, roleFromRepo);
-            _roleRepository.UpdateRole(roleId);
-            _roleRepository.Save();
+            await _roleRepository.UpdateRoleAsync(roleId);
+            await _roleRepository.SaveAsync();
             return Ok(roleFromRepo);
         }
         [HttpDelete("{roleId}")]
-        public ActionResult DeleteRole(int staffId)
+        public async Task<ActionResult> DeleteRole(int staffId)
         {
-            var roleFromRepo = _roleRepository.GetRoleById(staffId);
+            var roleFromRepo = await _roleRepository.GetRoleByIdAsync(staffId);
             if (roleFromRepo == null)
             {
                 return NotFound();
             }
             _roleRepository.DeleteRole(roleFromRepo);
-            _roleRepository.Save();
+            await _roleRepository.SaveAsync();
             return NoContent();
         }
 

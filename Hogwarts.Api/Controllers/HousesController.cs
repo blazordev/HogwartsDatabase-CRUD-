@@ -29,7 +29,7 @@ namespace Hogwarts.Api.Controllers
         [HttpHead]
         public ActionResult<IEnumerable<HouseDto>> GetHouses()
         {
-            var housesFromRepo = _repo.GetHouses();
+            var housesFromRepo = _repo.GetAllHousesAsync();
             if(housesFromRepo == null)
             {
                 return NotFound();
@@ -40,7 +40,7 @@ namespace Hogwarts.Api.Controllers
         [HttpGet("{houseId}")]
         public ActionResult<HouseDto> GetHouse(int houseId)
         {
-            var houseFromRepo = _repo.GetHouseById(houseId);
+            var houseFromRepo = _repo.GetHouseByIdAsync(houseId);
             if (houseFromRepo == null)
             {
                 return NotFound();

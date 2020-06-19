@@ -1,4 +1,5 @@
 ﻿using Hogwarts.Api.DbContexts;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class HouseRepository
+    public class HouseRepository: IHouseRepository
     {
         private HogwartsDbContext _context;
 
@@ -17,49 +18,46 @@ namespace Hogwarts.Api.Services
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
-        public bool HouseExists(int houseId)
+        public async Task<bool> HouseExistsAsync(int houseId)
         {
             if (String.IsNullOrEmpty(houseId.ToString()))
             {
                 throw new ArgumentNullException(nameof(houseId));
             }
-            return _context.Houses.Any(h => h.Id == houseId);
+            return await _context.Houses.AnyAsync(h => h.Id == houseId);
         }
 
-        public IEnumerable<House> GetHouses()
+        public async Task<IEnumerable<House>> GetAllHousesAsync()
         {
-            return _context.Houses.ToList();
+            return await _context.Houses.ToListAsync();
         }
 
-        public House GetHouseById(int houseId)
-        {
-            if (String.IsNullOrEmpty(houseId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(houseId));
-            }
-            return _context.Houses.FirstOrDefault(h => h.Id == houseId);
-        }
-
-        public House GetHouseOfHeadOfHouse(int staffId)
-        {
-            var headOfHouse = _context.HeadOfHouses.FirstOrDefault(h => h.StaffId == staffId);
-            return _context.Houses.FirstOrDefault(h =>
-            h.Id == headOfHouse.HouseId);
-        }
-
-        public IEnumerable<HeadOfHouse> GetHeadsOfHouse(int houseId)
+        public async Task<House> GetHouseByIdAsync(int houseId)
         {
             if (String.IsNullOrEmpty(houseId.ToString()))
             {
                 throw new ArgumentNullException(nameof(houseId));
             }
-            return _context.HeadOfHouses
+            return await _context.Houses.FirstOrDefaultAsync(h => h.Id == houseId);
+        }
+
+        public async Task<House> GetHouseAssignedToHeadOfHouseAsync(int staffId)
+        {
+            return await _context.HeadOfHouses
+                .Include(h => h.House)
+                .Where(h => h.StaffId == staffId)
+                .Select(h => h.House).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<HeadOfHouse>> GetHeadsOfHouseAsync(int houseId)
+        {
+            return await _context.HeadOfHouses
                 .Where(h => h.HouseId == houseId)
-                .ToList();
+                .ToListAsync();
         }
-        public HeadOfHouse GetHeadOfHouse(int staffId, int houseId)
+        public async Task<HeadOfHouse> GetHeadOfHouseAsync(int staffId, int houseId)
         {
-            return _context.HeadOfHouses.FirstOrDefault(h =>
+            return await _context.HeadOfHouses.FirstOrDefaultAsync(h =>
             h.StaffId == staffId && h.HouseId == houseId);
         }
 

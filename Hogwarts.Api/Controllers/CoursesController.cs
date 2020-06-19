@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -26,14 +27,14 @@ namespace Hogwarts.Api.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CourseDto>> GetCourses()
         {
-            return Ok(_mapper.Map<IEnumerable<CourseDto>>(_coursesRepo.GetCourses()));
+            return Ok(_mapper.Map<IEnumerable<CourseDto>>(_coursesRepo.GetCoursesAsync()));
         }
 
         // GET: api/courses/{courseId}
         [HttpGet("{courseId}", Name = "GetCourse")]
         public ActionResult<CourseDto> GetCourse(int courseId)
         {
-            var courseEntity = _coursesRepo.GetCourseById(courseId);
+            var courseEntity = _coursesRepo.GetCourseByIdAsync(courseId);
             if (courseEntity == null)
             {
                 return NotFound();
@@ -41,30 +42,30 @@ namespace Hogwarts.Api.Controllers
             return Ok(_mapper.Map<CourseDto>(courseEntity));
         }
 
-        public ActionResult<CourseDto> CreateCourse(CourseForCreationDto courseForCreation)
+        public async Task<ActionResult<CourseDto>> CreateCourse(CourseForCreationDto courseForCreation)
         {
             var courseEntity = _mapper.Map<Course>(courseForCreation);
             _coursesRepo.Add(courseEntity);
-            _coursesRepo.Save();
+            await _coursesRepo.SaveAsync();
             var courseToReturn = _mapper.Map<CourseDto>(courseEntity);
             return CreatedAtRoute("GetCourse", new { staffId = courseToReturn.Id }, courseToReturn);
         }
         [HttpPut("{courseId}")]
-        public ActionResult<CourseDto> EditCourse([FromRoute] int courseId, 
+        public async Task<ActionResult<CourseDto>> EditCourse([FromRoute] int courseId, 
             [FromBody] CourseForEditDto course)
         {
-            var courseToEdit = _coursesRepo.GetCourseById(courseId);
+            var courseToEdit = await _coursesRepo.GetCourseByIdAsync(courseId);
             if (courseToEdit == null) return NotFound();
             _mapper.Map(course, courseToEdit);
             _coursesRepo.UpdateCourse(courseToEdit);
-            _coursesRepo.Save();
+            await _coursesRepo.SaveAsync();
             return Ok(_mapper.Map<CourseDto>(courseToEdit));
         }
         [HttpPatch("{courseId}")]
-        public ActionResult<CourseDto> PartiallyEditCourse(int courseId,
+        public async Task<ActionResult<CourseDto>> PartiallyEditCourse(int courseId,
             JsonPatchDocument<CourseForEditDto> patchDocument)
         {
-            var courseFromRepo = _coursesRepo.GetCourseById(courseId);
+            var courseFromRepo = await _coursesRepo.GetCourseByIdAsync(courseId);
             if (courseFromRepo == null)
             {
                 return NotFound();
@@ -81,20 +82,20 @@ namespace Hogwarts.Api.Controllers
             _mapper.Map(courseToPatch, courseFromRepo);
 
             _coursesRepo.UpdateCourse(courseFromRepo);
-            _coursesRepo.Save();
+            await _coursesRepo.SaveAsync();
             return Ok(_mapper.Map<CourseDto>(courseFromRepo));
         }
 
         [HttpDelete("{courseId}")]
-        public ActionResult DeleteCourse(int courseId)
+        public async Task<ActionResult> DeleteCourse(int courseId)
         {
-            var courseToDelete = _coursesRepo.GetCourseById(courseId);
+            var courseToDelete = await _coursesRepo.GetCourseByIdAsync(courseId);
             if(courseToDelete == null)
             {
                 return NotFound();
             }
             _coursesRepo.DeleteCourse(courseToDelete);
-            _coursesRepo.Save();
+            await _coursesRepo.SaveAsync();
             return NoContent();
         }
 

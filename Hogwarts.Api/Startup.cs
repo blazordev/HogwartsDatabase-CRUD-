@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hogwarts.Api.DbContexts;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -68,11 +69,11 @@ namespace Hogwarts.Api
 
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddScoped<HouseRepository>();
+            services.AddScoped<IHouseRepository,HouseRepository>();
             services.AddScoped<StudentRepository>();
-            services.AddScoped<CourseRepository>();
+            services.AddScoped<ICourseRepository,CourseRepository>();
             services.AddScoped<StaffRepository>();
-            services.AddScoped<RoleRepository>();
+            services.AddScoped<IRoleRepository,RoleRepository>();
 
         }
 

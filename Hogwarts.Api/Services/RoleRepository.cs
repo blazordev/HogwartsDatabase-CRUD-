@@ -1,5 +1,7 @@
 ﻿using Hogwarts.Api.DbContexts;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services
 {
-    public class RoleRepository
+    public class RoleRepository : IRoleRepository
     {
         private HogwartsDbContext _context;
 
@@ -15,61 +17,42 @@ namespace Hogwarts.Api.Services
         {
             _context = context;
         }
-
         public void AddRole(Role role)
-        {
-            if(role== null)
-            {
-                throw new ArgumentNullException(nameof(role));
-            }
+        {           
             _context.Roles.Add(role);
         }
-        public List<Role> GetRoles()
+        public async Task<IEnumerable<Role>> GetRolesAsync()
         {
-            return _context.Roles.OrderBy(r => r.Name).OrderBy(r => r.Name).ToList();
+            return await _context.Roles.ToListAsync();
         }
-        public Role GetRoleById(int roleId)
+        public async Task<Role> GetRoleByIdAsync(int roleId)
+        {            
+            return await _context.Roles.FirstOrDefaultAsync(r => r.Id == roleId);
+        }        
+        public async Task<bool> RoleExistsAsync(int roleId)
+        {            
+            return await _context.Roles.AnyAsync(r => r.Id == roleId);
+        }
+        public async Task<IEnumerable<Role>> GetRolesForStaffAsync(int staffId)
         {
-            if(String.IsNullOrWhiteSpace(roleId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(roleId));
-            }
-            return _context.Roles.FirstOrDefault(r => r.Id == roleId);
+            return await _context.StaffRoles
+                .Include(sr => sr.Role)
+                .Where(sr => sr.StaffId == staffId)
+                .Select(sr => sr.Role).ToListAsync();            
         }
-        
-        public bool RoleExists(int roleId)
-        {
-            if (String.IsNullOrWhiteSpace(roleId.ToString()))
-            {
-                throw new ArgumentNullException(nameof(roleId));
-            }
-            return _context.Roles.Any(r => r.Id == roleId);
-        }
-
-        public IEnumerable<Role> GetRolesForStaff(int staffId)
-        {
-            var staffRoles = _context.StaffRoles.Where(sr => sr.StaffId == staffId);
-            var rolesToReturn = new List<Role>();
-            foreach (var staffRole in staffRoles)
-            {
-                var role = _context.Roles.FirstOrDefault(r => r.Id == staffRole.RoleId);
-                rolesToReturn.Add(role);
-            }
-            return rolesToReturn;
-        }
-        public void UpdateRole(int roleId)
+        public async Task UpdateRoleAsync(int roleId)
         {
             //no code needed
         }
-
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return _context.SaveChanges() >= 0;
+            return (await _context.SaveChangesAsync() >= 0);
         }
 
-        public bool HasRoleAlready(int staffId, int roleId)
+        public async Task<bool> HasRoleAlreadyAsync(int staffId, int roleId)
         {
-            return _context.StaffRoles.Any(sr => sr.StaffId == staffId && sr.RoleId == roleId);
+            return await _context.StaffRoles
+                .AnyAsync(sr => sr.StaffId == staffId && sr.RoleId == roleId);
         }
 
         public void DeleteRole(Role roleFromRepo)

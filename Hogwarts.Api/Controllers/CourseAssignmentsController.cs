@@ -29,32 +29,32 @@ namespace Hogwarts.Api.Controllers
         }
         //get assigned courses for teacher
         [HttpGet("Staff/{staffId}", Name = "GetAssignedCoursesForStaff")]
-        public ActionResult<IEnumerable<CourseDto>> GetAssignedCoursesForStaff(int staffId)
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetAssignedCoursesForStaff(int staffId)
         {
             if (!_staffRepo.StaffExists(staffId) || !_staffRepo.IsTeacher(staffId))
             {
                 return NotFound();
             }
-            var courseEntities = _courseRepo.GetCoursesForStaffmember(staffId);
+            var courseEntities = await _courseRepo.GetCoursesForStaffmemberAsync(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courseEntities));
         }
-        [HttpGet("Courses/{courseId}", Name = "GetAllStaffForCourse")]
-        public ActionResult<IEnumerable<CourseDto>> GetAllStaffForCourse(int courseId)
-        {
-            if (!_courseRepo.CourseExists(courseId))
-            {
-                return NotFound();
-            }
-            var staffEntities = _staffRepo.GetStaffForCourse(courseId);
-            return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffEntities));
-        }
+        //[HttpGet("Courses/{courseId}", Name = "GetAllStaffForCourse")]
+        //public async Task<ActionResult<IEnumerable<CourseDto>>> GetAllStaffForCourse(int courseId)
+        //{
+        //    if (!_courseRepo.CourseExistsAsync(courseId).Result)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var staffEntities = await _staffRepo.GetStaffForCourseAsync(courseId);
+        //    return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffEntities));
+        //}
 
         //POST api/staffId/courseId
         [HttpPost("{staffId}/{courseId}")]
         public ActionResult<StaffDto> AssignCourseToStaff(int staffId, int courseId)
         {
             var staffEntity = _staffRepo.GetStaffById(staffId);
-            if (staffEntity == null || !_courseRepo.CourseExists(courseId))
+            if (staffEntity == null || !_courseRepo.CourseExistsAsync(courseId).Result)
             {
                 return NotFound();
             }

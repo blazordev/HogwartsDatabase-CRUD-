@@ -34,7 +34,7 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            var rolesToReturn = _roleRepo.GetRolesForStaff(staffId);
+            var rolesToReturn = _roleRepo.GetRolesForStaffAsync(staffId);
             return Ok(_mapper.Map<IEnumerable<RoleDto>>(rolesToReturn));
         }
 
@@ -42,11 +42,11 @@ namespace Hogwarts.Api.Controllers
         [HttpPost("{staffId}/{roleId}")]
         public ActionResult<StaffDto> AssignRoleToStaff(int staffId, int roleId)
         {
-            if (!_roleRepo.RoleExists(roleId) || !_staffRepo.StaffExists(staffId))
+            if (!_roleRepo.RoleExistsAsync(roleId).Result || !_staffRepo.StaffExists(staffId))
             {
                 return NotFound();
             }
-            if (_roleRepo.HasRoleAlready(staffId, roleId))
+            if (_roleRepo.HasRoleAlreadyAsync(staffId, roleId).Result)
             {
                 return Conflict("Staffmember already has that role");
             }

@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Hogwarts.Api.Controllers;
+using Hogwarts.Api.Services.Interfaces;
 
 namespace Hogwarts.Api.Services
 {
-    public class CourseRepository
+    public class CourseRepository : ICourseRepository
     {
         private HogwartsDbContext _context;
 
@@ -19,35 +20,35 @@ namespace Hogwarts.Api.Services
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IEnumerable<Course> GetCourses()
+        public async Task<IEnumerable<Course>> GetCoursesAsync()
         {
-            return _context.Courses.ToList();
+            return await _context.Courses.ToListAsync();
         }
 
-        public Course GetCourseById(int courseId)
+        public async Task<Course> GetCourseByIdAsync(int courseId)
         {
             if(String.IsNullOrWhiteSpace(courseId.ToString()))
             {
                 throw new ArgumentNullException(nameof(courseId));
             }
-            return _context.Courses.FirstOrDefault(c => c.Id == courseId);
+            return await _context.Courses.FirstOrDefaultAsync(c => c.Id == courseId);
         }
         public void Add(Course course)
         {
             _context.Courses.Add(course);
         }
-        public bool Save()
+        public async Task<bool> SaveAsync()
         {
-            return (_context.SaveChanges() >= 0);
+            return (await _context.SaveChangesAsync() >= 0);
         }
 
-        public bool CourseExists(int courseId)
+        public async Task<bool> CourseExistsAsync(int courseId)
         {
             if (String.IsNullOrWhiteSpace(courseId.ToString()))
             {
                 throw new ArgumentNullException(nameof(courseId));
             }
-            return _context.Courses.Any(c => c.Id == courseId);
+            return await _context.Courses.AnyAsync(c => c.Id == courseId);
         }
         
         public void UpdateCourse(Course course)
@@ -55,16 +56,12 @@ namespace Hogwarts.Api.Services
             //no code needed for update in current repo
         }
         
-        public IEnumerable<Course> GetCoursesForStaffmember(int staffId)
+        public async Task<IEnumerable<Course>> GetCoursesForStaffmemberAsync(int staffId)
         {
-            //Prettify this into a join
-            var staffCourseList = _context.StaffCourse.Where(sc => sc.StaffId == staffId);
-            var coursesToReturn = new List<Course>();
-            foreach (var staffCourse in staffCourseList)
-            {
-                coursesToReturn.Add(_context.Courses.FirstOrDefault(c => c.Id == staffCourse.CourseId));
-            }
-            return coursesToReturn;
+            return await _context.StaffCourse
+                .Include(sc => sc.Course)
+                .Where(sc => sc.StaffId == staffId)
+                .Select(sc => sc.Course).ToListAsync();           
 
         }
 

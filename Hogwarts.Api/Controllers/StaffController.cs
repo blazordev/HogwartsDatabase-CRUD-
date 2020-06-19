@@ -126,14 +126,14 @@ namespace Hogwarts.Api.Controllers
         }
 
         [HttpGet("{staffId}/courses")]
-        public ActionResult<IEnumerable<CourseDto>> GetCoursesForStaff(int staffId)
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCoursesForStaff(int staffId)
         {
             var staffEntity = _staffRepo.GetStaffById(staffId);
             if (staffEntity == null)
             {
                 return NotFound();
             }
-            var courses = _courseRepo.GetCoursesForStaffmember(staffId);
+            var courses = await  _courseRepo.GetCoursesForStaffmemberAsync(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courses));
         }
         [HttpPut("{staffId}")]

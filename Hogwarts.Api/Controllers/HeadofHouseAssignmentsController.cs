@@ -29,13 +29,13 @@ namespace Hogwarts.Api.Controllers
         }
         //GET house of Staff
         [HttpGet("staff/{staffId}")]
-        public ActionResult<HouseDto> GetHouseForStaff(int staffId)
+        public async Task<ActionResult<HouseDto>> GetHouseForStaff(int staffId)
         {
             if(!_staffRepo.StaffExists(staffId) || !_staffRepo.IsHeadOfHouse(staffId))
             {
                 return NotFound();
             }
-            var houseToReturn = _houseRepo.GetHouseOfHeadOfHouse(staffId);
+            var houseToReturn = await _houseRepo.GetHouseAssignedToHeadOfHouseAsync(staffId);
             return Ok(_mapper.Map<HouseDto>(houseToReturn));
         }
 
@@ -43,7 +43,7 @@ namespace Hogwarts.Api.Controllers
         [HttpGet("houses/{houseId}")]
         public ActionResult<IEnumerable<StaffDto>> GetHeadsOfHouse(int houseId)
         {
-            if (!_houseRepo.HouseExists(houseId))
+            if (!_houseRepo.HouseExistsAsync(houseId).Result)
             {
                 return NotFound();
             }
@@ -56,7 +56,7 @@ namespace Hogwarts.Api.Controllers
         [HttpPost("{staffId}/{houseId}")]
         public ActionResult<StaffDto> AssignHouseToStaff(int staffId, int houseId)
         {           
-            if (!_staffRepo.StaffExists(staffId) || !_houseRepo.HouseExists(houseId))
+            if (!_staffRepo.StaffExists(staffId) || !_houseRepo.HouseExistsAsync(houseId).Result)
             {
                 return NotFound();
             }
@@ -72,14 +72,13 @@ namespace Hogwarts.Api.Controllers
         }
 
         [HttpDelete("{staffId}/{houseId}")]
-        public ActionResult<StaffDto> UnassignHouseFromStaff(int staffId, int houseId)
+        public async Task<ActionResult<StaffDto>> UnassignHouseFromStaff(int staffId, int houseId)
         {
-            var headOfHouseEntity = _houseRepo.GetHeadOfHouse(staffId, houseId);
+            var headOfHouseEntity = await _houseRepo.GetHeadOfHouseAsync(staffId, houseId);
             if (headOfHouseEntity == null)
             {
                 return NotFound();
-            }
-            
+            }            
             _staffRepo.DeleteStaffHouseRelationship(headOfHouseEntity);
             _staffRepo.Save();
 
