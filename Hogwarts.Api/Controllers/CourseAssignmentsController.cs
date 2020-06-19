@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,12 +17,12 @@ namespace Hogwarts.Api.Controllers
     public class CourseAssignmentsController : ControllerBase
     {
         private IMapper _mapper;
-        private CourseRepository _courseRepo;
-        private StaffRepository _staffRepo;
+        private ICourseRepository _courseRepo;
+        private IStaffRepository _staffRepo;
 
         public CourseAssignmentsController(IMapper mapper,
-            CourseRepository courseRepo,
-            StaffRepository staffRepo)
+            ICourseRepository courseRepo,
+            IStaffRepository staffRepo)
         {
             _mapper = mapper;
             _courseRepo = courseRepo;

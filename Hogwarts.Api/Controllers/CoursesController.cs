@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,10 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class CoursesController : ControllerBase
     {
-        private CourseRepository _coursesRepo;
+        private ICourseRepository _coursesRepo;
         private IMapper _mapper;
 
-        public CoursesController(CourseRepository coursesRepo, IMapper mapper)
+        public CoursesController(ICourseRepository coursesRepo, IMapper mapper)
         {
             _coursesRepo = coursesRepo;
             _mapper = mapper;

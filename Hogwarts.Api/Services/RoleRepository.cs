@@ -57,7 +57,7 @@ namespace Hogwarts.Api.Services
         }
         public void UpdateRole(int roleId)
         {
-            throw new NotImplementedException();
+            //No code needed for this method in this repo
         }
     }
 }

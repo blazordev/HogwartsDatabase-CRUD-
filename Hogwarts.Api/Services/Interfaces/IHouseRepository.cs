@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services.Interfaces
 {
-    interface IHouseRepository
+    public interface IHouseRepository
     {
         public Task<bool> HouseExistsAsync(int houseId);
 

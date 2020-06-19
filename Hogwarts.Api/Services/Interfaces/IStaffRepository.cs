@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services.Interfaces
 {
-    interface IStaffRepository
+    public interface IStaffRepository
     {
         public Task<Staff> GetStaffByIdAsync(int staffId);
         public Task<IEnumerable<Staff>> GetStaffCollectionAsync(IEnumerable<int> staffIds);

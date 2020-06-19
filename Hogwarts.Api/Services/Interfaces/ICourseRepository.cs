@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services.Interfaces
 {
-    interface ICourseRepository
+    public interface ICourseRepository
     {
         public Task<IEnumerable<Course>> GetCoursesAsync();
 

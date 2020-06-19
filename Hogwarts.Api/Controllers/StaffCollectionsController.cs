@@ -6,6 +6,7 @@ using AutoMapper;
 using Hogwarts.Api.Helpers;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,9 +17,9 @@ namespace Hogwarts.Api.Controllers
     public class StaffCollectionsController : ControllerBase
     {
         private IMapper _mapper;
-        private StaffRepository _staffRepo;
+        private IStaffRepository _staffRepo;
 
-        public StaffCollectionsController(IMapper mapper, StaffRepository staffRepo)
+        public StaffCollectionsController(IMapper mapper, IStaffRepository staffRepo)
         {
             _mapper = mapper;
             _staffRepo = staffRepo;

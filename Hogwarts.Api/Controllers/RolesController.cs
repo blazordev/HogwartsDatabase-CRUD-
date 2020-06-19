@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,11 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class RolesController : Controller
     {
-        RoleRepository _roleRepository;
-        private StaffRepository _staffRepository;
+        IRoleRepository _roleRepository;
+        private IStaffRepository _staffRepository;
         IMapper _mapper;
-        public RolesController(IMapper mapper, RoleRepository roleRepository,
-            StaffRepository staffRepository)
+        public RolesController(IMapper mapper, IRoleRepository roleRepository,
+            IStaffRepository staffRepository)
         {
             _mapper = mapper;
             _roleRepository = roleRepository;

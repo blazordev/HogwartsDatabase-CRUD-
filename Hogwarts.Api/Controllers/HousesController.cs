@@ -6,6 +6,7 @@ using AutoMapper;
 using Hogwarts.Api.DbContexts;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,10 +18,10 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class HousesController : ControllerBase
     {
-        private readonly HouseRepository _repo;
+        private readonly IHouseRepository _repo;
         private readonly IMapper _mapper;
 
-        public HousesController(HouseRepository repo, IMapper mapper)
+        public HousesController(IHouseRepository repo, IMapper mapper)
         {
             _repo = repo;
             _mapper = mapper;

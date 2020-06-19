@@ -14,6 +14,7 @@ using Hogwarts.Api.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Hogwarts.Api.Helpers;
 using System.Text.Json;
+using Hogwarts.Api.Services.Interfaces;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -21,13 +22,13 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class StaffController : ControllerBase
     {
-        private StaffRepository _staffRepo;
-        private RoleRepository _roleRepo;
-        private CourseRepository _courseRepo;
+        private IStaffRepository _staffRepo;
+        private IRoleRepository _roleRepo;
+        private ICourseRepository _courseRepo;
         private IMapper _mapper;
 
-        public StaffController(StaffRepository staffRepo,
-            RoleRepository roleRepo, IMapper mapper, CourseRepository courseRepo)
+        public StaffController(IStaffRepository staffRepo,
+            IRoleRepository roleRepo, IMapper mapper, ICourseRepository courseRepo)
         {
             _staffRepo = staffRepo;
             _roleRepo = roleRepo;

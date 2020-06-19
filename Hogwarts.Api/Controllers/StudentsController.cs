@@ -14,6 +14,7 @@ using Hogwarts.Api.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Hogwarts.Api.Helpers;
 using System.Text.Json;
+using Hogwarts.Api.Services.Interfaces;
 
 namespace Hogwarts.Api.Controllers
 {
@@ -21,13 +22,13 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private StudentRepository _repo;
+        private IStudentRepository _repo;
         private IMapper _mapper;
 
-        public StudentsController(StudentRepository repo, IMapper mapper)
+        public StudentsController(IStudentRepository repo, IMapper mapper)
         {
-            _repo = repo ?? throw new ArgumentException(nameof(repo));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _repo = repo;
+            _mapper = mapper;
         }
 
         // GET: api/students

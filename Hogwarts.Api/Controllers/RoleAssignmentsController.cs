@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +15,12 @@ namespace Hogwarts.Api.Controllers
     [ApiController]
     public class RoleAssignmentsController : ControllerBase
     {
-        private StaffRepository _staffRepo;
-        private RoleRepository _roleRepo;
+        private IStaffRepository _staffRepo;
+        private IRoleRepository _roleRepo;
         private IMapper _mapper;
 
-        public RoleAssignmentsController(StaffRepository staffRepo,
-            RoleRepository roleRepo,
+        public RoleAssignmentsController(IStaffRepository staffRepo,
+            IRoleRepository roleRepo,
             IMapper mapper)
         {
             _staffRepo = staffRepo;
@@ -46,7 +47,7 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            if (_roleRepo.HasRoleAlreadyAsync(staffId, roleId).Result)
+            if (await _roleRepo.HasRoleAlreadyAsync(staffId, roleId))
             {
                 return Conflict("Staffmember already has that role");
             }

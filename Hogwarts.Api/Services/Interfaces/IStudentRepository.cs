@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Services.Interfaces
 {
-    interface IStudentRepository
+    public interface IStudentRepository
     {
         public Task<bool> StudentExistAsync(int studentId);
         public PagedList<Student> GetStudents(

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hogwarts.Api.Models;
 using Hogwarts.Api.Services;
+using Hogwarts.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,13 +16,13 @@ namespace Hogwarts.Api.Controllers
     public class HeadofHouseAssignmentsController : ControllerBase
     {
         private IMapper _mapper;
-        private StaffRepository _staffRepo;
-        private HouseRepository _houseRepo;
+        private IStaffRepository _staffRepo;
+        private IHouseRepository _houseRepo;
         
 
         public HeadofHouseAssignmentsController(IMapper mapper,
-            StaffRepository staffRepo, 
-            HouseRepository houseRepo)
+            IStaffRepository staffRepo, 
+            IHouseRepository houseRepo)
         {
             _mapper = mapper;
             _staffRepo = staffRepo;
