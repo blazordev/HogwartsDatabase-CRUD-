@@ -7,12 +7,12 @@ namespace Hogwarts.Api.ResourceParameters
 {
     public class StaffResourceParameters
     {
-        const int maxPageSize = 25;
+        const int maxPageSize = 1000;
         public string SearchQuery { get; set; }
         public int RoleId { get; set; }      
         public int PageNumber { get; set; } = 1;
         
-        private int _pageSize = 20;
+        private int _pageSize = 1000;
         public int PageSize
         {
             get => _pageSize;

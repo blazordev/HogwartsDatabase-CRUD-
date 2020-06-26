@@ -97,9 +97,9 @@ namespace Hogwarts.Api.Services
             return await _context.StaffRoles.FirstOrDefaultAsync(sr =>
                  sr.StaffId == staffId && sr.RoleId == roleId);
         }
-        public void DeleteStaffRoleRelationship(StaffRole staffRoleFromRepo)
+        public void DeleteStaffRoleRelationship(StaffRole staffRole)
         {
-            _context.StaffRoles.Remove(staffRoleFromRepo);
+            _context.StaffRoles.Remove(staffRole);
         }
         public void AddStaff(Staff staff)
         {

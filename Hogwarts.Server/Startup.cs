@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hogwarts.Server.Services;
 
+
 namespace Hogwarts.Server
 {
     public class Startup
@@ -28,11 +29,24 @@ namespace Hogwarts.Server
         {
             services.AddRazorPages();
             services.AddServerSideBlazor().AddCircuitOptions(options => { options.DetailedErrors = true; });
+            var baseAddress = "https://localhost:5001/";
+            
             services.AddHttpClient<StudentDataService>(client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5001/");
+                client.BaseAddress = new Uri(baseAddress);
             });
-
+            services.AddHttpClient<StaffDataService>(client =>
+            {
+                client.BaseAddress = new Uri(baseAddress);
+            });
+            services.AddHttpClient<RolesDataService>(client =>
+            {
+                client.BaseAddress = new Uri(baseAddress);
+            });
+            services.AddHttpClient<HouseDataService>(client =>
+            {
+                client.BaseAddress = new Uri(baseAddress);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

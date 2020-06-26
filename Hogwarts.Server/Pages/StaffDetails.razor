@@ -1,0 +1,22 @@
+﻿@page "/staffDetails/{staffId}"
+@inherits StaffDetailsBase
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                Staff Info
+            </div>
+            <div class="card-body">
+                <div class="card-text"> <p class="small">Last Name:</p><p> @Staff.LastName</p></div>
+                <div class="card-text"><p class="small">First Name:</p><p>@Staff.FirstName @Staff.MiddleNames</p></div>
+                <p class="card-text small">Roles:</p>
+                @foreach (var roleName in Staff.RoleNames)
+                {
+                    <span class="badge" style="background-color:#E7ECF0">@roleName</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+

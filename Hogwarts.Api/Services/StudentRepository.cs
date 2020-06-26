@@ -73,11 +73,15 @@ namespace Hogwarts.Api.Services
         }
         public void AddStudent(Student student)
         {            
-            _context.Students.Add(student);
+           _context.Students.Add(student);
         }
         public void DeleteStudent(Student studentFromRepo)
         {
             _context.Students.Remove(studentFromRepo);
+        }
+        public void DeleteManyStudents(IEnumerable<Student> students)
+        {
+            _context.Students.RemoveRange(students);
         }
         public void UpdateStudent(Student student)
         {

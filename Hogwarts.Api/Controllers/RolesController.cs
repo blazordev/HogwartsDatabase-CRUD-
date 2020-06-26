@@ -35,7 +35,7 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            return Ok(_mapper.Map<RoleDto>(roleEntities));
+            return Ok(_mapper.Map<IEnumerable<RoleDto>>(roleEntities));
         }
         // GET api/roles/5
         [HttpGet("{id}", Name = "GetRole")]

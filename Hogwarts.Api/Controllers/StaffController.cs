@@ -41,21 +41,21 @@ namespace Hogwarts.Api.Controllers
         public async Task<ActionResult<IEnumerable<StaffDto>>> GetStaff(
             [FromQuery] StaffResourceParameters staffResourceParameters)
         {
-            var staffFromRepo = await _staffRepo.GetAllStaffAsync(staffResourceParameters);           
+            var staffFromRepo = await _staffRepo.GetAllStaffAsync(staffResourceParameters);
             return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffFromRepo));
         }
 
         // GET: api/Staff/5
-        [HttpGet("{id}", Name = "GetStaffMember")]
-        public async Task<ActionResult<StaffDto>> GetStaff(int id)
+        [HttpGet("{staffId}", Name = "GetStaffMember")]
+        public async Task<ActionResult<StaffDto>> GetStaff(int staffId)
         {
-            var staffFromRepo = await _staffRepo.GetStaffByIdAsync(id);
+            var staffFromRepo = await _staffRepo.GetStaffByIdAsync(staffId);
             if (staffFromRepo == null)
             {
                 return NotFound();
-            }         
+            }
             var staffToReturn = _mapper.Map<StaffDto>(staffFromRepo);
-          
+
             return Ok(staffToReturn);
         }
         //POST: api/staff
@@ -65,14 +65,14 @@ namespace Hogwarts.Api.Controllers
             var staffEntity = _mapper.Map<Staff>(staff);
             //first Add staff
             _staffRepo.AddStaff(staffEntity);
+            await _staffRepo.SaveAsync();
             var createdStaffId = staffEntity.Id;
             if (staff.RoleIds != null)
             {
                 _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.RoleIds);
 
-                if (!String.IsNullOrEmpty(staff.HouseId.ToString()))
+                if (staff.HouseId != 0)
                 {
-                    //if role is HeadOfHouse, add house to staff
                     if (await _staffRepo.IsHeadOfHouseAsync(createdStaffId))
                     {
                         _staffRepo.AddHouseToStaff(createdStaffId, staff.HouseId);
@@ -82,9 +82,8 @@ namespace Hogwarts.Api.Controllers
                         return BadRequest("StaffMember must have Role HeadOfHouse to assign House");
                     }
                 }
-                if (staff.CourseIds != null)
-                {
-                    //if role is Teacher, add courses to staff
+                if (staff.CourseIds.Any())
+                {                    
                     if (await _staffRepo.IsTeacherAsync(createdStaffId))
                     {
                         _staffRepo.AssignCourseCollectionToStaff(staffEntity.Id, staff.CourseIds);
@@ -97,9 +96,10 @@ namespace Hogwarts.Api.Controllers
             }
             //if all goes well
             await _staffRepo.SaveAsync();
+            var staffWithRoles = await _staffRepo.GetStaffByIdAsync(staffEntity.Id);
             return CreatedAtRoute("GetStaffMember",
                 new { staffId = createdStaffId },
-                _mapper.Map<StaffDto>(staffEntity));
+                _mapper.Map<StaffDto>(staffWithRoles));
         }
 
         [HttpGet("{staffId}/courses")]
@@ -110,7 +110,7 @@ namespace Hogwarts.Api.Controllers
             {
                 return NotFound();
             }
-            var courses = await  _courseRepo.GetCoursesForStaffmemberAsync(staffId);
+            var courses = await _courseRepo.GetCoursesForStaffmemberAsync(staffId);
             return Ok(_mapper.Map<IEnumerable<CourseDto>>(courses));
         }
 
@@ -159,8 +159,8 @@ namespace Hogwarts.Api.Controllers
             await _staffRepo.SaveAsync();
             return NoContent();
         }
-       
-        
+
+
     }
 }
 

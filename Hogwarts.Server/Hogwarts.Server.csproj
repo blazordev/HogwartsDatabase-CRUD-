@@ -4,4 +4,12 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Radzen.Blazor" Version="2.10.7" />
+  </ItemGroup>
+
 </Project>

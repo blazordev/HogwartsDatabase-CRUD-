@@ -1,0 +1,44 @@
+﻿@page "/addStudent"
+@inherits AddStudentBase
+    <div class="col-md-4">
+        <a class="btn btn-outline-primary" @onclick="@NavigateToStudentList"><span class="oi oi-arrow-left"></span></a>
+        <EditForm Model="@Student" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group row">
+                <label for="lastName" class="col-sm-3 small">Last Name: </label>
+                <InputText id="lastName" @bind-Value="@Student.LastName" class="form-control col-sm-8" placeholder="Enter last name"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Student.LastName)" />
+            </div>
+            <div class="form-group row">
+                <label for="firstName" class="col-sm-3 small">First Name: </label>
+                <InputText id="firstName" class="form-control col-sm-8" @bind-Value="@Student.FirstName" placeholder="Enter first name"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Student.FirstName)" />
+            </div>
+            <div class="form-group row">
+                <label for="middleNames" class="col-sm-3 small">Middle Names: </label>
+                <InputText id="middleNames" class="form-control col-sm-8" @bind-Value="@Student.MiddleNames" placeholder="Enter first name"></InputText>
+                <ValidationMessage class="offset-sm-3 col-sm-8" For="@(() => Student.MiddleNames)" />
+            </div>
+            @*<div class="form-group row">
+                    <label for="birthdate" class="col-sm-3">Date of Birth: </label>
+                    <InputDate id="birthdate" class="form-control col-sm-8" @bind-Value="@Employee.BirthDate" placeholder="Enter birthdate"></InputDate>
+                </div>*@
+
+            <div class="form-group row">
+                <label for="house" class="col-sm-3">House: </label>
+                <InputSelect id="house" class="form-control col-sm-8" @bind-Value="@HouseId">
+                    @foreach (var House in Houses)
+                    {
+                        <option value="@House.Id">@House.Name</option>
+                    }
+                </InputSelect>
+            </div>
+            @*<div class="form-group row">
+                    <label for="prefect" class=" offset-sm-3">
+                        <InputCheckbox id="prefect" @bind-Value="@Student.IsPrefect"></InputCheckbox>
+                        &nbsp;Prefect
+                    </label>
+                </div>*@
+            <button type="submit" class="btn btn-primary edit-btn">Save</button>
+        </EditForm>
+    </div>

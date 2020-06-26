@@ -7,13 +7,13 @@ namespace Hogwarts.Api.ResourceParameters
 {
     public class StudentsResourceParameters
     {
-        const int maxPageSize = 25;
+        const int maxPageSize = 1000;
         public string HouseName { get; set; }
         public bool IncludeHouse { get; set; } = true;
         public string SearchQuery { get; set; }
         public int PageNumber { get; set; } = 1;
 
-        private int _pageSize = 10;
+        private int _pageSize = 100;
         public int PageSize
         {
             get => _pageSize;

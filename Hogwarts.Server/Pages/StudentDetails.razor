@@ -1,0 +1,13 @@
+﻿@page "/studentDetails/{StudentId}"
+@inherits StudentDetailsBase
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <p>@Student.LastName, @Student.FirstName @Student.MiddleNames</p>
+            </div>
+            <div class="form-group">
+                <p>House: @Student.HouseName</p>
+            </div>
+        </div>
+    </div>

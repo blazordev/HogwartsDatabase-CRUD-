@@ -74,5 +74,30 @@ namespace Hogwarts.Api.Controllers
             Response.Headers.Add("Allow", "GET,OPTIONS,POST");
             return Ok();
         }
+        [HttpDelete("({ids})")]
+        public async Task<ActionResult> DeleteStudentCollection(
+            [FromRoute]
+            //have to do our own model-binding since .net core cant auto-bind arrays from string
+        [ModelBinder(BinderType = typeof(ArrayModelBinder))]
+        IEnumerable<int> ids)
+        {
+            //usually, the [ApiController] attribute checks if parameter is null 
+            //and automatically sends back badrequest
+            //But here we have do a null-check ourselves
+            if (ids == null)
+            {
+                return BadRequest();
+            }
+            var studentEntities = await _repo.GetStudentsAsync(ids);
+            //check if any are missing
+            if (studentEntities.Count() != ids.Count())
+            {
+                return NotFound();
+            }
+            _repo.DeleteManyStudents(studentEntities);
+            await _repo.SaveAsync();
+            return NoContent();
+
+        }
     }
 }

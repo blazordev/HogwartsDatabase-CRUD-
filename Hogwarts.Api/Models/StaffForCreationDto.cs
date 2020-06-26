@@ -10,14 +10,12 @@ namespace Hogwarts.Api.Models
 {
     public class StaffForCreationDto
     {
-        [Required]
-        public string FirstName { get; set; }
+        [Required] public string FirstName { get; set; }
         public string MiddleNames { get; set; }
-        [Required]
-        public string LastName { get; set; }
+        [Required] public string LastName { get; set; }
         public IEnumerable<int> RoleIds { get; set; } = new List<int>();
         public int HouseId { get; set; }
         public IEnumerable<int> CourseIds { get; set; } = new List<int>();
-      
+
     }
 }

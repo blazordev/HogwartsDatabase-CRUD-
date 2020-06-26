@@ -1,0 +1,47 @@
+﻿@page "/staffList"
+@inherits StaffListBase
+
+@if (FilteredStaff == null || !(FilteredStaff.Count() > 0) && SearchTerm == "")
+{
+    <div class="lds-ripple"><div></div><div></div></div>
+}
+else
+{
+    <nav class="navbar" style="background-color: #E7ECF0">
+        <a href="AddStaff" class="btn btn-light table-btn"><span></span> Add</a>
+        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control float-left col-md-5" placeholder="Search" type="search">
+    </nav>
+    <table class="table table-bordered table-striped table-sm table-hover table-responsive-sm"
+           style="background-color: #E7ECF0">
+        <thead>
+            <tr>
+                <th class="small text-sm-center">ID</th>
+                <th class="small">FIRST NAME</th>
+                <th class="small">LAST NAME</th>
+                <th class="small"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var staffItem in FilteredStaff)
+            {
+                <tr @onclick="() => StaffDetailsPage(staffItem.Id)">
+                    <td class="text-sm-center">@staffItem.Id</td>
+                    <td><span class="ml-1">@staffItem.FirstName @staffItem.MiddleNames</span> </td>
+                    <td><span class="ml-1">@staffItem.LastName</span> </td>
+                    <td class="ml-4">
+                        @foreach (var role in staffItem.RoleNames)
+                        {
+                            <span class=" text-capitalize badge" style="background-color:#E7ECF0">@role</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!FilteredStaff.Any())
+    {
+        <p>No records found</p>
+    }
+}
+
+

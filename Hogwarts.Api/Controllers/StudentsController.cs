@@ -37,7 +37,7 @@ namespace Hogwarts.Api.Controllers
             [FromQuery] StudentsResourceParameters studentsResourceParameters)
         {
             var studentsFromRepo = _repo.GetStudents(studentsResourceParameters);
-            
+
             var previousPageLink = studentsFromRepo.HasPrevious ?
                 CreateStudentsResourceUri(studentsResourceParameters,
                 ResourceUriType.PreviousPage) : null;
@@ -66,7 +66,6 @@ namespace Hogwarts.Api.Controllers
         public async Task<ActionResult<StudentDto>> GetStudent(int studentId)
         {
             var studentFromRepo = await _repo.GetStudentByIdAsync(studentId);
-
             if (studentFromRepo == null)
             {
                 return NotFound();
@@ -80,7 +79,8 @@ namespace Hogwarts.Api.Controllers
             var studentEntity = _mapper.Map<Student>(student);
             _repo.AddStudent(studentEntity);
             await _repo.SaveAsync();
-            var studentToReturn = _mapper.Map<StudentDto>(studentEntity);
+            var studentWithHouseName = await _repo.GetStudentByIdAsync(studentEntity.Id);
+            var studentToReturn = _mapper.Map<StudentDto>(studentWithHouseName);
             return CreatedAtRoute("GetStudent", new { studentId = studentToReturn.Id },
                 studentToReturn);
 
@@ -94,7 +94,8 @@ namespace Hogwarts.Api.Controllers
             _mapper.Map(student, studentEntityFromRepo);
             _repo.UpdateStudent(studentEntityFromRepo);
             await _repo.SaveAsync();
-            return Ok(_mapper.Map<StudentDto>(studentEntityFromRepo));
+            var studentWithHouseName = await _repo.GetStudentByIdAsync(studentEntityFromRepo.Id);
+            return Ok(_mapper.Map<StudentDto>(studentWithHouseName));
         }
 
         [HttpPatch("{studentId}")]
