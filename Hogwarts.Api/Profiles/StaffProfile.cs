@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Data;
 using System;
 using System.Collections.Generic;
@@ -14,8 +14,8 @@ namespace Hogwarts.Api.Profiles
         {
             CreateMap<Staff, StaffDto>()
                 .ForMember(
-                    dest => dest.RoleNames,
-                    opt => opt.MapFrom(src => src.StaffRoles.Select(sr => sr.Role.Name)));
+                    dest => dest.Roles,
+                    opt => opt.MapFrom(src => src.StaffRoles.Select(sr => sr.Role)));
             CreateMap<StaffForCreationDto, Staff>();
             CreateMap<Staff, StaffForEditDto>().ReverseMap();
             

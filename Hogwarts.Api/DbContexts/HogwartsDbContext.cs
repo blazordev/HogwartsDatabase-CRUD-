@@ -1,5 +1,5 @@
 ﻿using Hogwarts.Api.Extensions;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

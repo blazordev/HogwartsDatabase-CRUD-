@@ -184,12 +184,15 @@ app {
     .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
         background-color: #F7F8FA;
     }
+
     .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
         background-color: white;
     }
+
     .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
         background-color: #ecfafb;
     }
+
     .lds-ripple {
         display: inline-block;
         position: relative;
@@ -226,8 +229,16 @@ app {
             opacity: 0;
         }
     }
+
     th, td {
         font-size: 14px;
     }
-    
+
+    .sort-th {
+        cursor: pointer;
+    }
+
+    .fa {
+        float: right;
+    }
 }

@@ -9,7 +9,7 @@ using Hogwarts.Api.DbContexts;
 using Hogwarts.Data;
 using Hogwarts.Api.Services;
 using AutoMapper;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Api.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Hogwarts.Api.Helpers;

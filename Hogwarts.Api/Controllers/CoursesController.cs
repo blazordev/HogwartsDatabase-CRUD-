@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Api.Services;
 using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
@@ -26,16 +26,17 @@ namespace Hogwarts.Api.Controllers
 
         // GET: api/courses 
         [HttpGet]
-        public ActionResult<IEnumerable<CourseDto>> GetCourses()
+        public async Task<ActionResult<IEnumerable<CourseDto>>> GetCourses()
         {
-            return Ok(_mapper.Map<IEnumerable<CourseDto>>(_coursesRepo.GetCoursesAsync()));
+            var coursesToReturn = await _coursesRepo.GetCoursesAsync();
+            return Ok(_mapper.Map<IEnumerable<CourseDto>>(coursesToReturn));
         }
 
         // GET: api/courses/{courseId}
         [HttpGet("{courseId}", Name = "GetCourse")]
-        public ActionResult<CourseDto> GetCourse(int courseId)
+        public async Task<ActionResult<CourseDto>> GetCourse(int courseId)
         {
-            var courseEntity = _coursesRepo.GetCourseByIdAsync(courseId);
+            var courseEntity = await _coursesRepo.GetCourseByIdAsync(courseId);
             if (courseEntity == null)
             {
                 return NotFound();

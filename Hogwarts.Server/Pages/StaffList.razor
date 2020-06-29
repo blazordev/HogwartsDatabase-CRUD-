@@ -7,21 +7,31 @@
 }
 else
 {
-    <nav class="navbar" style="background-color: #E7ECF0">
-        <a href="AddStaff" class="btn btn-light table-btn"><span></span> Add</a>
-        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control float-left col-md-5" placeholder="Search" type="search">
+    <nav class="nav" style="background-color: #E7ECF0">
+        <a href="AddStaff" class="btn btn-light"><span class="fas fa-plus"></span></a>
+        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control col-md-4" placeholder="Search" type="search">
+        <select class="col-md-4" @onchange="RoleSelected">
+            <option value="-1" disabled selected>(select)</option>
+            @foreach (var role in Roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
     </nav>
     <table class="table table-bordered table-striped table-sm table-hover table-responsive-sm"
            style="background-color: #E7ECF0">
         <thead>
             <tr>
-                <th class="small text-sm-center">ID</th>
-                <th class="small">FIRST NAME</th>
-                <th class="small">LAST NAME</th>
+                <th class="sort-th small text-center">ID</th>
+                <th class="sort-th small"><span> FIRST NAME</span></th>
+                <th class="sort-th small">
+                    <span>LAST NAME</span>
+                </th>
                 <th class="small"></th>
             </tr>
         </thead>
         <tbody>
+             
             @foreach (var staffItem in FilteredStaff)
             {
                 <tr @onclick="() => StaffDetailsPage(staffItem.Id)">
@@ -29,9 +39,9 @@ else
                     <td><span class="ml-1">@staffItem.FirstName @staffItem.MiddleNames</span> </td>
                     <td><span class="ml-1">@staffItem.LastName</span> </td>
                     <td class="ml-4">
-                        @foreach (var role in staffItem.RoleNames)
+                        @foreach (var role in staffItem.Roles)
                         {
-                            <span class=" text-capitalize badge" style="background-color:#E7ECF0">@role</span>
+                            <span class=" text-capitalize badge" style="background-color:#E7ECF0">@role.Name</span>
                         }
                     </td>
                 </tr>
@@ -40,7 +50,7 @@ else
     </table>
     @if (!FilteredStaff.Any())
     {
-        <p>No records found</p>
+        <p>There are no records to display</p>
     }
 }
 

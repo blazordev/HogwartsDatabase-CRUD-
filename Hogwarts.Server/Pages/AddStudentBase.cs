@@ -1,4 +1,4 @@
-﻿using Hogwarts.Server.Models;
+﻿using Hogwarts.Data.Models;
 using Hogwarts.Server.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Extensions;

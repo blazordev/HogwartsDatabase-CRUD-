@@ -1,6 +1,6 @@
 ﻿using Hogwarts.Api.DbContexts;
 using Hogwarts.Api.Helpers;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
@@ -38,10 +38,7 @@ namespace Hogwarts.Api.Services
         {
             _context.Staff.RemoveRange(staffEntities);
         }
-        public async Task<IEnumerable<Staff>> GetAllStaffAsync()
-        {
-            return await _context.Staff.ToListAsync();
-        }
+        
         public async Task<IEnumerable<Staff>> GetAllStaffAsync(StaffResourceParameters staffResourceParameters)
         {
             var staffToReturn = _context.Staff as IQueryable<Staff>;

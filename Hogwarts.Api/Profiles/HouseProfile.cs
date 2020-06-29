@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Data;
 using System;
 using System.Collections.Generic;

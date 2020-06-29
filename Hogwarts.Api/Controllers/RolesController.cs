@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Hogwarts.Api.Models;
+using Hogwarts.Data.Models;
 using Hogwarts.Api.Services;
 using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;

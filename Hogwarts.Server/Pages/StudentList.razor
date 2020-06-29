@@ -1,5 +1,14 @@
 ﻿@page "/studentList"
-@using Hogwarts.Server.Models
+@using Hogwarts.Data.Models
 @using Hogwarts.Server.Services
+@using BlazorTable
+@inherits StudentListBase
 
-    
+    <Table TableItem="StudentDto" Items="Students" PageSize="15">
+        <Column TableItem="StudentDto" Title="Id" Field="@(x => x.Id)" Sortable="true" Width="10%" />
+        <Column TableItem="StudentDto" Title="First Name" Field="@(x => x.FirstName)" Sortable="true" Width="20%" />
+        <Column TableItem="StudentDto" Title="Last Name" Field="@(x => x.LastName)" Sortable="true" Width="20%" />
+        <Column TableItem="StudentDto" Title="House" Field="@(x => x.HouseName)" Sortable="true" Width="20%"/>
+        
+        <Pager ShowPageNumber="true" ShowTotalCount="true" />
+    </Table>

@@ -9,7 +9,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BlazorTable" Version="1.11.1" />
+    <PackageReference Include="Font.Awesome" Version="5.13.0" />
     <PackageReference Include="Radzen.Blazor" Version="2.10.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Hogwarts.Data\Hogwarts.Data.csproj" />
   </ItemGroup>
 
 </Project>
