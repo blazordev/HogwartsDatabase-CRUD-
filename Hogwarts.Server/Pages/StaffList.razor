@@ -1,22 +1,16 @@
 ﻿@page "/staffList"
 @inherits StaffListBase
 
-@if (FilteredStaff == null || !(FilteredStaff.Count() > 0) && SearchTerm == "")
+@if (FilteredStaff == null || !FilteredStaff.Any() && SearchTerm == "" && selectedRole == 0)
 {
-    <div class="lds-ripple"><div></div><div></div></div>
+    <div class="align-items-center lds-ripple"><div></div><div></div></div>
 }
 else
 {
-    <nav class="nav" style="background-color: #E7ECF0">
-        <a href="AddStaff" class="btn btn-light"><span class="fas fa-plus"></span></a>
-        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control col-md-4" placeholder="Search" type="search">
-        <select class="col-md-4" @onchange="RoleSelected">
-            <option value="-1" disabled selected>(select)</option>
-            @foreach (var role in Roles)
-            {
-                <option value="@role.Id">@role.Name</option>
-            }
-        </select>
+    <nav class="btn-toolbar" style="background-color: #E7ECF0">
+        <a href="AddStaff" class="btn" style="height:30px; margin-bottom:6px"><span class="fas fa-plus"></span> Add</a>
+        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3" placeholder="Search Name" type="search" style="height:30px; margin-top: 3px; margin-bottom:3px">
+
     </nav>
     <table class="table table-bordered table-striped table-sm table-hover table-responsive-sm"
            style="background-color: #E7ECF0">
@@ -27,11 +21,22 @@ else
                 <th class="sort-th small">
                     <span>LAST NAME</span>
                 </th>
-                <th class="small"></th>
+                <th class="small">
+                    <select class="col-md-4" @onchange="RoleSelected">
+                        <option value="0" selected>All</option>
+                        @foreach (var role in Roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+                    </select>
+                    @*<RadzenDropDown AllowClear="true" AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="selectedRoles" Placeholder="Filter..." Multiple="true" Data="@Roles" TextProperty="Name" ValueProperty="Name"
+                                    Change="@(args => Change(args))" Style="margin-top: -5px; margin-bottom: -10px; height:33px; width:300px" />*@
+
+                </th>
             </tr>
         </thead>
         <tbody>
-             
+
             @foreach (var staffItem in FilteredStaff)
             {
                 <tr @onclick="() => StaffDetailsPage(staffItem.Id)">
@@ -41,7 +46,7 @@ else
                     <td class="ml-4">
                         @foreach (var role in staffItem.Roles)
                         {
-                            <span class=" text-capitalize badge" style="background-color:#E7ECF0">@role.Name</span>
+                            <span class="text-capitalize badge" style="background-color:#E7ECF0">@role.Name</span>
                         }
                     </td>
                 </tr>
@@ -52,6 +57,7 @@ else
     {
         <p>There are no records to display</p>
     }
+    
 }
 
 

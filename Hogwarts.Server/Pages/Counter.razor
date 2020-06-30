@@ -1,8 +1,11 @@
 ﻿@page "/counter"
 
 <i class="fa fa-coffee"></i>
-
+<button @onclick="Clicked">Click Me</button>
 
 @code {
-
+    public void Clicked()
+    {
+        Console.WriteLine("Clicked button");
+    }
 }
