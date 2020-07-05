@@ -70,7 +70,7 @@ namespace Hogwarts.Api.Controllers
             if (staff.RoleIds != null)
             {
                 _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.RoleIds);
-
+                await _staffRepo.SaveAsync();
                 if (staff.HouseId != 0)
                 {
                     if (await _staffRepo.IsHeadOfHouseAsync(createdStaffId))
@@ -83,10 +83,10 @@ namespace Hogwarts.Api.Controllers
                     }
                 }
                 if (staff.CourseIds.Any())
-                {                    
+                {
                     if (await _staffRepo.IsTeacherAsync(createdStaffId))
                     {
-                        _staffRepo.AssignCourseCollectionToStaff(staffEntity.Id, staff.CourseIds);
+                        _staffRepo.AssignCourseCollectionToStaff(createdStaffId, staff.CourseIds);
                     }
                     else
                     {

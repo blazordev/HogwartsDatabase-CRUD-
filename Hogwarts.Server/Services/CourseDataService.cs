@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Server.Services
 {
-    public class HouseDataService
+    public class CourseDataService
     {
         private HttpClient _httpClient;
 
-        public HouseDataService(HttpClient httpClient)
+        public CourseDataService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
 
-        public async Task<List<HouseDto>> GetAllHousesAsync()
+        public async Task<List<CourseDto>> GetAllCoursesAsync()
         {
-            return await JsonSerializer.DeserializeAsync<List<HouseDto>>
-               (await _httpClient.GetStreamAsync($"api/houses"),
+            return await JsonSerializer.DeserializeAsync<List<CourseDto>>
+               (await _httpClient.GetStreamAsync($"api/courses"),
                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
     }

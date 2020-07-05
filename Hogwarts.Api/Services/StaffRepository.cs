@@ -122,7 +122,7 @@ namespace Hogwarts.Api.Services
         {
             foreach (var roleId in roleIds)
             {
-                _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
+               _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
             }
         }
         public void AddCourseToStaff(int staffId, int courseId)
@@ -133,7 +133,7 @@ namespace Hogwarts.Api.Services
         {
             foreach (var courseId in courseIds)
             {
-                _context.StaffCourse.Add(
+               _context.StaffCourse.Add(
                     new StaffCourse { CourseId = courseId, StaffId = staffId });
             }
         }
@@ -155,5 +155,6 @@ namespace Hogwarts.Api.Services
         {
             _context.Staff.Remove(staffFromRepo);
         }
+       
     }
 }

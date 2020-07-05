@@ -190,7 +190,7 @@ app {
     }
 
     .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
-        background-color: #ecfafb;
+        background-color: #E5F3Ff;
     }
 
     .lds-ripple {
@@ -231,7 +231,7 @@ app {
     }
 
     th, td {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .sort-th {
@@ -240,6 +240,47 @@ app {
 
     .fa {
         float: right;
+    }
+
+    input, btn, .form-control {
+        height: 30px;
+    }
+
+    .delete-label {
+        background: none;
+        border: none;        
+        padding: 0px;
+        cursor: pointer;
+    }
+
+        .delete-label:hover {
+            color: white;
+        }
+
+    .label {
+        display: inline-block;
+        background-color: #2388af;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 2rem;
+        margin: 2px;
+        font-weight: 500;
+        font-size: smaller;
+    }
+
+    .table, .badge, .btn-toolbar {
+        background-color: #E7ECF0;
+    }
+    .form-control.invalid {
+        border-color: #f7b541;
+        border-width: thin;
+    }
+        
+    .validation-message {
+        width: 100%;
+        margin-top: .25rem;
+        font-size: small;
+        color: #f7b541;
     }
     
 }

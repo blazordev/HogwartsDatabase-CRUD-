@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Hogwarts.Server.Services;
-
+using Hogwarts.Data;
 
 namespace Hogwarts.Server
 {
@@ -44,6 +44,10 @@ namespace Hogwarts.Server
                 client.BaseAddress = new Uri(baseAddress);
             });
             services.AddHttpClient<HouseDataService>(client =>
+            {
+                client.BaseAddress = new Uri(baseAddress);
+            });
+            services.AddHttpClient<CourseDataService>(client =>
             {
                 client.BaseAddress = new Uri(baseAddress);
             });

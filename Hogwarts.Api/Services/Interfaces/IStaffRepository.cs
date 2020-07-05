@@ -33,6 +33,7 @@ namespace Hogwarts.Api.Services.Interfaces
         public Task<bool> IsTeacherAsync(int staffId);
         public Task<bool> IsHeadOfHouseAsync(int staffId);
         public void DeleteStaff(Staff staffFromRepo);
+  
 
     }
 }
