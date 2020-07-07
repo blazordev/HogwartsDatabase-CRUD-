@@ -1,0 +1,59 @@
+﻿@page "/staffList"
+@inherits StaffListBase
+
+@if (FilteredStaff == null || !FilteredStaff.Any() && SearchTerm == "" && selectedRole == 0)
+{
+    <div class="offset-5"><div class="lds-ripple"><div></div><div></div></div></div>
+}
+else
+{
+    <nav class="btn-toolbar" style="background-color: #E7ECF0">
+        <a href="AddStaff" class="btn"><span class="fas fa-plus"></span> Add</a>
+        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3" placeholder="Search Name" type="search" style="height:30px; margin-top: 3px; margin-bottom:3px">
+
+    </nav>
+    <table class="table table-bordered table-striped table-sm table-hover table-responsive-sm">
+        <thead>
+            <tr>
+                <th class="small text-center">ID</th>
+                <th class="small"><span> FIRST NAME</span></th>
+                <th class="small">
+                    <span>LAST NAME</span>
+                </th>
+                <th class="small">
+                    <select class="col-md-4" style="font-size:small" @onchange="RoleSelected">
+                        <option value="0" selected>Roles</option>
+                        @foreach (var role in Roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+                    </select>                    
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var staffItem in FilteredStaff)
+            {
+                <tr @onclick="() => StaffDetailsPage(staffItem.Id)">
+                    <td class="text-sm-center">@staffItem.Id</td>
+                    <td><span class="ml-1">@staffItem.FirstName @staffItem.MiddleNames</span> </td>
+                    <td><span class="ml-1">@staffItem.LastName</span> </td>
+                    <td class="ml-4">
+                        @foreach (var role in staffItem.Roles)
+                        {
+                            <span class="badge">@role.Name</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (!FilteredStaff.Any())
+    {
+        <p>There are no records to display</p>
+    }
+
+}
+
+

@@ -1,12 +1,12 @@
 ﻿using Hogwarts.Data.Models;
-using Hogwarts.Server.Services;
+using Hogwarts.Client.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Server.Pages
+namespace Hogwarts.Client.Pages
 {
     public class StudentListBase : ComponentBase
     {

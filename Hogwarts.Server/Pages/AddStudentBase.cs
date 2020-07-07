@@ -1,5 +1,5 @@
 ﻿using Hogwarts.Data.Models;
-using Hogwarts.Server.Services;
+using Hogwarts.Client.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http.Extensions;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Server.Pages
+namespace Hogwarts.Client.Pages
 {
     public class AddStudentBase : ComponentBase
     {

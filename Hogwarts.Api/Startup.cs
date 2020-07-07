@@ -33,7 +33,13 @@ namespace Hogwarts.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			services.AddSyncfusionBlazor();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("myPolicy", builder =>
+                                  {
+                                      builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                  });
+            });
             services.AddDbContext<HogwartsDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("HogwartsDbConnection")), ServiceLifetime.Transient);
 
@@ -102,7 +108,7 @@ namespace Hogwarts.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseCors("myPolicy");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

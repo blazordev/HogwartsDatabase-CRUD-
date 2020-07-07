@@ -1,0 +1,111 @@
+﻿@page "/AddStaff"
+@inherits AddStaffBase
+
+
+
+<EditForm Model="@Staff" OnValidSubmit="@HandleValidSubmit" class="card col-md-4 offset-4">
+    <DataAnnotationsValidator />
+    <h3 class="text-center">Add Staff</h3>
+    <div class="form">
+        <div class="form-group">
+            <InputText @bind-Value="@Staff.FirstName" placeholder="First Name" type="text" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <InputText @bind-Value="@Staff.MiddleNames" placeholder="(Middle Names)" type="text" class="form-control"></InputText>
+        </div>
+        <div class="form-group">
+            <InputText @bind-Value="@Staff.LastName" placeholder="Last Name" type="text" class="form-control"></InputText>
+            <div class="container" style="margin-top:20px">
+                <div class="row">
+                    <div class="col-form-label-sm">Select Roles</div>
+                    <select class="form-control form-control-sm" style="margin-bottom:10px" multiple>
+                        @foreach (var role in Roles)
+                        {
+                            <option @onclick="@(() => RoleSelected(role.Id))">@role.Name</option>
+                        }
+                    </select>
+                    <div class="form-group">
+                        @if (Staff.RoleIds.Any())
+                        {
+                            @if (Staff.RoleIds.Count == 1)
+                            {
+                                <div class="col-form-label-sm">Role</div>
+                            }
+                            else
+                            {
+                                <div class="col-form-label-sm">Roles</div>
+                            }
+
+                            @foreach (var id in Staff.RoleIds)
+                            {
+                                <span class="badge" style="padding-top:5px">
+                                    @GetRole(id).Name
+                                    <button class="align-self-center delete-label" type="button" @onclick="() => RemoveRole(id)"><i style="height:9px" class="fa fa-times fa-sm float-right"></i></button>
+                                </span>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            @if (Staff.RoleIds.Any(r => r == 6))//head of house
+            {
+                <div class="form-group">
+                    <select class="form-control form-control-sm" style="margin-top:10px;">
+                        <option value="-1" selected disabled @onchange="SelectHouse">House</option>
+                        @foreach (var house in Houses)
+                        {
+                            <option value="@house.Id">@house.Name</option>
+                        }
+                    </select>
+                </div>
+            }
+            @if (Staff.RoleIds.Any(r => r == 3))//teacher
+            {
+                <div class="form-group">
+                    <div class="col-form-label-sm">Select Courses</div>
+                    <select class="form-control form-control-sm" multiple>
+                        @foreach (var course in Courses)
+                        {
+                            <option @onclick="@(() => CourseSelected(course.Id))">@course.Name</option>
+                        }
+                    </select>
+                </div>
+                @if (Staff.CourseIds.Any())
+                {
+                    <div class="form-group">
+                        <table class="table table-bordered table-striped table-sm table-hover table-responsive-sm">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @(Staff.CourseIds.Count() == 1 ? "Course" : "Courses")
+                                    </th>
+                                    <th>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var courseId in Staff.CourseIds)
+                                {
+                                    <tr>
+                                        <td>
+                                            @GetCourse(courseId).Name
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm align-content-center" type="button" @onclick="()=> RemoveCourse(courseId)">
+                                                <i class="fas fa-trash fa-xs"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            }
+            <div class="form-group">
+                <button name="submit" type="submit" class="btn btn-outline-primary btn-block">Submit</button>
+            </div>
+        </div>
+        <ValidationSummary/>
+    </div>
+</EditForm>

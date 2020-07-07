@@ -9,10 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Hogwarts.Server.Services;
+using Hogwarts.Client.Services;
 using Hogwarts.Data;
 
-namespace Hogwarts.Server
+namespace Hogwarts.Client
 {
     public class Startup
     {

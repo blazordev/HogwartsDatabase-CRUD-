@@ -2,8 +2,6 @@
 using Hogwarts.Data.Models;
 using Hogwarts.Client.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Http.Extensions;
-using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Linq;

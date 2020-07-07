@@ -2,7 +2,6 @@
 using Hogwarts.Data.Models;
 using Hogwarts.Client.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
