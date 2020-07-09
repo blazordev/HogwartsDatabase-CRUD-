@@ -283,4 +283,9 @@ app {
         font-size: small;
         color: #f7b541;
     }
+    #course-table > tbody > tr > td {
+        height: 20px;
+        padding: 0px;
+        border-top: 0px;
+    }
 }

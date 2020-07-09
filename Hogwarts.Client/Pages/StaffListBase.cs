@@ -100,7 +100,6 @@ namespace Hogwarts.Client.Pages
         }
         public void StaffDetailsPage(int staffId)
         {
-            RowBackgroundColor = "floralwhite";
             NavigationManager.NavigateTo($"staffDetails/{staffId}");
         }
         public int selectedRole { get; set; }
