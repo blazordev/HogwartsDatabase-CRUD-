@@ -17,9 +17,9 @@ namespace Hogwarts.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<StaffDto>> GetAllStaffAsync()
+        public async Task<List<StaffDto>> GetAllStaffAsync()
         {
-            return await JsonSerializer.DeserializeAsync<IEnumerable<StaffDto>>
+            return await JsonSerializer.DeserializeAsync<List<StaffDto>>
                 (await _httpClient.GetStreamAsync($"api/staff"), 
                 new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }

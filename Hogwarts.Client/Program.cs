@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Hogwarts.Client.Services;
+using BlazorStrap;
 
 namespace Hogwarts.Client
 {
@@ -17,7 +18,7 @@ namespace Hogwarts.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-
+            builder.Services.AddBootstrapCss();
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
             builder.Services.AddScoped<StaffDataService>();
             builder.Services.AddScoped<StudentDataService>();

@@ -1,16 +1,23 @@
 ﻿@page "/counter"
+<h1>@currentCount</h1>
+@for (int i = 0; i < 5; i++)
+{
+    var a = i;
+    <p><button class="btn btn-primary" @onclick="() => test(i)">Set counter to @a</button></p>
+}
 
-<h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+@functions {
+    int currentCount = 0;
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
-@code {
-    private int currentCount = 0;
-
-    private void IncrementCount()
+    protected void IncrementCount()
     {
         currentCount++;
+
+    }
+
+    void test(int i)
+    {
+        currentCount = i;
     }
 }

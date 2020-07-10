@@ -8,13 +8,36 @@
 else
 {
     <nav class="btn-toolbar" style="background-color: #E7ECF0">
-        <a href="AddStaff" class="btn"><span class="fas fa-plus"></span> Add</a>
+        <div style="padding:2px"><BSButton><span class="fas fa-plus fa-xs"></span> New</BSButton></div>
+        <div style="padding:2px"><BSButton><span class="fas fa-edit fa-xs"></span> Edit</BSButton></div>
+        <div style="padding:2px">
+            <BSButton><span class="fas fa-trash-alt fa-xs"></span> Delete</BSButton>
+        </div>
         <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3" placeholder="Search Name" type="search" style="height:30px; margin-top: 3px; margin-bottom:3px">
-
+        <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+            <BSDropdown>
+                <BSButtonGroup>
+                    <BSButton>Export</BSButton>
+                    <BSDropdownToggle IsSplit="true" />
+                    <BSDropdownMenu>
+                        <BSDropdownItem Href="javascript:void(0);"><i class="fas fa-file-excel"> Excel</i></BSDropdownItem>
+                        <BSDropdownItem Href="javascript:void(0);"><i class="fas fa-pdf"></i> PDF</BSDropdownItem>
+                    </BSDropdownMenu>
+                </BSButtonGroup>
+            </BSDropdown>
+        </div>
     </nav>
     <table class="table table-bordered table-striped table-sm table-hover table-responsive-sm">
         <thead>
             <tr>
+                <th style="padding-bottom:5px; padding-right:0px;padding-left:0px">
+                    <div class="text-center" style="margin:-10px; padding:4px; padding-bottom:10px">
+                        <div class="custom-checkbox" style="width:inherit; margin-left:33px; margin-right:0px">
+                            <input type="checkbox" class="custom-control-input" id="customCheck" @onchange="ToggleAllChecked">
+                            <label class="custom-control-label" for="customCheck"></label>
+                        </div>
+                    </div>
+                </th>
                 <th class="small text-center">ID</th>
                 <th class="small"><span> FIRST NAME</span></th>
                 <th class="small">
@@ -33,14 +56,23 @@ else
         </thead>
         <tbody>
 
-            @foreach (var staffItem in FilteredStaff)
+            @for (var i = 0; i < FilteredStaff.Count; i++)
             {
-                <tr @onclick="() => StaffDetailsPage(staffItem.Id)">
-                    <td class="text-sm-center">@staffItem.Id</td>
-                    <td><span class="ml-1">@staffItem.FirstName @staffItem.MiddleNames</span> </td>
-                    <td><span class="ml-1">@staffItem.LastName</span> </td>
-                    <td class="ml-4">
-                        @foreach (var role in staffItem.Roles)
+                var index = i;
+                <tr @key="FilteredStaff[index]" style="padding-bottom:5px; padding-right:0px;padding-left:0px">
+                    <td>
+                        <div class="text-center" style="margin:-10px; margin-top:-5px; padding:4px; padding-bottom:10px">
+                            <div class="custom-checkbox" style="width:inherit; margin-left:-15px; margin-right:-47px">
+                                <input type="checkbox" class="custom-control-input" id="customCheck_@index" checked="@FilteredStaff[index].Checked" @bind-value="FilteredStaff[index].Checked">
+                                <label class="custom-control-label" for="customCheck_@index"></label>
+                            </div>
+                        </div>
+                    </td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="text-sm-center">@FilteredStaff[i].Id</td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].FirstName @FilteredStaff[i].MiddleNames</span> </td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].LastName</span> </td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="ml-4">
+                        @foreach (var role in FilteredStaff[i].Roles)
                         {
                             <span class="badge">@role.Name</span>
                         }
@@ -53,7 +85,6 @@ else
     {
         <p>There are no records to display</p>
     }
-
 }
 
 

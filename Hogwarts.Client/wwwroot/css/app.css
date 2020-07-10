@@ -268,8 +268,10 @@ app {
         font-size: smaller;
     }
 
-    .table, .badge, .btn-toolbar {
+    .table, .badge, .btn-toolbar, .btn-primary {
         background-color: #E7ECF0;
+        border: #E7ECF0;
+        color: black;
     }
 
     .form-control.invalid {
@@ -287,5 +289,20 @@ app {
         height: 20px;
         padding: 0px;
         border-top: 0px;
+    }
+    .checkRow {
+        padding-bottom:5px; 
+        padding-right:0px;
+        padding-left:0px;
+    }
+    .checkContainer {
+        margin:-10px; 
+        padding:4px; 
+        padding-bottom:10px;
+    }
+    .tableCheckbox {
+        width:inherit; 
+        margin-left:33px;
+        margin-right:0px;
     }
 }
