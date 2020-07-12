@@ -182,7 +182,7 @@ app {
     }
 
     .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
-        background-color: #F7F8FA;
+        background-color: #f8f9fb;
     }
 
     .table-striped > tbody > tr:nth-child(even) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
@@ -304,5 +304,8 @@ app {
         width:inherit; 
         margin-left:33px;
         margin-right:0px;
+    }
+    .btn-toolbar {
+        background-color: #E7ECF0;
     }
 }
