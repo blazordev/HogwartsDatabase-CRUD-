@@ -2,6 +2,7 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #fafbff;
 }
 
 a, .btn-link {
@@ -41,18 +42,16 @@ app {
             margin-left: 1.5rem;
         }
 
-.main .top-row a:first-child {
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+        .main .top-row a:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
 }
 
-    .sidebar .top-row {
-        background-color: rgba(0,0,0,0.4);
-    }
+
 
     .sidebar .navbar-brand {
         font-size: 1.1rem;
@@ -129,12 +128,12 @@ app {
     z-index: 1000;
 }
 
-#blazor-error-ui .dismiss {
-    cursor: pointer;
-    position: absolute;
-    right: 0.75rem;
-    top: 0.5rem;
-}
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
@@ -285,27 +284,156 @@ app {
         font-size: small;
         color: #f7b541;
     }
+
     #course-table > tbody > tr > td {
         height: 20px;
         padding: 0px;
         border-top: 0px;
     }
-    .checkRow {
-        padding-bottom:5px; 
-        padding-right:0px;
-        padding-left:0px;
+}
+
+.checkRow {
+    padding-bottom: 5px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.checkContainer {
+    margin: -10px !important;
+    padding: 4px !important;
+    padding-bottom: 10px !important;
+}
+
+.tableCheckbox {
+    width: inherit;
+    margin-left: 33px !important;
+    margin-right: 0px !important;
+}
+
+.btn {
+    padding-right: 4px !important;
+}
+
+.inline-form {
+    height: 30px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.table-checkbox-container {
+    margin: -10px;
+    margin-top: -5px;
+    padding: 4px;
+    padding-bottom: 10px;
+}
+.custom-checkbox-container {
+    width:inherit; 
+    margin-left:-15px; 
+    margin-right:-47px;
+}
+.btn:focus {
+    outline: none;
+    box-shadow: none;
+}
+.new {
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+    .new span {
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        transition: 0.5s;
     }
-    .checkContainer {
-        margin:-10px; 
-        padding:4px; 
-        padding-bottom:10px;
+
+        .new span:after {
+            content: 'New';
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            right: -20px;
+            transition: 0.5s;
+        }
+
+    .new:hover span {
+        padding-right: 32px;
     }
-    .tableCheckbox {
-        width:inherit; 
-        margin-left:33px;
-        margin-right:0px;
+
+        .new:hover span:after {
+            opacity: 1;
+            right: 0;
+        }
+.edit {
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.edit span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+    .edit span:after {
+        content: 'Edit';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
     }
-    .btn-toolbar {
-        background-color: #E7ECF0;
+
+.edit:hover span {
+    padding-right: 29px;
+}
+
+    .edit:hover span:after {
+        opacity: 1;
+        right: 0;
     }
+.delete {
+    text-align: center;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.delete span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+    .delete span:after {
+        content: 'Delete';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+
+.delete:hover span {
+    padding-right: 45px;
+}
+
+    .delete:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
+.card {
+    border: none;
+}
+.table {
+    background-color: white;
+}
+.card {   
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
 }
