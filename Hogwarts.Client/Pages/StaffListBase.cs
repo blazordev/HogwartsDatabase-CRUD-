@@ -135,6 +135,10 @@ namespace Hogwarts.Client.Pages
                 }
             }
         }
+        public void AddPage()
+        {
+            NavigationManager.NavigateTo("addStaff");
+        }
 
 
 

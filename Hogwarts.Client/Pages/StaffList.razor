@@ -7,73 +7,70 @@
 }
 else
 {
-    <div class="card" style="padding:10px">
-        <div class="custom-control-inline">
-            <button class="btn btn-sm new"><span><i class="fas fa-plus"> </i></span></button>
-            <button class="btn btn-sm edit"><span><i class="fas fa-edit"></i></span></button>
-            <button class="btn btn-sm delete"><span><i class="fas fa-trash"></i></span></button>
-            <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Search Name" type="text">
-            <select class="input-group-sm col-md-3 form-control inline-form" @onchange="RoleSelected">
-                <option value="0" selected>Roles</option>
-                @foreach (var role in Roles)
-                {
-                    <option value="@role.Id">@role.Name</option>
-                }
-            </select>
-        </div>
-        <table class="table table-striped table-bordered table-sm table-hover table-responsive-sm">
-            <thead>
-                <tr>
-                    <th class="checkRow">
-                        <div class="text-center checkContainer">
-                            <div class="custom-checkbox tableCheckbox">
-                                <input type="checkbox" class="custom-control-input" id="customCheck" @onchange="ToggleAllChecked">
-                                <label class="custom-control-label" for="customCheck"></label>
-                            </div>
-                        </div>
-                    </th>
-                    <th class="small text-center">ID</th>
-                    <th class="small"><span> FIRST NAME</span></th>
-                    <th class="small">
-                        <span>LAST NAME</span>
-                    </th>
-                    <th class="small">
-
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-
-                @for (var i = 0; i < FilteredStaff.Count; i++)
-                {
-                    var index = i;
-                    <tr @key="FilteredStaff[index]" class="checkRow">
-                        <td>
-                            <div class="text-center table-checkbox-container">
-                                <div class="custom-checkbox custom-checkbox-container">
-                                    <input type="checkbox" class="custom-control-input" id="customCheck_@index" checked="@FilteredStaff[index].Checked" @bind-value="FilteredStaff[index].Checked">
-                                    <label class="custom-control-label" for="customCheck_@index"></label>
-                                </div>
-                            </div>
-                        </td>
-                        <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="text-sm-center">@FilteredStaff[i].Id</td>
-                        <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].FirstName @FilteredStaff[i].MiddleNames</span> </td>
-                        <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].LastName</span> </td>
-                        <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="ml-4">
-                            @foreach (var role in FilteredStaff[i].Roles)
-                            {
-                                <span class="badge">@role.Name</span>
-                            }
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<div class="card" style="padding:10px">
+    <div class="custom-control-inline">
+        <button @onclick="AddPage" class="btn borderLeftRight btn-sm"><span><i class="fas fa-plus"></i></span> Add</button>
+        <button class="btn borderLeftRight btn-sm"><span><i class="fas fa-edit"></i></span> Edit</button>
+        <button class="btn borderLeftRight btn-sm"><span><i class="fas fa-trash"></i></span> Delete</button>
+        <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Search Name" type="text">
+        <select class="input-group-sm col-md-3 form-control inline-form" @onchange="RoleSelected">
+            <option value="0" selected>Roles</option>
+            @foreach (var role in Roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
     </div>
+    <table class="table table-striped table-bordered table-sm table-hover table-responsive-sm">
+        <thead>
+            <tr>
+                <th class="table-checkbox-row">
+                    <label class="table-checkbox-label">
+                        <input type="checkbox" @onchange="ToggleAllChecked" />
+                        <span class="table-checkbox-span"></span>
+                    </label>
+                </th>
+                <th class="small text-center">ID</th>
+                <th class="small"><span> FIRST NAME</span></th>
+                <th class="small">
+                    <span>LAST NAME</span>
+                </th>
+                <th class="small">
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @for (var i = 0; i < FilteredStaff.Count; i++)
+            {
+                var index = i;
+                <tr @key="FilteredStaff[index]">
+                    <td class="table-checkbox-row">
+
+                        <label class="table-checkbox-label">
+                            <input type="checkbox" @bind-value="FilteredStaff[index].Checked" checked="@FilteredStaff[index].Checked" />
+                            <span class="table-checkbox-span"></span>
+                        </label>
+
+                    </td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="text-sm-center">@FilteredStaff[i].Id</td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].FirstName @FilteredStaff[i].MiddleNames</span> </td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].LastName</span> </td>
+                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="ml-4">
+                        @foreach (var role in FilteredStaff[i].Roles)
+                        {
+                            <span class="badge">@role.Name</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
     @if (!FilteredStaff.Any())
     {
         <p>There are no records to display</p>
     }
+</div>
 }
 
 

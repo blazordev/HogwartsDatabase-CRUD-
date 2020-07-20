@@ -4,8 +4,7 @@
 
 
 <EditForm Model="@Staff" OnValidSubmit="@HandleValidSubmit" class="card col-md-4 offset-4">
-    <DataAnnotationsValidator />
-    <h3 class="text-center">Add Staff</h3>
+    <DataAnnotationsValidator />    
     <div class="form">
         <div class="form-group">
             <InputText @bind-Value="@Staff.FirstName" placeholder="First Name" type="text" class="form-control"></InputText>
@@ -108,6 +107,6 @@
                 <button name="submit" type="submit" class="btn btn-outline-primary btn-block">Submit</button>
             </div>
         </div>
-        
+
     </div>
 </EditForm>
