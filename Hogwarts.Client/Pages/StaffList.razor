@@ -1,7 +1,7 @@
 ﻿@page "/staffList"
-@inherits StaffListBase
 
-@if (FilteredStaff == null || !FilteredStaff.Any() && SearchTerm == "" && selectedRole == 0)
+
+@if (Staff == null)
 {
     <div class="offset-5"><div class="lds-ripple"><div></div><div></div></div></div>
 }
@@ -40,29 +40,10 @@ else
             </tr>
         </thead>
         <tbody>
-
             @for (var i = 0; i < FilteredStaff.Count; i++)
             {
                 var index = i;
-                <tr @key="FilteredStaff[index]">
-                    <td class="table-checkbox-row">
-
-                        <label class="table-checkbox-label">
-                            <input type="checkbox" @bind-value="FilteredStaff[index].Checked" checked="@FilteredStaff[index].Checked" />
-                            <span class="table-checkbox-span"></span>
-                        </label>
-
-                    </td>
-                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="text-sm-center">@FilteredStaff[i].Id</td>
-                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].FirstName @FilteredStaff[i].MiddleNames</span> </td>
-                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)"><span class="ml-1">@FilteredStaff[i].LastName</span> </td>
-                    <td @onclick="() => StaffDetailsPage(FilteredStaff[index].Id)" class="ml-4">
-                        @foreach (var role in FilteredStaff[i].Roles)
-                        {
-                            <span class="badge">@role.Name</span>
-                        }
-                    </td>
-                </tr>
+                <StaffRow Staff="FilteredStaff[index]"></StaffRow>
             }
         </tbody>
     </table>

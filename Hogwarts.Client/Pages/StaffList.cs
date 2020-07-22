@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Client.Pages
 {
-    public class StaffListBase : ComponentBase
+    public partial class StaffList
     {
         [Inject] StaffDataService StaffDataService { get; set; }
         [Inject] RolesDataService RoleDataService { get; set; }
@@ -20,12 +20,13 @@ namespace Hogwarts.Client.Pages
         public List<StaffDto> StaffToManipulate { get; set; } = new List<StaffDto>();
         public string RowBackgroundColor { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
-        public IEnumerable<StaffDto> Staff { get; set; } = new List<StaffDto>();
+        public List<StaffDto> Staff { get; set; } 
         public bool AllAreChecked { get; set; } = false;
 
         public bool Show { get; set; }
+       
         [Parameter] public string SearchTerm { get; set; } = "";
-
+         
         private IEnumerable<StaffDto> _filteredStaff;
         public List<StaffDto> FilteredStaff
         {
@@ -36,67 +37,21 @@ namespace Hogwarts.Client.Pages
         }
 
         public List<StaffDto> PreformFilter()
-        {
-            //below code gives null reference exceptionon on middle name which is not required
-            //IEnumerable<StaffDto> list = new List<StaffDto>();
-            //list = Staff.Where(s =>
-            //s.FirstName.ToLower().Contains(SearchTerm.ToLower())
-            //|| s.MiddleNames.ToLower().Contains(SearchTerm.ToLower())
-            //|| s.LastName.ToLower().Contains(SearchTerm.ToLower()));
-            //list = list.Where(s => s.Roles.Any(r => r.Id == selectedRole));
-            //return list;
-            //Instead, doing it manually
-            List<StaffDto> list = new List<StaffDto>();
-            foreach (var staffItem in Staff)
-            {
-                if (staffItem.FirstName != null)
-                {
-                    if (staffItem.FirstName.ToLower().Contains(SearchTerm.ToLower()))
-                    {
-                        list.Add(staffItem);
-                    }
-                }
-                if (staffItem.MiddleNames != null)
-                {
-                    if (staffItem.MiddleNames.ToLower().Contains(SearchTerm.ToLower()))
-                    {
-                        if (!list.Contains(staffItem))
-                        {
-                            list.Add(staffItem);
-                        }
-                    }
-                }
-                if (staffItem.LastName != null)
-                {
-                    if (staffItem.LastName.ToLower().Contains(SearchTerm.ToLower()))
-                    {
-                        if (!list.Contains(staffItem))
-                        {
-                            list.Add(staffItem);
-                        }
-                    }
-                }
-            }
-            List<StaffDto> listWithRole = new List<StaffDto>();
-            if (selectedRole != 0)
-            {
-                foreach (var item in list)
-                {
-                    foreach (var role in item.Roles)
-                    {
-                        if (role.Id == selectedRole)
-                        {
-                            listWithRole.Add(item);
-                        }
-                    }
-                }
-                return listWithRole.ToList();
-            }
-            return list.ToList();
-        }
+        {            
+            IEnumerable<StaffDto> staffList = new List<StaffDto>();
+            staffList = Staff.Where(s =>
+            s.FirstName.ToLower().Contains(SearchTerm.ToLower())
+            || s.MiddleNames != null && s.MiddleNames.ToLower().Contains(SearchTerm.ToLower())
+            || s.LastName.ToLower().Contains(SearchTerm.ToLower()));
 
-        protected override async Task OnInitializedAsync()
+            //if a role is selected, filter the list further
+            staffList = selectedRole != 0 ? staffList.Where(s => s.Roles.Any(r => r.Id == selectedRole)) : staffList;
+            return staffList.ToList();
+        }
+        protected async override Task OnInitializedAsync()
         {
+            
+            Staff = new List<StaffDto>();
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
         }
@@ -115,7 +70,7 @@ namespace Hogwarts.Client.Pages
         }
         public void ToggleAllChecked()
         {
-            if(!AllAreChecked)
+            if (!AllAreChecked)
             {
                 FilteredStaff.ConvertAll(s => s.Checked = true);
                 AllAreChecked = !AllAreChecked;

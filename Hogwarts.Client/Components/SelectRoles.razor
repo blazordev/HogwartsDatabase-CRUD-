@@ -1,0 +1,9 @@
+﻿<div class="col-form-label-sm">Select Roles</div>
+<select class="form-control form-control-sm" style="margin-bottom:10px" multiple>
+    @foreach (var role in Roles)
+    {
+        <option @onclick="@(()=> AddRole.InvokeAsync(role))">@role.Name</option>
+    }
+</select>
+
+

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Client.Pages
 {
-    public class AddStaffBase : ComponentBase
+    public partial class AddStaff 
     {
         [Parameter] public StaffForCreationDto Staff { get; set; } = new StaffForCreationDto();
         public List<RoleDto> Roles { get; set; } = new List<RoleDto>();
@@ -30,15 +30,11 @@ namespace Hogwarts.Client.Pages
             Houses = await HouseDataService.GetAllHousesAsync();
             Courses = await CourseDataService.GetAllCoursesAsync();
         }
-        public void RoleSelected(int id)
+        public void AddRole(RoleDto role)
         {
-            AddRole(id);
-        }
-        public void AddRole(int roleId)
-        {
-            if (Staff.RoleIds.Find(r => r == roleId) == 0)
+            if (Staff.RoleIds.Find(r => r == role.Id) == 0)
             {
-                Staff.RoleIds.Add(roleId);
+                Staff.RoleIds.Add(role.Id);
             }
         }
         public RoleDto GetRole(int id)

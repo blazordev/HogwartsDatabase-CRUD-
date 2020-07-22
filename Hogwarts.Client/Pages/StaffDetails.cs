@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Client.Pages
 {
-    public class StaffDetailsBase : ComponentBase
+    public partial class StaffDetails
     {
         public StaffDto Staff { get; set; } = new StaffDto();
 

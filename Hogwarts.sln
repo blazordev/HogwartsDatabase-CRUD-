@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hogwarts.Api", "Hogwarts.Ap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hogwarts.Data", "Hogwarts.Data\Hogwarts.Data.csproj", "{1F60E4CF-625D-4EC7-B386-0696A830D5CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hogwarts.Client", "Hogwarts.Client\Hogwarts.Client.csproj", "{12063B50-2E15-47F0-AD38-9E8BE4389AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hogwarts.Client", "Hogwarts.Client\Hogwarts.Client.csproj", "{12063B50-2E15-47F0-AD38-9E8BE4389AA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

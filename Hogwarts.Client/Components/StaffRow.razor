@@ -1,0 +1,18 @@
+﻿<tr @key="Staff.Id">
+    <td class="table-checkbox-row">
+
+        <label class="table-checkbox-label">
+            <input type="checkbox" @bind-value="Staff.Checked" checked="@Staff.Checked" />
+            <span class="table-checkbox-span"></span>
+        </label>
+    </td>
+    <td class="text-sm-center">@Staff.Id</td>
+    <td><span class="ml-1">@Staff.FirstName @Staff.MiddleNames</span> </td>
+    <td><span class="ml-1">@Staff.LastName</span> </td>
+    <td class="ml-4">
+        @foreach (var role in Staff.Roles)
+        {
+            <span class="badge">@role.Name</span>
+        }
+    </td>
+</tr>
