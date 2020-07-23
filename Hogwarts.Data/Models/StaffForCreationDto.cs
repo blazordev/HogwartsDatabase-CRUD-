@@ -12,7 +12,7 @@ namespace Hogwarts.Data.Models
         [Required] public string FirstName { get; set; }
         public string MiddleNames { get; set; }
         [Required] public string LastName { get; set; }
-        public List<int> RoleIds { get; set; } = new List<int>();
+        public List<RoleDto> Roles { get; set; } = new List<RoleDto>();
         public int HouseId { get; set; }
         public List<int> CourseIds { get; set; } = new List<int>();
 

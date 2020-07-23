@@ -118,11 +118,11 @@ namespace Hogwarts.Api.Services
         {
             _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
         }
-        public void AssignRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds)
+        public void AssignRoleCollectionToStaff(int staffId, IEnumerable<RoleDto> roles)
         {
-            foreach (var roleId in roleIds)
+            foreach (var role in roles)
             {
-               _context.StaffRoles.Add(new StaffRole { RoleId = roleId, StaffId = staffId });
+               _context.StaffRoles.Add(new StaffRole { RoleId = role.Id, StaffId = staffId });
             }
         }
         public void AddCourseToStaff(int staffId, int courseId)

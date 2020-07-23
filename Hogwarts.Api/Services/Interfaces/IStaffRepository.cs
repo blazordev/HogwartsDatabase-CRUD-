@@ -1,6 +1,7 @@
 ﻿using Hogwarts.Api.Helpers;
 using Hogwarts.Api.ResourceParameters;
 using Hogwarts.Data;
+using Hogwarts.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,14 @@ namespace Hogwarts.Api.Services.Interfaces
         public void UpdateStaff(Staff staff);
         public Task<bool> SaveAsync();
         public void AddRoleToStaff(int staffId, int roleId);
-        public void AssignRoleCollectionToStaff(int staffId, IEnumerable<int> roleIds);
+        public void AssignRoleCollectionToStaff(int staffId, IEnumerable<RoleDto> roles);
         public void AddCourseToStaff(int staffId, int courseId);
         public void AssignCourseCollectionToStaff(int staffId, IEnumerable<int> courseIds);
         public void AddHouseToStaff(int staffId, int houseId);
         public Task<bool> IsTeacherAsync(int staffId);
         public Task<bool> IsHeadOfHouseAsync(int staffId);
         public void DeleteStaff(Staff staffFromRepo);
-  
+
 
     }
 }

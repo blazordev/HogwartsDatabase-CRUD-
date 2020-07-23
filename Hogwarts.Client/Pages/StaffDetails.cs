@@ -18,7 +18,7 @@ namespace Hogwarts.Client.Pages
         [Inject]
         public StaffDataService Service { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected async override Task OnInitializedAsync()
         {
             Staff = await Service.GetStaffByIdAsync(int.Parse(StaffId));
         }

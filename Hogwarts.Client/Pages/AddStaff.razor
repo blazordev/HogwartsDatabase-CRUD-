@@ -4,7 +4,7 @@
 
 
 <EditForm Model="@Staff" OnValidSubmit="@HandleValidSubmit" class="card col-md-4 offset-4">
-    <DataAnnotationsValidator />    
+    <DataAnnotationsValidator />
     <div class="form">
         <div class="form-group">
             <InputText @bind-Value="@Staff.FirstName" placeholder="First Name" type="text" class="form-control"></InputText>
@@ -16,31 +16,26 @@
             <InputText @bind-Value="@Staff.LastName" placeholder="Last Name" type="text" class="form-control"></InputText>
             <div class="container" style="margin-top:20px">
                 <div class="row">
-                    <SelectRoles AddRole="AddRole"></SelectRoles>                    
+                    <SelectRoles AddRole="AddRole"></SelectRoles>
                     <div class="form-group">
-                        @if (Staff.RoleIds.Any())
+                        @if (Staff.Roles.Any())
                         {
-                            @if (Staff.RoleIds.Count == 1)
+                            @if (Staff.Roles.Count == 1)
                             {
                                 <div class="col-form-label-sm">Role</div>
                             }
                             else
                             {
                                 <div class="col-form-label-sm">Roles</div>
-                            }
-
-                            @foreach (var id in Staff.RoleIds)
+                            }@foreach (var role in Staff.Roles)
                             {
-                                <span class="badge" style="padding-top:5px">
-                                    @GetRole(id).Name
-                                    <button class="align-self-center delete-label" type="button" @onclick="() => RemoveRole(id)"><i style="height:9px" class="fa fa-times fa-sm float-right"></i></button>
-                                </span>
+                                <RolesOutput Role="role" RemoveRole="RemoveRole"></RolesOutput>
                             }
                         }
                     </div>
                 </div>
             </div>
-            @if (Staff.RoleIds.Any(r => r == 6))//head of house
+            @if (Staff.Roles.Any(r => r.Id == 6))//head of house
             {
                 <div class="form-group">
                     <select class="form-control form-control-sm" style="margin-top:10px;">
@@ -52,7 +47,7 @@
                     </select>
                 </div>
             }
-            @if (Staff.RoleIds.Any(r => r == 3))//teacher
+            @if (Staff.Roles.Any(r => r.Id == 3))//teacher
             {
                 <div class="form-group">
                     <div class="col-form-label-sm">Select Courses</div>

@@ -67,9 +67,9 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.AddStaff(staffEntity);
             await _staffRepo.SaveAsync();
             var createdStaffId = staffEntity.Id;
-            if (staff.RoleIds != null)
+            if (staff.Roles != null)
             {
-                _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.RoleIds);
+                _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.Roles);
                 await _staffRepo.SaveAsync();
                 if (staff.HouseId != 0)
                 {
