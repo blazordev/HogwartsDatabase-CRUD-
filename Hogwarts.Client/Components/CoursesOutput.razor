@@ -1,0 +1,33 @@
+﻿@if (Staff.Courses.Any())
+{
+    <div class="form-group">
+        <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>
+                        @(Staff.Courses.Count() == 1 ? "Course" : "Courses")
+                    </th>
+                    <th>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var course in Staff.Courses)
+                {
+                    <tr style="height:7px">
+                        <td>
+                            @course.Name
+                        </td>
+                        <td>
+                            <div class="text-center">
+                                <a class="btn btn-sm align-self-sm-center" style="padding:0px; margin:0px; height:inherit" type="button" @onclick="()=> RemoveCourse(course.Id)">
+                                    <i style="color:darkgray" class="fas fa-trash fa-xs"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

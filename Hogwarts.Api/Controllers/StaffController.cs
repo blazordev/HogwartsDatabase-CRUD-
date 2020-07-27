@@ -62,31 +62,36 @@ namespace Hogwarts.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<StaffDto>> CreateStaff(StaffForCreationDto staff)
         {
+            if (staff.Roles.Any(r => r.Id == 6) && staff.House == null)//House head but no house selected
+            {
+                return BadRequest("House Head must specify which house");
+            }
             var staffEntity = _mapper.Map<Staff>(staff);
             //first Add staff
             _staffRepo.AddStaff(staffEntity);
             await _staffRepo.SaveAsync();
             var createdStaffId = staffEntity.Id;
+            
             if (staff.Roles != null)
             {
                 _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.Roles);
                 await _staffRepo.SaveAsync();
-                if (staff.HouseId != 0)
+                if (staff.House != null)
                 {
                     if (await _staffRepo.IsHeadOfHouseAsync(createdStaffId))
                     {
-                        _staffRepo.AddHouseToStaff(createdStaffId, staff.HouseId);
+                        _staffRepo.AddHouseToStaff(createdStaffId, staff.House.Id);
                     }
                     else
                     {
                         return BadRequest("StaffMember must have Role HeadOfHouse to assign House");
                     }
                 }
-                if (staff.CourseIds.Any())
+                if (staff.Courses.Any())
                 {
                     if (await _staffRepo.IsTeacherAsync(createdStaffId))
                     {
-                        _staffRepo.AssignCourseCollectionToStaff(createdStaffId, staff.CourseIds);
+                        _staffRepo.AssignCourseCollectionToStaff(createdStaffId, staff.Courses.Select(c => c.Id));
                     }
                     else
                     {

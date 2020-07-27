@@ -40,7 +40,7 @@ namespace Hogwarts.Api.Controllers
             return Ok(_mapper.Map<HouseDto>(houseToReturn));
         }
 
-        //Get staff who are Headof particular house
+        //Get staff who are Head of particular house
         [HttpGet("houses/{houseId}")]
         public ActionResult<IEnumerable<StaffDto>> GetHeadsOfHouse(int houseId)
         {
@@ -52,7 +52,7 @@ namespace Hogwarts.Api.Controllers
             return Ok(_mapper.Map<IEnumerable<StaffDto>>(staffToReturn));
         }
 
-        //POST api/staffId/houseId
+        
 
         [HttpPost("{staffId}/{houseId}")]
         public async Task<ActionResult<StaffDto>> AssignHouseToStaff(int staffId, int houseId)

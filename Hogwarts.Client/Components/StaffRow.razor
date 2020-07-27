@@ -15,4 +15,14 @@
             <span class="badge">@role.Name</span>
         }
     </td>
+    <td class="text-center">
+        @if (House != null)
+        {
+            <i class="fa fa-check" style="color:lightgreen"></i>
+        }
+        else
+        {
+            <i class="fa fa-times" style="color:red"></i>
+        }
+    </td>
 </tr>

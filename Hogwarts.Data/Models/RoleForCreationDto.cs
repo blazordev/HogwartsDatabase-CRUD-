@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Data.Models
 {
-    [NameMustBeDifferentFromDescriptionAttribute]
+    [NameMustBeDifferentFromDescription]
     public class RoleForCreationDto
     {
         [Required]

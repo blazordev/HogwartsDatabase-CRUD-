@@ -1,0 +1,9 @@
+﻿<div class="form-group">
+    <div class="col-form-label-sm">Select Courses</div>
+    <select class="form-control form-control-sm" multiple>
+        @foreach (var course in Courses)
+        {
+            <option @onclick="@(() => CourseClicked(course.Id))">@course.Name</option>
+        }
+    </select>
+</div>
