@@ -91,7 +91,7 @@ namespace Hogwarts.Api.Extensions
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Headmaster/Headmistress" },
                 new Role { Id = 2, Name = "Deputy Headmaster/Headmistress" },
-                new Role { Id = 3, Name = "Teacher" },
+                new Role { Id = 3, Name = "Professor" },
                 new Role { Id = 4, Name = "Patron/Matron" },
                 new Role { Id = 5, Name = "Grounds Keeper" },
                 new Role { Id = 6, Name = "House Head" },

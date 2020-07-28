@@ -20,7 +20,15 @@ namespace Hogwarts.Client.Pages
         public List<StaffDto> StaffToManipulate { get; set; } = new List<StaffDto>();
         public string RowBackgroundColor { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
-        public List<StaffDto> Staff { get; set; } 
+        public List<StaffDto> Staff { get; set; }
+        private bool _firstIsChecked;
+        public bool FirstIsChecked 
+        { 
+            get { return _firstIsChecked; }
+            set { _firstIsChecked = value;
+                ToggleAllChecked();
+            }
+        } 
         public bool AllAreChecked { get; set; } = false;
 
         public bool Show { get; set; }
@@ -69,26 +77,10 @@ namespace Hogwarts.Client.Pages
             }
         }
         public void ToggleAllChecked()
-        {
-            if (!AllAreChecked)
-            {
-                FilteredStaff.ConvertAll(s => s.Checked = true);
+        {          
+                FilteredStaff.ConvertAll(s => s.IsChecked = FirstIsChecked);
                 AllAreChecked = !AllAreChecked;
                 StateHasChanged();
-            }
-            else
-            {
-                FilteredStaff.ConvertAll(s => s.Checked = false);
-                AllAreChecked = !AllAreChecked;
-                StateHasChanged();
-            }
-            foreach (var item in FilteredStaff)
-            {
-                if (item.Checked)
-                {
-                    Console.WriteLine($"{item.FirstName} {item.LastName}");
-                }
-            }
         }
         public void AddPage()
         {

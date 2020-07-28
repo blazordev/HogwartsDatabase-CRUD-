@@ -49,7 +49,10 @@ namespace Hogwarts.Client.Pages
         }
         public void AddCourse(CourseDto course)
         {
-            Staff.Courses.Add(course);
+            if (!Staff.Courses.Contains(course))
+            {
+                Staff.Courses.Add(course);
+            }
         }
 
         public async Task HandleValidSubmit()

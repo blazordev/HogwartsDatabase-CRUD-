@@ -12,10 +12,14 @@ namespace Hogwarts.Client.Components
     {
         [Parameter] public StaffDto Staff { get; set; }
         [Inject] HouseHeadDataService HouseHeadDataService { get; set; }
+        [Inject] CourseDataService CourseDataService { get; set; }
         public HouseDto House { get; set; }
+        public List<CourseDto> Courses { get; set; } = new List<CourseDto>();
         protected async override Task OnInitializedAsync()
         {
-            House = await HouseHeadDataService.GetHouseForStaffAsync(Staff.Id); 
+            House = await HouseHeadDataService.GetHouseForStaffAsync(Staff.Id);
+            Courses = await CourseDataService.GetCoursesForStaff(Staff.Id);
         }
+        
     }
 }

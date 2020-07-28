@@ -23,5 +23,32 @@ namespace Hogwarts.Client.Services
                (await _httpClient.GetStreamAsync($"api/courses"),
                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
+        public async Task<List<CourseDto>> GetCoursesForStaff(int staffId)
+        {
+            var response = await _httpClient.GetAsync($"api/Staff/{staffId}/Courses");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var contentStream = await response.Content.ReadAsStreamAsync();
+
+                try
+                {
+                    return await JsonSerializer.DeserializeAsync<List<CourseDto>>(contentStream, new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true });
+                }
+                catch (JsonException) // Invalid JSON
+                {
+                    Console.WriteLine("Invalid JSON.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("HTTP Response was invalid and cannot be deserialised.");
+            }
+
+            return null;
+        }
+
     }
 }
+    
+

@@ -1,12 +1,16 @@
 ﻿@page "/counter"
 <h1>@currentCount</h1>
+
 @for (int i = 0; i < 5; i++)
 {
     var a = i;
     <p><button class="btn btn-primary" @onclick="() => test(i)">Set counter to @a</button></p>
 }
 
-
+<div id="wrapper">
+    <img src="http://placehold.it/300x200" class="hover" />
+    <p class="text">text</p>
+</div>
 @functions {
     int currentCount = 0;
 

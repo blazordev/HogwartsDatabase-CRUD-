@@ -213,7 +213,7 @@ namespace Hogwarts.Api.Migrations
                         new
                         {
                             Id = 3,
-                            Name = "Teacher"
+                            Name = "Professor"
                         },
                         new
                         {

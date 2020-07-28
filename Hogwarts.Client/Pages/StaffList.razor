@@ -26,17 +26,18 @@ else
             <tr>
                 <th class="table-checkbox-row">
                     <label class="table-checkbox-label">
-                        <input type="checkbox" @onchange="ToggleAllChecked" />
+                        <input type="checkbox" @bind-value="FirstIsChecked" checked="@FirstIsChecked"/>
                         <span class="table-checkbox-span"></span>
                     </label>
                 </th>
                 <th class="small text-center">ID</th>
-                <th class="small"><span> FIRST NAME</span></th>
+                <th class="small"><span> First Name</span></th>
                 <th class="small">
-                    <span>LAST NAME</span>
+                    <span>Last Name</span>
                 </th>
-                <th>Roles</th>
+                <th>Positions</th>
                 <th>House Head</th>
+                <th>Professor</th>
             </tr>
         </thead>
         <tbody>

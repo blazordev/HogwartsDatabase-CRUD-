@@ -10,7 +10,9 @@ namespace Hogwarts.Data.Models
         public string MiddleNames { get; set; } = "";
         public string LastName { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
-        public bool Checked { get; set; }
+        public bool IsChecked { get; set; } = false;
+        public bool ShowRoles { get; set; } = false;
+        public bool ShowCourses { get; set; } = false;
 
 
     }

@@ -19,17 +19,30 @@ namespace Hogwarts.Client.Services
         }
 
         public async Task<HouseDto> GetHouseForStaffAsync(int staffId)
-        {           
+        {
             var response = await _httpClient.GetAsync($"api/HeadOfHouseAssignments/Staff/{staffId}");
 
             if (response.IsSuccessStatusCode)
             {
-                return await JsonSerializer.DeserializeAsync<HouseDto>(await response.Content.ReadAsStreamAsync());
+                var contentStream = await response.Content.ReadAsStreamAsync();
+
+                try
+                {
+                    return await JsonSerializer.DeserializeAsync<HouseDto>(contentStream, new JsonSerializerOptions { IgnoreNullValues = true, PropertyNameCaseInsensitive = true });
+                }
+                catch (JsonException) // Invalid JSON
+                {
+                    Console.WriteLine("Invalid JSON.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("HTTP Response was invalid and cannot be deserialised.");
             }
 
             return null;
-
         }
+
     }
 }
 

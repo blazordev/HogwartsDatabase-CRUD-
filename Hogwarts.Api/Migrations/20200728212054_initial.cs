@@ -192,11 +192,11 @@ namespace Hogwarts.Api.Migrations
                 values: new object[,]
                 {
                     { 8, null, "Caretaker" },
-                    { 6, null, "HeadOfHouse" },
+                    { 6, null, "House Head" },
                     { 5, null, "Grounds Keeper" },
                     { 7, null, "Librarian" },
-                    { 3, null, "Teacher" },
-                    { 2, null, "Deputy HeadMaster/HeadMistress" },
+                    { 3, null, "Professor" },
+                    { 2, null, "Deputy Headmaster/Headmistress" },
                     { 1, null, "Headmaster/Headmistress" },
                     { 4, null, "Patron/Matron" }
                 });

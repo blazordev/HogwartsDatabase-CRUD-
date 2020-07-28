@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hogwarts.Api.Migrations
 {
     [DbContext(typeof(HogwartsDbContext))]
-    [Migration("20200709095210_addedCheckedField")]
-    partial class addedCheckedField
+    [Migration("20200728212054_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -210,12 +210,12 @@ namespace Hogwarts.Api.Migrations
                         new
                         {
                             Id = 2,
-                            Name = "Deputy HeadMaster/HeadMistress"
+                            Name = "Deputy Headmaster/Headmistress"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Teacher"
+                            Name = "Professor"
                         },
                         new
                         {
@@ -230,7 +230,7 @@ namespace Hogwarts.Api.Migrations
                         new
                         {
                             Id = 6,
-                            Name = "HeadOfHouse"
+                            Name = "House Head"
                         },
                         new
                         {

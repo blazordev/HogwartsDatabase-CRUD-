@@ -48,7 +48,10 @@ namespace Hogwarts.Api.Services
                 staffToReturn = _context.StaffRoles
                     .Where(sr => sr.RoleId == roleId)
                     .Include(sr => sr.Staff)
-                    .Select(sr => sr.Staff);
+                    .Select(sr => sr.Staff)
+                    .OrderBy(s => s.LastName)
+                    .ThenBy(s => s.FirstName)
+                    .ThenBy(s => s.MiddleNames);
             }
             if (!String.IsNullOrWhiteSpace(staffResourceParameters.SearchQuery))
             {
@@ -62,7 +65,11 @@ namespace Hogwarts.Api.Services
             var pageNumber = staffResourceParameters.PageNumber;
             return await staffToReturn.Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize).Include(s => s.StaffRoles)
-               .ThenInclude(sr => sr.Role).ToListAsync(); 
+               .ThenInclude(sr => sr.Role).
+               OrderBy(s => s.LastName)
+               .ThenBy(s => s.FirstName)
+               .ThenBy(s => s.MiddleNames)
+               .ToListAsync();
         }
         public async Task<IEnumerable<Staff>> GetHeadsOfHouseAsync(int houseId)
         {

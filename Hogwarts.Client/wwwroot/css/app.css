@@ -619,3 +619,23 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 .btn{
      color:dimgray
 }
+#wrapper .text {
+    position: relative;
+    bottom: 30px;
+    left: 0px;
+    visibility: hidden;
+}
+
+#wrapper:hover .text {
+    visibility: visible;
+}
+
+.grow {
+    transition: all .2s ease-in-out;
+}
+
+    .grow:hover {
+        transform: scale(1.1);
+    }
+
+
