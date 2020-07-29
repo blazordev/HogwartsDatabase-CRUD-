@@ -18,7 +18,7 @@ namespace Hogwarts.Client.Pages
         [Inject] NavigationManager NavigationManager { get; set; }
         public int Index { get; set; }
         public List<StaffDto> StaffToManipulate { get; set; } = new List<StaffDto>();
-        public string RowBackgroundColor { get; set; }
+        public string RowBackgroundColor { get; set; } = "";
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
         public List<StaffDto> Staff { get; set; }
         private bool _firstIsChecked;

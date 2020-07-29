@@ -303,7 +303,7 @@ app {
 
 .table-checkbox-label {
     height: 7px !important;
-    margin-right: -18px !important;
+    margin-right: -26px ;
     margin-left: 4px !important;
     margin-bottom: -60px !important;
     margin-top: 3px !important;
@@ -637,5 +637,10 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     .grow:hover {
         transform: scale(1.1);
     }
+
+.badge {    
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+    text-align: center;
+}
 
 

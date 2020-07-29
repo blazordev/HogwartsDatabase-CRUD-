@@ -1,7 +1,7 @@
-﻿<tr @key="Staff.Id">
+﻿<tr style="@Highlighted" @key="Staff.Id" @onclick="() => Staff.IsChecked = !Staff.IsChecked">
     <td class="table-checkbox-row">
         <label class="table-checkbox-label">
-            <input type="checkbox" @bind-value="Staff.IsChecked" checked="@Staff.IsChecked" />
+            <input type="checkbox" @onclick="() => Staff.IsChecked = !Staff.IsChecked" checked="@Staff.IsChecked" />
             <span class="table-checkbox-span"></span>
         </label>
     </td>
@@ -28,84 +28,49 @@
             }
         }
     </td>
-    <td class="text-center">
-        @if (House != null)
-        {
-            switch (House.Name)
-            {
-                case "Gryffindor":
-                    <span class="badge" style="background-color: darkred;color :white">
-                        @House.Name
-                    </span>
-                    break;
-                case "Slytherin":
-                    <span class="badge" style="background-color: forestgreen; color: white">
-                        @House.Name
-                    </span>
-                    break;
-                case "Hufflepuff":
-                    <span class="badge" style="background-color: blue; color: white">
-                        @House.Name
-                    </span>
-                    break;
-                case "Ravenclaw":
-                    <span class="badge" style="background-color: #1A3956; color: white">
-                        @House.Name
-                    </span>
-                    break;
-            }
-        }
-        else
-        {
-            <span class="badge" style="background-color:lightseagreen">
-            </span>
-        }
-    </td>
-    <td>
+    
+    <td style="padding: 0px" class="text-center">
         @if (Staff.Roles.Any(r => r.Name == "Professor"))
         {
-            <span class="badge float-left" style="background-color:darkcyan">
-                <i style="color:white" class="fa fa-check"></i>
-            </span>
-            @if (Courses.Any())
+            <button @onclick="() => Staff.ShowCourses = !Staff.ShowCourses"
+                    style="margin:0px; background:none; padding:0px" class="btn borderLeftRight">
+                <h5 style="margin:0px"><span style="color:lightseagreen">&#10004;</span></h5>
+            </button>
+
+            if (Staff.ShowCourses && Courses.Any())
             {
-                if (!Staff.ShowCourses)
-                {
-                    <a @onclick="() => Staff.ShowCourses = !Staff.ShowCourses"><i class="grow float-left fa fa-caret-right" style="color:darkgray; padding-left:10px; padding-top:3px" aria-hidden="true"></i></a>
-                }
-                else
-                {
-                    <a @onclick="() => Staff.ShowCourses = !Staff.ShowCourses"><i class="grow float-left fa fa-caret-down" style="color:darkgray; padding-left:10px; padding-top:3px" aria-hidden="true"></i></a>
-                    <div class="form-group">
-                        <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @(Courses.Count() == 1 ? "Course" : "Courses")
-                                    </th>                                    
+                <div class="form-group">
+                    <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @(Courses.Count() == 1 ? "Course" : "Courses")
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Courses)
+                            {
+                                <tr style="height:7px">
+                                    <td>
+                                        @course.Name
+                                    </td>
+
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var course in Courses)
-                                {
-                                    <tr style="height:7px">
-                                        <td>
-                                            @course.Name
-                                        </td>
-                                       
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
             }
+            else if(Staff.ShowCourses && !Courses.Any())
+            {
+                <p>No Courses to show</p>
+            }
+
         }
         else
         {
-            <span class="badge" style="background-color:darkred">
-                <i style="color:white" class="fa fa-close"></i>
-            </span>
+            <h5 style="margin:0px"><span style="color:red">&#10008;</span></h5>
         }
     </td>
 </tr>
