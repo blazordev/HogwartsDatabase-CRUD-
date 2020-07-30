@@ -18,7 +18,6 @@ namespace Hogwarts.Client.Pages
         [Inject] NavigationManager NavigationManager { get; set; }
         public int Index { get; set; }
         public List<StaffDto> StaffToManipulate { get; set; } = new List<StaffDto>();
-        public string RowBackgroundColor { get; set; } = "";
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
         public List<StaffDto> Staff { get; set; }
         private bool _firstIsChecked;
@@ -86,7 +85,17 @@ namespace Hogwarts.Client.Pages
         {
             NavigationManager.NavigateTo("addStaff");
         }
+        public async Task DeleteSelected()
+        {
+            var selectedStaff = FilteredStaff.Where(s => s.IsChecked);
+            string staffToDelete = string.Join(",", selectedStaff.Select(s => s.Id));
+            await StaffDataService.DeleteStaffCollection(staffToDelete);
+            //remove local representations of deleted item
+            FilteredStaff = FilteredStaff.Except(selectedStaff).ToList();
+            FilteredStaff = await StaffDataService.GetAllStaffAsync();
+            StateHasChanged();
 
+        }
 
 
     }

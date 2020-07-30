@@ -18,19 +18,20 @@ namespace Hogwarts.Client
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("app");
-           
-            builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
-            builder.Services.AddScoped<StaffDataService>();
-            builder.Services.AddScoped<StudentDataService>();
-            builder.Services.AddScoped<RolesDataService>();
-            builder.Services.AddScoped<HouseDataService>();
-            builder.Services.AddScoped<CourseDataService>();
-            builder.Services.AddScoped<HouseHeadDataService>();
-            var host = builder.Build();
-
-           
+            ConfigureServices(builder.Services);
 
             await builder.Build().RunAsync();
+        }
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddOptions();
+            services.AddTransient(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/") });
+            services.AddScoped<StaffDataService>();
+            services.AddScoped<StudentDataService>();
+            services.AddScoped<RolesDataService>();
+            services.AddScoped<HouseDataService>();
+            services.AddScoped<CourseDataService>();
+            services.AddScoped<HouseHeadDataService>();
         }
     }
 }

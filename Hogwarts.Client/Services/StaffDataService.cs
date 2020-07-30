@@ -20,14 +20,14 @@ namespace Hogwarts.Client.Services
         public async Task<List<StaffDto>> GetAllStaffAsync()
         {
             return await JsonSerializer.DeserializeAsync<List<StaffDto>>
-                (await _httpClient.GetStreamAsync($"api/staff"), 
+                (await _httpClient.GetStreamAsync($"api/staff"),
                 new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
         public async Task<StaffDto> GetStaffByIdAsync(int staffId)
         {
             return await JsonSerializer.DeserializeAsync<StaffDto>
-                (await _httpClient.GetStreamAsync($"api/staff/{staffId}"), 
+                (await _httpClient.GetStreamAsync($"api/staff/{staffId}"),
                 new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
@@ -46,6 +46,10 @@ namespace Hogwarts.Client.Services
             return null;
         }
 
+        public async Task DeleteStaffCollection(string staffIds)
+        {
+            await _httpClient.DeleteAsync($"api/staffCollections/({staffIds})");
+        }
     }
 
 }
