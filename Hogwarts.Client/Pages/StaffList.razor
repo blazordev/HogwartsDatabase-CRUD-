@@ -9,7 +9,7 @@ else
 {
 <div class="card" style="padding:10px">
     <div class="custom-control-inline">
-        <button @onclick="AddPage" class="btn btn-sm"><span><i class="fas fa-plus"></i></span> Add</button>
+        <button @onclick="Add" class="btn btn-sm"><span><i class="fas fa-plus"></i></span> Add</button>
         <button class="btn btn-sm"><span><i class="fas fa-edit"></i></span> Edit</button>
         <button @onclick="DeleteSelected" class="btn btn-sm"><span><i class="fas fa-trash"></i></span> Delete</button>
         <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Search Name" type="text">
@@ -54,4 +54,8 @@ else
 </div>
 }
 
+<Confirmation @ref="Confirmation" onCancel="Cancel" onConfirm="ConfirmDelete">
+    Delete @SelectedStaff.Count() @(SelectedStaff.Count() > 1 ? "items" : "item")        
+</Confirmation>
 
+<AddStaff @ref="AddStaff" OnSubmit="Submit"></AddStaff>

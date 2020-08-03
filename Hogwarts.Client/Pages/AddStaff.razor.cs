@@ -12,13 +12,15 @@ namespace Hogwarts.Client.Pages
     public partial class AddStaff 
     {
         [Parameter] public StaffForCreationDto Staff { get; set; } = new StaffForCreationDto();
-          
-       
-        [Inject] NavigationManager NavigationManager { get; set; }
+
+        [Parameter] public EventCallback OnSubmit { get; set; }
         [Inject] StaffDataService StaffDataService { get; set; }       
         public bool IsChecked { get; set; } = true;
         public bool ResetSelect { get; set; }
-        public bool DisplayCourses { get; set; }       
+        public bool DisplayCourses { get; set; }    
+        private bool display = false;
+        public void ShowModal() => display = true;
+        public void HideModal() => display = false;
         
         
         public void AddRole(RoleDto role)
@@ -55,11 +57,15 @@ namespace Hogwarts.Client.Pages
             }
         }
 
-        public async Task HandleValidSubmit()
-        {            
-            await StaffDataService.AddStaff(Staff);            
-            NavigationManager.NavigateTo("staffList");
-        }       
+        public void Cancel()
+        {
+            HideModal();
+            Staff = new StaffForCreationDto();
+        }
+        public void Reset()
+        {
+            Staff = new StaffForCreationDto();
+        }
 
     }
 }

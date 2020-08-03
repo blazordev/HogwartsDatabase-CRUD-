@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
-
+using Hogwarts.Client.Components;
 
 namespace Hogwarts.Client.Pages
 {
@@ -21,30 +21,36 @@ namespace Hogwarts.Client.Pages
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
         public List<StaffDto> Staff { get; set; }
         private bool _firstIsChecked;
-        public bool FirstIsChecked 
-        { 
+        public AddStaff AddStaff { get; set; }
+        public Confirmation Confirmation { get; set; }
+        public bool FirstIsChecked
+        {
             get { return _firstIsChecked; }
-            set { _firstIsChecked = value;
+            set
+            {
+                _firstIsChecked = value;
                 ToggleAllChecked();
             }
-        } 
+        }
         public bool AllAreChecked { get; set; } = false;
 
         public bool Show { get; set; }
-       
+
         [Parameter] public string SearchTerm { get; set; } = "";
-         
+
         private IEnumerable<StaffDto> _filteredStaff;
         public List<StaffDto> FilteredStaff
         {
             get
-            { return PreformFilter(); }
+            {
+                return PreformFilter();
+            }
             set
             { _filteredStaff = value; }
         }
-
+        IEnumerable<StaffDto> SelectedStaff;
         public List<StaffDto> PreformFilter()
-        {            
+        {
             IEnumerable<StaffDto> staffList = new List<StaffDto>();
             staffList = Staff.Where(s =>
             s.FirstName.ToLower().Contains(SearchTerm.ToLower())
@@ -57,7 +63,7 @@ namespace Hogwarts.Client.Pages
         }
         protected async override Task OnInitializedAsync()
         {
-            
+
             Staff = new List<StaffDto>();
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
@@ -76,28 +82,54 @@ namespace Hogwarts.Client.Pages
             }
         }
         public void ToggleAllChecked()
-        {          
-                FilteredStaff.ConvertAll(s => s.IsChecked = FirstIsChecked);
-                AllAreChecked = !AllAreChecked;
-                StateHasChanged();
-        }
-        public void AddPage()
         {
-            NavigationManager.NavigateTo("addStaff");
-        }
-        public async Task DeleteSelected()
-        {
-            var selectedStaff = FilteredStaff.Where(s => s.IsChecked);
-            string staffToDelete = string.Join(",", selectedStaff.Select(s => s.Id));
-            await StaffDataService.DeleteStaffCollection(staffToDelete);
-            //remove local representations of deleted item
-            FilteredStaff = FilteredStaff.Except(selectedStaff).ToList();
-            FilteredStaff = await StaffDataService.GetAllStaffAsync();
+            FilteredStaff.ConvertAll(s => s.IsChecked = FirstIsChecked);
+            AllAreChecked = !AllAreChecked;
             StateHasChanged();
+        }
+        public void Add()
+        {
+            AllAreChecked = false;
+            AddStaff.ShowModal();
+            FirstIsChecked = false;
+            FilteredStaff.ConvertAll(s => s.IsChecked = false);
+            AllAreChecked = false;
+        }
+        public void DeleteSelected()
+        {
+            SelectedStaff = Staff.Where(s => s.IsChecked);
+            if (SelectedStaff.Count() > 0)
+            {
+                Confirmation.Show();
+            }
+        }
+        public async Task ConfirmDelete()
+        {
+            string staffToDelete = string.Join(",", SelectedStaff.Select(s => s.Id));
+            await StaffDataService.DeleteStaffCollection(staffToDelete);
+            Staff = await StaffDataService.GetAllStaffAsync();
+            Confirmation.Hide();
+            AllAreChecked = false;
+            FirstIsChecked = false;
+            SelectedStaff = null;
+            StateHasChanged();            
+        }
+        public void Cancel()
+        {
+            Confirmation.Hide();
+            SelectedStaff = null;
+            
 
         }
-
-
+        public async Task Submit()
+        {
+            await StaffDataService.AddStaff(AddStaff.Staff);
+            Staff = await StaffDataService.GetAllStaffAsync();            
+            AddStaff.HideModal();
+            AddStaff.Reset();
+            StateHasChanged();
+            Console.WriteLine("Submitted");
+        }
     }
 }
 
