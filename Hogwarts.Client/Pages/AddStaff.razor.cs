@@ -11,7 +11,7 @@ namespace Hogwarts.Client.Pages
 {
     public partial class AddStaff 
     {
-        [Parameter] public StaffForCreationDto Staff { get; set; } = new StaffForCreationDto();
+        [Parameter] public StaffDto Staff { get; set; } = new StaffDto();
 
         [Parameter] public EventCallback OnSubmit { get; set; }
         [Inject] StaffDataService StaffDataService { get; set; }       
@@ -60,11 +60,11 @@ namespace Hogwarts.Client.Pages
         public void Cancel()
         {
             HideModal();
-            Staff = new StaffForCreationDto();
+            Staff = new StaffDto();
         }
         public void Reset()
         {
-            Staff = new StaffForCreationDto();
+            Staff = new StaffDto();
         }
 
     }

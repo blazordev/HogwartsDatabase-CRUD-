@@ -60,7 +60,7 @@ namespace Hogwarts.Api.Controllers
         }
         //POST: api/staff
         [HttpPost]
-        public async Task<ActionResult<StaffDto>> CreateStaff(StaffForCreationDto staff)
+        public async Task<ActionResult<StaffDto>> CreateStaff(StaffDto staff)
         {
             if (staff.Roles.Any(r => r.Id == 6) && staff.House == null)//House head but no house selected
             {
@@ -121,7 +121,7 @@ namespace Hogwarts.Api.Controllers
 
         [HttpPut("{staffId}")]
         public async Task<ActionResult<StaffDto>> EditStaff([FromRoute] int staffId,
-            [FromBody] StaffForEditDto staff)
+            [FromBody] StaffDto staff)
         {
             var staffEntityToEdit = await _staffRepo.GetStaffByIdAsync(staffId);
             if (staffEntityToEdit == null) return NotFound();
@@ -132,14 +132,14 @@ namespace Hogwarts.Api.Controllers
         }
         [HttpPatch("{staffId}")]
         public async Task<ActionResult<StaffDto>> PartiallyEditStaff(int staffId,
-            JsonPatchDocument<StaffForEditDto> patchDocument)
+            JsonPatchDocument<StaffDto> patchDocument)
         {
             var staffFromRepo = await _staffRepo.GetStaffByIdAsync(staffId);
             if (staffFromRepo == null)
             {
                 return NotFound();
             }
-            var staffToPatch = _mapper.Map<StaffForEditDto>(staffFromRepo);
+            var staffToPatch = _mapper.Map<StaffDto>(staffFromRepo);
             patchDocument.ApplyTo(staffToPatch, ModelState);
             if (!TryValidateModel(staffToPatch))
             {

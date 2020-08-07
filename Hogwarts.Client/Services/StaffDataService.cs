@@ -31,7 +31,7 @@ namespace Hogwarts.Client.Services
                 new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<StaffDto> AddStaff(StaffForCreationDto staff)
+        public async Task<StaffDto> AddStaff(StaffDto staff)
         {
             var employeeJson =
                 new StringContent(JsonSerializer.Serialize(staff), Encoding.UTF8, "application/json");

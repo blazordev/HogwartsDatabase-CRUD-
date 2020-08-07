@@ -12,7 +12,7 @@ namespace Hogwarts.Client.Components
 {
     public partial class CoursesOutput
     {
-        [Parameter] public StaffForCreationDto Staff { get; set; }
+        [Parameter] public StaffDto Staff { get; set; }
         [Parameter] public bool IncludeDescription { get; set; } = false;
        
         public void RemoveCourse(int id)

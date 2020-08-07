@@ -12,12 +12,12 @@ namespace Hogwarts.Data.ValidationAttributes
         protected override ValidationResult IsValid(object value,
             ValidationContext validationContext)
         {
-            var staff = (StaffForCreationDto)validationContext.ObjectInstance;
+            var staff = (StaffDto)validationContext.ObjectInstance;
 
             if (staff.Roles.Any(r => r.Id == 6) && staff.House == null)
             {
                 return new ValidationResult("House Head must select House",
-                    new[] { nameof(StaffForCreationDto) });
+                    new[] { nameof(StaffDto) });
             }
 
             return ValidationResult.Success;

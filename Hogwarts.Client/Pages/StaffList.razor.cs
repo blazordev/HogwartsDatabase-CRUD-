@@ -17,9 +17,8 @@ namespace Hogwarts.Client.Pages
         [Inject] RolesDataService RoleDataService { get; set; }
         [Inject] NavigationManager NavigationManager { get; set; }
         public int Index { get; set; }
-        public List<StaffDto> StaffToManipulate { get; set; } = new List<StaffDto>();
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
-        public List<StaffDto> Staff { get; set; }
+        List<StaffDto> Staff;
         private bool _firstIsChecked;
         public AddStaff AddStaff { get; set; }
         public Confirmation Confirmation { get; set; }
@@ -62,9 +61,7 @@ namespace Hogwarts.Client.Pages
             return staffList.ToList();
         }
         protected async override Task OnInitializedAsync()
-        {
-
-            Staff = new List<StaffDto>();
+        {            
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
         }
