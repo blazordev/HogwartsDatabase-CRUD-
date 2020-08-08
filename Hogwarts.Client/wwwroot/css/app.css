@@ -303,7 +303,7 @@ app {
 
 .table-checkbox-label {
     height: 7px !important;
-    margin-right: -26px ;
+    margin-right: -25px !important;
     margin-left: 4px !important;
     margin-bottom: -60px !important;
     margin-top: 3px !important;

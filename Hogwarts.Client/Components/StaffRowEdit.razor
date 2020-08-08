@@ -1,22 +1,22 @@
 ﻿<tr style="padding: 0px; font-weight: bold; color: #DCDCDC" @key="Staff.Id">
     <td class="table-checkbox-row">
-        <label class="table-checkbox-label">
+        <label class="table-checkbox-label"style="margin-right: -18px !important;">
             <input type="checkbox" checked="checked" disabled="disabled"/>
             <span class="table-checkbox-span"></span>
         </label>
     </td>
-    <td class="text-sm-center" style="background-color:#DCDCDC">@Staff.Id</td>
-    <td style="padding:0px"><input style="margin:0px" type="text" @bind="@Staff.FirstName" /> <input style="margin:0px" @bind="@Staff.MiddleNames"></td>
-    <td style="padding:0px"><input  style="margin:0px" type="text" @bind="@Staff.LastName" /></td>
-    <td class="ml-4" style="background-color:gray">
+    <td class="text-sm-center">@Staff.Id</td>
+    <td style="padding:0px"><input style="margin:0px; margin-bottom:-1px;" type="text" @bind="@Staff.FirstName" /> <input style="margin:0px; margin-bottom:-1px;" @bind="@Staff.MiddleNames"></td>
+    <td style="padding:0px"><input  style="margin:0px; margin-bottom:-1px;" type="text" @bind="@Staff.LastName" /></td>
+    <td class="ml-4">
         <span class="float-left">@Staff.Roles.Count()</span>
         @if (Staff.Roles.Count() > 0)
         {
-            <a><i class="grow float-left fa fa-caret-right" style="color:#DCDCDC; padding-left:10px; padding-top:3px" aria-hidden="true"></i></a>
+            <a><i class="grow float-left fa fa-caret-right" style="padding-left:10px; padding-top:3px" aria-hidden="true"></i></a>
         }
     </td>
 
-    <td style="padding: 0px; background-color: #DCDCDC" class="text-center">
+    <td style="padding: 0px;" class="text-center">
         @if (Staff.Roles.Any(r => r.Name == "Professor"))
         {
             <a style="margin:0px; background:none; padding:0px">
