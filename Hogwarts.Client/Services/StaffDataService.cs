@@ -46,6 +46,21 @@ namespace Hogwarts.Client.Services
             return null;
         }
 
+        public async Task<StaffDto> UpdateStaff(StaffDto staff)
+        {
+            var employeeJson =
+                new StringContent(JsonSerializer.Serialize(staff), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"api/staff/{staff.Id}", employeeJson);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await JsonSerializer.DeserializeAsync<StaffDto>(await response.Content.ReadAsStreamAsync());
+            }
+
+            return null;
+        }
+
         public async Task DeleteStaffCollection(string staffIds)
         {
             await _httpClient.DeleteAsync($"api/staffCollections/({staffIds})");

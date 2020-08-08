@@ -1,28 +1,27 @@
-﻿using Hogwarts.Data;
+﻿using Hogwarts.Client.Services;
 using Hogwarts.Data.Models;
-using Hogwarts.Client.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Client.Pages
+namespace Hogwarts.Client.Components
 {
-    public partial class AddStaff 
+    public partial class EditStaff
     {
-        [Parameter] public StaffDto Staff { get; set; } = new StaffDto();
-
+        [Parameter] public int StaffId { get; set; }
+        public StaffDto Staff { get; set; } = new StaffDto();
         [Parameter] public EventCallback OnSubmit { get; set; }
-        [Inject] StaffDataService StaffDataService { get; set; }       
+        [Inject] StaffDataService StaffDataService { get; set; }
         public bool IsChecked { get; set; } = true;
         public bool ResetSelect { get; set; }
-        public bool DisplayCourses { get; set; }    
+        public bool DisplayCourses { get; set; }
         private bool display = false;
         public void ShowModal() => display = true;
         public void HideModal() => display = false;
         
-        
+
         public void AddRole(RoleDto role)
         {
             if (!Staff.Roles.Contains(role))
@@ -34,7 +33,7 @@ namespace Hogwarts.Client.Pages
         {
             Staff.House = house;
         }
-       
+
         public void RemoveRole(int id)
         {
             if (id == 3)// teacher
@@ -69,3 +68,4 @@ namespace Hogwarts.Client.Pages
 
     }
 }
+

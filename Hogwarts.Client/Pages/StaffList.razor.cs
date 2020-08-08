@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Hogwarts.Client.Components;
+using System.Threading;
 
 namespace Hogwarts.Client.Pages
 {
@@ -16,11 +17,17 @@ namespace Hogwarts.Client.Pages
         [Inject] StaffDataService StaffDataService { get; set; }
         [Inject] RolesDataService RoleDataService { get; set; }
         [Inject] NavigationManager NavigationManager { get; set; }
+        [Inject] CourseDataService CourseDataService { get; set; }
+        public bool EditMode { get; set; } = false;
         public int Index { get; set; }
+        public StaffDto SingleStaffToEdit { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
         List<StaffDto> Staff;
         private bool _firstIsChecked;
+        public bool IsOpenToEdit { get; set; } = false;
         public AddStaff AddStaff { get; set; }
+        public EditStaff EditStaff { get; set; }
+        public bool EditWasClicked { get; set; } = false;
         public Confirmation Confirmation { get; set; }
         public bool FirstIsChecked
         {
@@ -61,7 +68,7 @@ namespace Hogwarts.Client.Pages
             return staffList.ToList();
         }
         protected async override Task OnInitializedAsync()
-        {            
+        {
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
         }
@@ -86,11 +93,30 @@ namespace Hogwarts.Client.Pages
         }
         public void Add()
         {
-            AllAreChecked = false;
             AddStaff.ShowModal();
             FirstIsChecked = false;
             FilteredStaff.ConvertAll(s => s.IsChecked = false);
             AllAreChecked = false;
+        }
+        public void EditSelected()
+        {
+            EditWasClicked = true;
+            var staffToConvert = FilteredStaff.Where(s => s.IsChecked).ToList();
+            staffToConvert.ConvertAll(s => s.EditModeIsOn = true);
+            Console.WriteLine("EditSelected");
+            StateHasChanged();            
+        }
+        public void Reset()
+        {
+            FirstIsChecked = false;
+            FilteredStaff.ConvertAll(s => s.IsChecked = false);
+            FilteredStaff.ConvertAll(s => s.EditModeIsOn = false);
+            AllAreChecked = false;
+        }
+        public void CancelSelected()
+        {
+            Reset();
+            StateHasChanged();            
         }
         public void DeleteSelected()
         {
@@ -99,6 +125,16 @@ namespace Hogwarts.Client.Pages
             {
                 Confirmation.Show();
             }
+        }
+        public async Task SaveSelected()
+        {
+            SelectedStaff = Staff.Where(s => s.IsChecked);
+            foreach (var staff in SelectedStaff)
+            {
+                await StaffDataService.UpdateStaff(staff);
+            }
+            FirstIsChecked = false;
+            Staff = await StaffDataService.GetAllStaffAsync();            
         }
         public async Task ConfirmDelete()
         {
@@ -109,24 +145,32 @@ namespace Hogwarts.Client.Pages
             AllAreChecked = false;
             FirstIsChecked = false;
             SelectedStaff = null;
-            StateHasChanged();            
+            StateHasChanged();
         }
         public void Cancel()
         {
             Confirmation.Hide();
             SelectedStaff = null;
-            
-
         }
-        public async Task Submit()
+        public async Task SubmitAdd()
         {
             await StaffDataService.AddStaff(AddStaff.Staff);
-            Staff = await StaffDataService.GetAllStaffAsync();            
+            Staff = await StaffDataService.GetAllStaffAsync();
             AddStaff.HideModal();
             AddStaff.Reset();
             StateHasChanged();
-            Console.WriteLine("Submitted");
+            Console.WriteLine("Added");
         }
+        public async Task SubmitEdit()
+        {
+            await StaffDataService.UpdateStaff(EditStaff.Staff);
+            Staff = await StaffDataService.GetAllStaffAsync();
+            AddStaff.HideModal();
+            AddStaff.Reset();
+            StateHasChanged();
+            Console.WriteLine("Edit Submitted");
+        }
+
     }
 }
 
