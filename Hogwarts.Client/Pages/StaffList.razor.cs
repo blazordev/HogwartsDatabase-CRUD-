@@ -26,7 +26,6 @@ namespace Hogwarts.Client.Pages
         private bool _firstIsChecked;
         public bool IsOpenToEdit { get; set; } = false;
         public AddStaff AddStaff { get; set; }
-        public EditStaff EditStaff { get; set; }
         public bool EditWasClicked { get; set; } = false;
         public Confirmation Confirmation { get; set; }
         public bool FirstIsChecked
@@ -72,11 +71,7 @@ namespace Hogwarts.Client.Pages
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
         }
-        public void StaffDetailsPage(int staffId)
-        {
-            NavigationManager.NavigateTo($"staffDetails/{staffId}");
-            Console.WriteLine($"Staff Id: {staffId} clicked");
-        }
+        
         public int selectedRole { get; set; }
         public void RoleSelected(ChangeEventArgs e)
         {

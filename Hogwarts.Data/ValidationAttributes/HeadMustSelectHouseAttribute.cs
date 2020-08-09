@@ -7,6 +7,7 @@ using System.Text;
 
 namespace Hogwarts.Data.ValidationAttributes
 {
+    //this is already implemented in staffController CreateStaff so no need to add attribute
     public class HeadMustSelectHouseAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value,

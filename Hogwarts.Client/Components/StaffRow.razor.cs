@@ -12,6 +12,7 @@ namespace Hogwarts.Client.Components
     {
         private string _highlighted;
         public bool ShowCourses { get; set; }
+        [Inject] public NavigationManager NavigationManager { get; set; }
         [Parameter] public StaffDto Staff { get; set; }
         public async Task ToggleCourses()
         {
@@ -30,6 +31,11 @@ namespace Hogwarts.Client.Components
         public async Task GetCourses()
         {
             Staff.Courses = await CourseDataService.GetCoursesForStaff(Staff.Id);
+        }
+        public void StaffDetailsPage()
+        {
+            NavigationManager.NavigateTo($"staffDetails/{Staff.Id}");
+            Console.WriteLine($"Staff Id: {Staff.Id} clicked");
         }
     }
 }

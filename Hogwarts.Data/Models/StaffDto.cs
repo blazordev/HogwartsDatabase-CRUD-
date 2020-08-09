@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Hogwarts.Data.Models
 {
-    [HeadMustSelectHouse]
+    
     public class StaffDto
     {
         public int Id { get; set; }

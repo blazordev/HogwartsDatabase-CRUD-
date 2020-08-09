@@ -11,7 +11,7 @@ namespace Hogwarts.Client.Components
     public partial class StaffRowEdit
     {
         [Parameter] public StaffDto Staff { get; set; }
-       
+        
         
     }
 }

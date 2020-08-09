@@ -272,8 +272,8 @@ app {
     }
 
     .form-control.invalid {
-        border-color: #f7b541;
-        border-width: thin;
+        border-bottom-color: #f7b541;
+        border-width: thick;
     }
 
     .validation-message {
@@ -639,7 +639,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     }
 
 .badge {    
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+    box-shadow: 0 4px 8px 0 #E7ECF0, 0 6px 20px 0 #E7ECF0 !important;
     text-align: center;
 }
 
