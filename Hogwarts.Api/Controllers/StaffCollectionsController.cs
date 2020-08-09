@@ -30,7 +30,7 @@ namespace Hogwarts.Api.Controllers
         public async Task<ActionResult> DeleteStaffCollection([FromRoute]
             [ModelBinder(BinderType = typeof(ArrayModelBinder))] IEnumerable<int> ids)
         {
-            if(ids == null)
+            if (ids == null)
             {
                 return BadRequest();
             }
@@ -43,6 +43,6 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.DeleteStaffCollection(staffEntities);
             await _staffRepo.SaveAsync();
             return NoContent();
-        }
+        }        
     }
 }

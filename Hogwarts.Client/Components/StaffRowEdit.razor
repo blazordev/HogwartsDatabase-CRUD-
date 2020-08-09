@@ -6,8 +6,8 @@
         </label>
     </td>
     <td class="text-sm-center">@Staff.Id</td>
-    <td style="padding:0px"><input style="margin:0px; margin-bottom:-1px;" type="text" @bind="@Staff.FirstName" /> <input style="margin:0px; margin-bottom:-1px;" @bind="@Staff.MiddleNames"></td>
-    <td style="padding:0px"><input  style="margin:0px; margin-bottom:-1px;" type="text" @bind="@Staff.LastName" /></td>
+    <td style="padding:0px"><input style="margin:0px; margin-top:2px; margin-left:5px;" type="text" @bind="@Staff.FirstName" /> <input style="margin:0px; margin-bottom:-1px;" @bind="@Staff.MiddleNames"></td>
+    <td style="padding:0px"><input  style="margin:0px; margin-top:2px; margin-left:5px;" type="text" @bind="@Staff.LastName" /></td>
     <td class="ml-4">
         <span class="float-left">@Staff.Roles.Count()</span>
         @if (Staff.Roles.Count() > 0)
@@ -15,7 +15,6 @@
             <a><i class="grow float-left fa fa-caret-right" style="padding-left:10px; padding-top:3px" aria-hidden="true"></i></a>
         }
     </td>
-
     <td style="padding: 0px;" class="text-center">
         @if (Staff.Roles.Any(r => r.Name == "Professor"))
         {

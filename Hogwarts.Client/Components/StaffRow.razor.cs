@@ -10,19 +10,26 @@ namespace Hogwarts.Client.Components
 {
     public partial class StaffRow
     {
+        private string _highlighted;
+        public bool ShowCourses { get; set; }
         [Parameter] public StaffDto Staff { get; set; }
-        private string _highlighted; 
-        public string Highlighted 
-        { 
-            get { return Staff.IsChecked? "font-weight:bold; color:dimgray" : ""; } 
+        public async Task ToggleCourses()
+        {
+            ShowCourses = !ShowCourses;
+            if (ShowCourses)
+            {
+                await GetCourses();
+            }
+        }
+        public string Highlighted
+        {
+            get { return Staff.IsChecked ? "font-weight:bold; color:dimgray" : ""; }
             set { _highlighted = value; }
         }
-        [Inject] CourseDataService CourseDataService { get; set; }        
-        public List<CourseDto> Courses { get; set; } = new List<CourseDto>();
-        protected async override Task OnInitializedAsync()
+        [Inject] CourseDataService CourseDataService { get; set; }
+        public async Task GetCourses()
         {
-            Courses = await CourseDataService.GetCoursesForStaff(Staff.Id);
+            Staff.Courses = await CourseDataService.GetCoursesForStaff(Staff.Id);
         }
-        
     }
 }

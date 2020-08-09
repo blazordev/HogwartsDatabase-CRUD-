@@ -33,10 +33,10 @@ namespace Hogwarts.Client.Services
 
         public async Task<StaffDto> AddStaff(StaffDto staff)
         {
-            var employeeJson =
+            var staffJson =
                 new StringContent(JsonSerializer.Serialize(staff), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("api/staff", employeeJson);
+            var response = await _httpClient.PostAsync("api/staff", staffJson);
 
             if (response.IsSuccessStatusCode)
             {
@@ -48,10 +48,10 @@ namespace Hogwarts.Client.Services
 
         public async Task<StaffDto> UpdateStaff(StaffDto staff)
         {
-            var employeeJson =
+            var staffJson =
                 new StringContent(JsonSerializer.Serialize(staff), Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PutAsync($"api/staff/{staff.Id}", employeeJson);
+            var response = await _httpClient.PutAsync($"api/staff/{staff.Id}", staffJson);
 
             if (response.IsSuccessStatusCode)
             {

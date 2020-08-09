@@ -28,41 +28,40 @@
             }
         }
     </td>
-    
+
     <td style="padding: 0px" class="text-center">
         @if (Staff.Roles.Any(r => r.Name == "Professor"))
         {
-            <button @onclick="() => Staff.ShowCourses = !Staff.ShowCourses"
+            <button @onclick="ToggleCourses"
                     style="margin:0px; background:none; padding:0px" class="btn borderLeftRight">
                 <h5 style="margin:0px"><span style="color:lightseagreen">&#10003;</span></h5>
             </button>
 
-            if (Staff.ShowCourses && Courses.Any())
+            if (ShowCourses && Staff.Courses.Any())
             {
                 <div class="form-group">
                     <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
                         <thead>
                             <tr>
                                 <th>
-                                    @(Courses.Count() == 1 ? "Course" : "Courses")
+                                    @(Staff.Courses.Count() == 1 ? "Course" : "Courses")
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var course in Courses)
+                            @foreach (var course in Staff.Courses)
                             {
                                 <tr style="height:7px">
                                     <td>
                                         @course.Name
                                     </td>
-
                                 </tr>
                             }
                         </tbody>
                     </table>
                 </div>
             }
-            else if(Staff.ShowCourses && !Courses.Any())
+            else if (ShowCourses && !Staff.Courses.Any())
             {
                 <p>No Courses to show</p>
             }

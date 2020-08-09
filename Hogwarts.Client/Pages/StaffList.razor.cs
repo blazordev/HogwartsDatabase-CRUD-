@@ -161,15 +161,7 @@ namespace Hogwarts.Client.Pages
             StateHasChanged();
             Console.WriteLine("Added");
         }
-        public async Task SubmitEdit()
-        {
-            await StaffDataService.UpdateStaff(EditStaff.Staff);
-            Staff = await StaffDataService.GetAllStaffAsync();
-            AddStaff.HideModal();
-            AddStaff.Reset();
-            StateHasChanged();
-            Console.WriteLine("Edit Submitted");
-        }
+        
 
     }
 }
