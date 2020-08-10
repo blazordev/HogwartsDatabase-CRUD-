@@ -28,7 +28,6 @@
             }
         }
     </td>
-
     <td style="padding: 0px" class="text-center">
         @if (Staff.Roles.Any(r => r.Name == "Professor"))
         {
@@ -36,20 +35,23 @@
                     style="margin:0px; background:none; padding:0px" class="btn borderLeftRight">
                 <h5 style="margin:0px"><span style="color:lightseagreen">&#10003;</span></h5>
             </button>
-
-            if (ShowCourses && Staff.Courses.Any())
+            if(Staff.ShowCourses && Courses == null)
+            {
+                <p>Loading...</p>
+            }
+            else if (Staff.ShowCourses && Courses.Any())
             {
                 <div class="form-group">
                     <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
                         <thead>
                             <tr>
                                 <th>
-                                    @(Staff.Courses.Count() == 1 ? "Course" : "Courses")
+                                    @(Courses.Count() == 1 ? "Course" : "Courses")
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var course in Staff.Courses)
+                            @foreach (var course in Courses)
                             {
                                 <tr style="height:7px">
                                     <td>
@@ -61,7 +63,7 @@
                     </table>
                 </div>
             }
-            else if (ShowCourses && !Staff.Courses.Any())
+            else if (Staff.ShowCourses && !Courses.Any())
             {
                 <p>No Courses to show</p>
             }

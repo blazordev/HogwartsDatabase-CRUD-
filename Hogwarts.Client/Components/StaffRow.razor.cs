@@ -10,14 +10,14 @@ namespace Hogwarts.Client.Components
 {
     public partial class StaffRow
     {
-        private string _highlighted;
-        public bool ShowCourses { get; set; }
+        private string _highlighted;        
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Parameter] public StaffDto Staff { get; set; }
+        List<CourseDto> Courses;
         public async Task ToggleCourses()
         {
-            ShowCourses = !ShowCourses;
-            if (ShowCourses)
+            Staff.ShowCourses = !Staff.ShowCourses;
+            if (Staff.ShowCourses)
             {
                 await GetCourses();
             }
@@ -30,7 +30,7 @@ namespace Hogwarts.Client.Components
         [Inject] CourseDataService CourseDataService { get; set; }
         public async Task GetCourses()
         {
-            Staff.Courses = await CourseDataService.GetCoursesForStaff(Staff.Id);
+            Courses = await CourseDataService.GetCoursesForStaff(Staff.Id);
         }
         public void StaffDetailsPage()
         {

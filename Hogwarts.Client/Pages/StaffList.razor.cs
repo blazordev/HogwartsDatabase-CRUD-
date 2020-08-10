@@ -146,6 +146,9 @@ namespace Hogwarts.Client.Pages
         {
             Confirmation.Hide();
             SelectedStaff = null;
+            FirstIsChecked = false;
+            FilteredStaff.ConvertAll(s => s.IsChecked = false);
+            AllAreChecked = false;
         }
         public async Task SubmitAdd()
         {
