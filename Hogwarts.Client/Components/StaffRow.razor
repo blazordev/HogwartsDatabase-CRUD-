@@ -22,20 +22,17 @@
             <a @onclick="() => Staff.ShowRoles = !Staff.ShowRoles">
                 <i class="grow float-left fa fa-caret-down" style="color: darkgrey; padding-top:3px; padding-left:10px" aria-hidden="true"></i>
             </a>
-            @foreach (var role in Staff.Roles)
-            {
-                <span class="badge">@role.Name</span>
-            }
+            <RolesList Staff="Staff"></RolesList>
         }
     </td>
     <td style="padding: 0px" class="text-center">
-        @if (Staff.Roles.Any(r => r.Name == "Professor"))
+        @if (Staff.Roles.Any(r => r.Id == 3))
         {
             <button @onclick="ToggleCourses"
                     style="margin:0px; background:none; padding:0px" class="btn borderLeftRight">
                 <h5 style="margin:0px"><span style="color:lightseagreen">&#10003;</span></h5>
             </button>
-            if(Staff.ShowCourses && Courses == null)
+            if (Staff.ShowCourses && Courses == null)
             {
                 <p>Loading...</p>
             }

@@ -35,23 +35,23 @@ namespace Hogwarts.Api.Extensions
                 );
 
             modelBuilder.Entity<Staff>().HasData(
-            new Staff { Id = 1, FirstName = "Albus", MiddleNames = "Percival Wulfric Brian", LastName = "Dumbledore" },
-            new Staff { Id = 2, FirstName = "Minerva", LastName = "McGonagall" },
-            new Staff { Id = 3, FirstName = "Sybill", MiddleNames = "Patricia", LastName = "Trelawny" },
-            new Staff { Id = 4, FirstName = "Severus", LastName = "Snape" },
-            new Staff { Id = 5, FirstName = "Cuthbert", LastName = "Binns" },
-            new Staff { Id = 6, FirstName = "Charity", LastName = "Burbage" },
-            new Staff { Id = 7, FirstName = "Alecto", LastName = "Carrow" },
-            new Staff { Id = 8, FirstName = "Remus", LastName = "Lupin" },
-            new Staff { Id = 9, FirstName = "Filius", LastName = "Flitwick" },
-            new Staff { Id = 10, FirstName = "Alastor", LastName = "Moody" },
-            new Staff { Id = 11, FirstName = "Wilhelmina", LastName = "Grubbly-Plank" },
-            new Staff { Id = 12, FirstName = "Rubeus", LastName = "Hagrid" },
-            new Staff { Id = 13, FirstName = "Rolanda", LastName = "Hooch" },
-            new Staff { Id = 14, FirstName = "Horace", LastName = "Slughorn" },
-            new Staff { Id = 15, FirstName = "Silvanus", LastName = "Kettleburn" },
-            new Staff { Id = 16, FirstName = "Pomona", LastName = "Sprout" },
-            new Staff { Id = 17, FirstName = "Argus", LastName = "Filch", });
+            new Staff { Id = 1, Gender=Gender.Male, FirstName = "Albus", MiddleNames = "Percival Wulfric Brian", LastName = "Dumbledore" },
+            new Staff { Id = 2, Gender = Gender.Female, FirstName = "Minerva", LastName = "McGonagall" },
+            new Staff { Id = 3, Gender = Gender.Female, FirstName = "Sybill", MiddleNames = "Patricia", LastName = "Trelawny" },
+            new Staff { Id = 4, Gender = Gender.Male, FirstName = "Severus", LastName = "Snape" },
+            new Staff { Id = 5, Gender = Gender.Male, FirstName = "Cuthbert", LastName = "Binns" },
+            new Staff { Id = 6, Gender = Gender.Female, FirstName = "Charity", LastName = "Burbage" },
+            new Staff { Id = 7, Gender = Gender.Female, FirstName = "Alecto", LastName = "Carrow" },
+            new Staff { Id = 8, Gender = Gender.Male, FirstName = "Remus", LastName = "Lupin" },
+            new Staff { Id = 9, Gender = Gender.Male, FirstName = "Filius", LastName = "Flitwick" },
+            new Staff { Id = 10, Gender = Gender.Male, FirstName = "Alastor", LastName = "Moody" },
+            new Staff { Id = 11, Gender = Gender.Female, FirstName = "Wilhelmina", LastName = "Grubbly-Plank" },
+            new Staff { Id = 12, Gender = Gender.Male, FirstName = "Rubeus", LastName = "Hagrid" },
+            new Staff { Id = 13, Gender = Gender.Female, FirstName = "Rolanda", LastName = "Hooch" },
+            new Staff { Id = 14, Gender = Gender.Male, FirstName = "Horace", LastName = "Slughorn" },
+            new Staff { Id = 15, Gender = Gender.Male, FirstName = "Silvanus", LastName = "Kettleburn" },
+            new Staff { Id = 16, Gender = Gender.Female, FirstName = "Pomona", LastName = "Sprout" },
+            new Staff { Id = 17, Gender = Gender.Male, FirstName = "Argus", LastName = "Filch" });
 
             //Seed Courses
             modelBuilder.Entity<Course>().HasData(
@@ -89,14 +89,14 @@ namespace Hogwarts.Api.Extensions
                 );
 
             modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, Name = "Headmaster/Headmistress" },
-                new Role { Id = 2, Name = "Deputy Headmaster/Headmistress" },
-                new Role { Id = 3, Name = "Professor" },
-                new Role { Id = 4, Name = "Patron/Matron" },
-                new Role { Id = 5, Name = "Grounds Keeper" },
-                new Role { Id = 6, Name = "House Head" },
-                new Role { Id = 7, Name = "Librarian" },
-                new Role { Id = 8, Name = "Caretaker" }
+                new Role { Id = 1, Name = "HEADMASTER/HEADMISTRESS" },
+                new Role { Id = 2, Name = "DEPUTY HEADMASTER/HEADMISTRESS" },
+                new Role { Id = 3, Name = "PROFESSOR" },
+                new Role { Id = 4, Name = "PATRON/MATRON" },
+                new Role { Id = 5, Name = "GROUNDS KEEPER" },
+                new Role { Id = 6, Name = "HOUSE HEAD" },
+                new Role { Id = 7, Name = "LIBRARIAN" },
+                new Role { Id = 8, Name = "CARETAKER" }
                 );
             modelBuilder.Entity<StaffRole>().HasData(
                 new StaffRole { StaffId = 1, RoleId = 1 },

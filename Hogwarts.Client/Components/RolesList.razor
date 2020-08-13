@@ -1,0 +1,45 @@
+﻿@using Hogwarts.Data.Models;
+@foreach (var role in Staff.Roles)
+{
+    @if (role.Id == 1)
+    {
+        if (Staff.Gender == Data.Gender.Female)
+        {
+            <div class="shadow label gradient" style="color:dimgray !important">HEADMISTRESS</div>
+        }
+        else
+        {
+            <div class="shadow label gradient" style="color:dimgray !important">HEADMASTER</div>
+        }
+    }
+    else if (role.Id == 2)
+    {
+        if (Staff.Gender == Data.Gender.Female)
+        {
+            <div class="shadow label gradient">DEPUTY HEADMISTRESS</div>
+        }
+        else
+        {
+            <div class="shadow label gradient">DEPUTY HEADMASTER</div>
+        }
+    }
+    else if (role.Id == 4)
+    {
+        if (Staff.Gender == Data.Gender.Female)
+        {
+            <div class="shadow label gradient">Matron</div>
+        }
+        else
+        {
+            <div class="shadow label gradient">Patron</div>
+        }
+    }
+    else
+    {
+        <div class="shadow label gradient">@role.Name</div>
+
+    }
+}
+@code{
+    [Parameter] public StaffDto Staff { get; set; }
+}

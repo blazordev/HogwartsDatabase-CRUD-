@@ -1,4 +1,4 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -256,11 +256,12 @@ app {
 
     .label {
         display: inline-block;
-        background-color: #2388af;
-        color: white;
+        background-color: #bbf0f3 !important;
+        background-image: linear-gradient(315deg, #bbf0f3 0%, #f6d285 74%) !important;
+        color: dimgray !important;
         padding: 0.2rem 0.5rem;
-        border-radius: 2rem;
-        margin: 2px;
+        border-radius: 1rem;
+        margin: 0px;
         font-weight: 500;
         font-size: smaller;
     }
@@ -643,10 +644,22 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 .badge {
     box-shadow: 0 4px 8px 0 #E7ECF0, 0 6px 20px 0 #E7ECF0 !important;
     text-align: center;
+}
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+.deep-shadow {
+    width: 250px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    text-align: center;
+}
+.shallow-shadow {
     -webkit-box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
     -moz-box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
     box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
 }
+
 
 
 

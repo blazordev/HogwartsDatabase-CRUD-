@@ -1,22 +1,53 @@
 ﻿@page "/staffDetails/{staffId}"
-
+@using Hogwarts.Data.Models;
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="card">
             <div class="card-header">
-                
             </div>
             <div class="card-body">
-                <div class="card-text"> <p class="small">Last Name:</p><p> @Staff.LastName</p></div>
-                <div class="card-text"><p class="small">First Name:</p><p>@Staff.FirstName @Staff.MiddleNames</p></div>
-                <p class="card-text small">Roles:</p>
-                @foreach (var role in Staff.Roles)
-                {
-                    <span class="badge" style="background-color:#E7ECF0">@role.Name</span>
-                }
+                <img class="card-shadow" style="width: 100%; height:auto;" src="data:image/jpeg;base64,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" />
+                <div style="margin-top:20px;">
+                    <h6 style="color:black">
+                        @Staff.FirstName @Staff.MiddleNames
+                    </h6>
+                    <h6>@Staff.LastName</h6>
+                </div>
+                <div style="margin-top:20px; text-align: center;">
+                    <RolesList Staff="Staff"></RolesList>
+                </div>
+                <div style="margin-top: 20px">
+                    Course:
+                    <h4 style="background-color:gold; color:darkgoldenrod" class="badge">Transfiguration</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="">
+                    <h5 style="color: white; text-shadow: 0 0 12px black;">"Hello there, i just wanna test if this is too long or if it wraps around nicely thank you very much"</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+            <div class="card-header"></div>
+            <div class="card-body">
+                <p>
+                    Four score and seven years ago our fathers brought forth on this continent a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.
+
+                    Now we are engaged in a great civil war, testing whether that nation or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this.
+
+                    But, in a larger sense, we can not dedicate—we can not consecrate—we can not hallow—this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us—that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion—that we here highly resolve that these dead shall not have died in vain—that this nation, under God, shall have a new birth of freedom—and that government of the people, by the people, for the people, shall not perish from the earth.
+                </p>
             </div>
         </div>
     </div>
 </div>
+
+
 
 

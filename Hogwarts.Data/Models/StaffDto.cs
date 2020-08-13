@@ -13,7 +13,8 @@ namespace Hogwarts.Data.Models
         public string FirstName { get; set; }
         public string MiddleNames { get; set; } = "";
         [Required(ErrorMessage = "Please enter Last Name")]
-        public string LastName { get; set; }       
+        public string LastName { get; set; }   
+        public Gender Gender { get; set; }
         public bool IsChecked { get; set; } = false;
         public bool ShowRoles { get; set; } = false;
         public bool EditModeIsOn { get; set; } = false;

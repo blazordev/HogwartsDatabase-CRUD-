@@ -15,6 +15,7 @@ namespace Hogwarts.Data
         [Required]
         [MaxLength(50)] 
         public string LastName { get; set; }
+        public Gender Gender { get; set; }
         public string ImageLink { get; set; }
         public IEnumerable<StaffRole> StaffRoles { get; set; } = new List<StaffRole>();
         public IEnumerable<StaffCourse> StaffCourse { get; set; } = new List<StaffCourse>();
