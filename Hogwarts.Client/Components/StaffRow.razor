@@ -15,13 +15,13 @@
         {
             @if (Staff.Roles.Count() > 0)
             {
-                <a @onclick="() => Staff.ShowRoles = !Staff.ShowRoles"><i class="grow float-left fa fa-caret-right" style="color:darkgray; padding-left:10px; padding-top:3px" aria-hidden="true"></i></a>
+                <a @onclick="() => Staff.ShowRoles = !Staff.ShowRoles"><i class="grow float-left fa fa-caret-right" style="color:lightblue; margin-left:8px; margin-top:4px" aria-hidden="true"></i></a>
             }
         }
         else
         {
             <a @onclick="() => Staff.ShowRoles = !Staff.ShowRoles">
-                <i class="grow float-left fa fa-caret-down" style="color: darkgrey; padding-top:3px; padding-left:10px" aria-hidden="true"></i>
+                <i class="grow float-left fa fa-caret-down" style="color: lightblue; margin-left:8px; margin-top:4px" aria-hidden="true"></i>
             </a>
             <RolesList Staff="Staff"></RolesList>
         }
@@ -71,5 +71,5 @@
             <h5 style="margin:0px"><span style="color:red">&#10007;</span></h5>
         }
     </td>
-    <td style="@Highlighted" class="text-center" @onclick="StaffDetailsPage"><i style="color:dimgray" class="grow fas fa-eye"></i></td>
+    <td style="@Highlighted" class="text-center" @onclick="StaffDetailsPage"><i style="color:lightblue" class="grow fas fa-eye"></i></td>
 </tr>

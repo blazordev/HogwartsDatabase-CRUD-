@@ -65,6 +65,21 @@ namespace Hogwarts.Client.Services
         {
             await _httpClient.DeleteAsync($"api/staffCollections/({staffIds})");
         }
+
+        public async Task<string> UpdateStaffCollection(IEnumerable<StaffDto> staffCollection)
+        {
+            var staffCollectionJson =
+                new StringContent(JsonSerializer.Serialize(staffCollection), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"api/staffCollections", staffCollectionJson);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+
+            return null;
+        }
     }
 
 }

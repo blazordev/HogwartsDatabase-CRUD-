@@ -203,42 +203,42 @@ namespace Hogwarts.Api.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "HEADMASTER/HEADMISTRESS"
+                            Name = "Headmaster/Headmistress"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "DEPUTY HEADMASTER/HEADMISTRESS"
+                            Name = "Deputy Headmaster/Headmistress"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "PROFESSOR"
+                            Name = "Professor"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "PATRON/MATRON"
+                            Name = "Patron/Matron"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "GROUNDS KEEPER"
+                            Name = "Grounds Keeper"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "HOUSE HEAD"
+                            Name = "House Head"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "LIBRARIAN"
+                            Name = "Librarian"
                         },
                         new
                         {
                             Id = 8,
-                            Name = "CARETAKER"
+                            Name = "Caretaker"
                         });
                 });
 

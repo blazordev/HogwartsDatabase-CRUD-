@@ -89,14 +89,14 @@ namespace Hogwarts.Api.Extensions
                 );
 
             modelBuilder.Entity<Role>().HasData(
-                new Role { Id = 1, Name = "HEADMASTER/HEADMISTRESS" },
-                new Role { Id = 2, Name = "DEPUTY HEADMASTER/HEADMISTRESS" },
-                new Role { Id = 3, Name = "PROFESSOR" },
-                new Role { Id = 4, Name = "PATRON/MATRON" },
-                new Role { Id = 5, Name = "GROUNDS KEEPER" },
-                new Role { Id = 6, Name = "HOUSE HEAD" },
-                new Role { Id = 7, Name = "LIBRARIAN" },
-                new Role { Id = 8, Name = "CARETAKER" }
+                new Role { Id = 1, Name = "Headmaster/Headmistress" },
+                new Role { Id = 2, Name = "Deputy Headmaster/Headmistress" },
+                new Role { Id = 3, Name = "Professor" },
+                new Role { Id = 4, Name = "Patron/Matron" },
+                new Role { Id = 5, Name = "Grounds Keeper" },
+                new Role { Id = 6, Name = "House Head" },
+                new Role { Id = 7, Name = "Librarian" },
+                new Role { Id = 8, Name = "Caretaker" }
                 );
             modelBuilder.Entity<StaffRole>().HasData(
                 new StaffRole { StaffId = 1, RoleId = 1 },

@@ -20,7 +20,6 @@ namespace Hogwarts.Client.Pages
         [Inject] CourseDataService CourseDataService { get; set; }
         public bool EditMode { get; set; } = false;
         public int Index { get; set; }
-        public StaffDto SingleStaffToEdit { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
         List<StaffDto> Staff;
         private bool _firstIsChecked;
@@ -53,7 +52,7 @@ namespace Hogwarts.Client.Pages
             set
             { _filteredStaff = value; }
         }
-        IEnumerable<StaffDto> SelectedStaff;
+        IEnumerable<StaffDto> SelectedStaff = new List<StaffDto>();
         public List<StaffDto> PreformFilter()
         {
             IEnumerable<StaffDto> staffList = new List<StaffDto>();
@@ -71,7 +70,7 @@ namespace Hogwarts.Client.Pages
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
         }
-        
+
         public int selectedRole { get; set; }
         public void RoleSelected(ChangeEventArgs e)
         {
@@ -99,7 +98,7 @@ namespace Hogwarts.Client.Pages
             var staffToConvert = FilteredStaff.Where(s => s.IsChecked).ToList();
             staffToConvert.ConvertAll(s => s.EditModeIsOn = true);
             Console.WriteLine("EditSelected");
-            StateHasChanged();            
+            StateHasChanged();
         }
         public void Reset()
         {
@@ -111,8 +110,11 @@ namespace Hogwarts.Client.Pages
         public async Task CancelSelected()
         {
             Reset();
-            Staff = await StaffDataService.GetAllStaffAsync();
-            StateHasChanged();            
+            if (FilteredStaff.Any(fs => fs.EditModeIsOn))
+            {                
+                Staff = await StaffDataService.GetAllStaffAsync();
+                StateHasChanged();
+            } 
         }
         public void DeleteSelected()
         {
@@ -125,12 +127,10 @@ namespace Hogwarts.Client.Pages
         public async Task SaveSelected()
         {
             SelectedStaff = Staff.Where(s => s.IsChecked);
-            foreach (var staff in SelectedStaff)
-            {
-                await StaffDataService.UpdateStaff(staff);
-            }
+            await StaffDataService.UpdateStaffCollection(SelectedStaff);
             FirstIsChecked = false;
-            Staff = await StaffDataService.GetAllStaffAsync();            
+            FilteredStaff.ConvertAll(s => s.IsChecked = false); //just for visual purposes
+            Staff = await StaffDataService.GetAllStaffAsync();
         }
         public async Task ConfirmDelete()
         {

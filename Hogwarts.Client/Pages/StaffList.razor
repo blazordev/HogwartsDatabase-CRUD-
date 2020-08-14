@@ -45,13 +45,13 @@ else
                 </tr>
             </thead>
             <tbody>
-               
+
                 @for (var i = 0; i < FilteredStaff.Count; i++)
                 {
                     var index = i;
                     if (FilteredStaff[index].EditModeIsOn)
                     {
-                        <StaffRowEdit Staff="FilteredStaff[index]" OnExitEditMode="ExitEditMode"></StaffRowEdit>
+                        <StaffRowEditMode Staff="FilteredStaff[index]" OnExitEditMode="ExitEditMode"></StaffRowEditMode>
                     }
                     else
                     {

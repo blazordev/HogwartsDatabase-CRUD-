@@ -43,6 +43,25 @@ namespace Hogwarts.Api.Controllers
             _staffRepo.DeleteStaffCollection(staffEntities);
             await _staffRepo.SaveAsync();
             return NoContent();
-        }        
+        }
+        [HttpPut]
+        public async Task<ActionResult> UpdateStaffCollection([FromBody] IEnumerable<StaffDto> staffCollection)
+        {
+            if (staffCollection == null || staffCollection.Count() == 0)
+            {
+                return BadRequest();
+            }
+            foreach (var staffItem in staffCollection)
+            {
+                var staffToUpdate = await _staffRepo.GetStaffByIdAsync(staffItem.Id);
+                if (staffToUpdate == null)
+                {
+                    return NotFound();
+                }
+                _mapper.Map(staffItem, staffToUpdate);
+            }
+            await _staffRepo.SaveAsync();
+            return Ok("Update Successful");
+        }
     }
 }

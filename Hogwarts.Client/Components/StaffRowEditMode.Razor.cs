@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Client.Components
 {
-    public partial class StaffRowEdit
+    public partial class StaffRowEditMode
     {
         [Parameter] public StaffDto Staff { get; set; }
         public string backgroundColor = "#ffede3";

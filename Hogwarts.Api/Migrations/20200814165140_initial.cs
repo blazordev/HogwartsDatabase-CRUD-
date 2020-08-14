@@ -56,6 +56,7 @@ namespace Hogwarts.Api.Migrations
                     FirstName = table.Column<string>(maxLength: 50, nullable: false),
                     MiddleNames = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(maxLength: 50, nullable: false),
+                    Gender = table.Column<int>(nullable: false),
                     ImageLink = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -203,26 +204,26 @@ namespace Hogwarts.Api.Migrations
 
             migrationBuilder.InsertData(
                 table: "Staff",
-                columns: new[] { "Id", "FirstName", "ImageLink", "LastName", "MiddleNames" },
+                columns: new[] { "Id", "FirstName", "Gender", "ImageLink", "LastName", "MiddleNames" },
                 values: new object[,]
                 {
-                    { 15, "Silvanus", null, "Kettleburn", "" },
-                    { 14, "Horace", null, "Slughorn", "" },
-                    { 13, "Rolanda", null, "Hooch", "" },
-                    { 12, "Rubeus", null, "Hagrid", "" },
-                    { 11, "Wilhelmina", null, "Grubbly-Plank", "" },
-                    { 10, "Alastor", null, "Moody", "" },
-                    { 9, "Filius", null, "Flitwick", "" },
-                    { 7, "Alecto", null, "Carrow", "" },
-                    { 6, "Charity", null, "Burbage", "" },
-                    { 5, "Cuthbert", null, "Binns", "" },
-                    { 4, "Severus", null, "Snape", "" },
-                    { 3, "Sybill", null, "Trelawny", "Patricia" },
-                    { 2, "Minerva", null, "McGonagall", "" },
-                    { 1, "Albus", null, "Dumbledore", "Percival Wulfric Brian" },
-                    { 16, "Pomona", null, "Sprout", "" },
-                    { 8, "Remus", null, "Lupin", "" },
-                    { 17, "Argus", null, "Filch", "" }
+                    { 15, "Silvanus", 0, null, "Kettleburn", "" },
+                    { 14, "Horace", 0, null, "Slughorn", "" },
+                    { 13, "Rolanda", 1, null, "Hooch", "" },
+                    { 12, "Rubeus", 0, null, "Hagrid", "" },
+                    { 11, "Wilhelmina", 1, null, "Grubbly-Plank", "" },
+                    { 10, "Alastor", 0, null, "Moody", "" },
+                    { 9, "Filius", 0, null, "Flitwick", "" },
+                    { 7, "Alecto", 1, null, "Carrow", "" },
+                    { 6, "Charity", 1, null, "Burbage", "" },
+                    { 5, "Cuthbert", 0, null, "Binns", "" },
+                    { 4, "Severus", 0, null, "Snape", "" },
+                    { 3, "Sybill", 1, null, "Trelawny", "Patricia" },
+                    { 2, "Minerva", 1, null, "McGonagall", "" },
+                    { 1, "Albus", 0, null, "Dumbledore", "Percival Wulfric Brian" },
+                    { 16, "Pomona", 1, null, "Sprout", "" },
+                    { 8, "Remus", 0, null, "Lupin", "" },
+                    { 17, "Argus", 0, null, "Filch", "" }
                 });
 
             migrationBuilder.InsertData(

@@ -3,6 +3,8 @@
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     background-color: #fafbff;
+    color: darkgray !important;
+    
 }
 
 a, .btn-link {
@@ -309,7 +311,7 @@ app {
 .table-checkbox-label {
     height: 7px !important;
     margin-right: -25px !important;
-    margin-left: 4px !important;
+    margin-left: 6px !important;
     margin-bottom: -60px !important;
     margin-top: 3px !important;
 }

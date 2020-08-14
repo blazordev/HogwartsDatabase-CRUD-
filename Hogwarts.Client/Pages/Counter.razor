@@ -1,19 +1,6 @@
 ﻿@page "/counter"
 <h1>@currentCount</h1>
-<header>
-    <h1 class="text-align-center">Pure CSS Material Design floating label </h1>
-</header>
-<form class="form-md">
-    <div class="form-group">
-        <input id="form_name1" class="form-control" type="text" placeholder="Placeholder" required>
-        <label for="form_name1">Label</label>
-    </div>
 
-    <div class="form-group">
-        <input id="form_name2" class="form-control" type="text" placeholder="" required>
-        <label for="form_name2">Label</label>
-    </div>
-</form>
 
 
 @for (int i = 0; i < 5; i++)
@@ -22,10 +9,7 @@
     <p><button class="btn btn-primary" @onclick="() => test(i)">Set counter to @a</button></p>
 }
 
-<div id="wrapper">
-    <img src="http://placehold.it/300x200" class="hover" />
-    <p class="text">text</p>
-</div>
+
 @functions {
     int currentCount = 0;
 
