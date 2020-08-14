@@ -14,9 +14,10 @@ else
             <button @onclick="DeleteSelected" class="btn btn-sm"><span><i class="fas fa-trash"></i></span> Delete</button>
             <button @onclick="SaveSelected" class="btn btn-sm"><span><i class="fas fa-save"></i></span> Save</button>
             <button @onclick="CancelSelected" class="btn btn-sm"><span><i class="fas fa-times"></i></span> Cancel</button>
+            <button style="margin-right:8px;" class="btn btn-sm"><span><i class="fas fa-file-export"></i></span> Export</button>
 
             <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Search Name" type="text">
-            <select class="input-group-sm col-md-3 form-control inline-form" @onchange="RoleSelected">
+            <select class="input-group-sm form-control inline-form" @onchange="RoleSelected">
                 <option value="0" selected>Positions Held</option>
                 @foreach (var role in Roles)
                 {
@@ -50,7 +51,7 @@ else
                     var index = i;
                     if (FilteredStaff[index].EditModeIsOn)
                     {
-                        <StaffRowEdit Staff="FilteredStaff[index]"></StaffRowEdit>
+                        <StaffRowEdit Staff="FilteredStaff[index]" OnExitEditMode="ExitEditMode"></StaffRowEdit>
                     }
                     else
                     {

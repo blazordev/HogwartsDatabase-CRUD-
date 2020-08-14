@@ -108,9 +108,10 @@ namespace Hogwarts.Client.Pages
             FilteredStaff.ConvertAll(s => s.EditModeIsOn = false);
             AllAreChecked = false;
         }
-        public void CancelSelected()
+        public async Task CancelSelected()
         {
             Reset();
+            Staff = await StaffDataService.GetAllStaffAsync();
             StateHasChanged();            
         }
         public void DeleteSelected()
@@ -142,13 +143,15 @@ namespace Hogwarts.Client.Pages
             SelectedStaff = null;
             StateHasChanged();
         }
-        public void Cancel()
+        public async Task Cancel()
         {
             Confirmation.Hide();
             SelectedStaff = null;
             FirstIsChecked = false;
             FilteredStaff.ConvertAll(s => s.IsChecked = false);
             AllAreChecked = false;
+            Staff = await StaffDataService.GetAllStaffAsync();
+            StateHasChanged();
         }
         public async Task SubmitAdd()
         {
@@ -159,7 +162,13 @@ namespace Hogwarts.Client.Pages
             StateHasChanged();
             Console.WriteLine("Added");
         }
-        
+        public async Task ExitEditMode(StaffDto staff)
+        {
+            staff.IsChecked = false;
+            staff.EditModeIsOn = false;
+            Staff = await StaffDataService.GetAllStaffAsync();
+            StateHasChanged();
+        }
 
     }
 }

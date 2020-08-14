@@ -1,14 +1,15 @@
-﻿<tr style="@Highlighted" @key="Staff.Id" @onclick="() => Staff.IsChecked = !Staff.IsChecked">
-    <td class="table-checkbox-row">
+﻿
+<tr style="@Highlighted" @key="Staff.Id" @onclick="() => Staff.IsChecked = !Staff.IsChecked">
+    <td style="@Highlighted" class="table-checkbox-row">
         <label class="table-checkbox-label">
             <input type="checkbox" @onclick="() => Staff.IsChecked = !Staff.IsChecked" checked="@Staff.IsChecked" />
             <span class="table-checkbox-span"></span>
         </label>
     </td>
-    <td class="text-sm-center">@Staff.Id</td>
-    <td><span class="ml-1">@Staff.FirstName @Staff.MiddleNames</span> </td>
-    <td><span class="ml-1">@Staff.LastName</span> </td>
-    <td class="ml-4">
+    <td style="@Highlighted"class="text-sm-center">@Staff.Id</td>
+    <td style="@Highlighted" ><span class="ml-1">@Staff.FirstName @Staff.MiddleNames</span> </td>
+    <td style="@Highlighted" ><span class="ml-1">@Staff.LastName</span> </td>
+    <td style="@Highlighted" class="ml-4">
         <span class="float-left">@Staff.Roles.Count()</span>
         @if (!Staff.ShowRoles)
         {
@@ -25,7 +26,7 @@
             <RolesList Staff="Staff"></RolesList>
         }
     </td>
-    <td style="padding: 0px" class="text-center">
+    <td style="@Highlighted padding: 0px" class="text-center">
         @if (Staff.Roles.Any(r => r.Id == 3))
         {
             <button @onclick="ToggleCourses"
@@ -42,7 +43,7 @@
                     <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
                         <thead>
                             <tr>
-                                <th>
+                                <th style="font-size: 10px">
                                     @(Courses.Count() == 1 ? "Course" : "Courses")
                                 </th>
                             </tr>
@@ -50,8 +51,8 @@
                         <tbody>
                             @foreach (var course in Courses)
                             {
-                                <tr style="height:7px">
-                                    <td>
+                                <tr style="height:10px">
+                                    <td style="font-size:10px">
                                         @course.Name
                                     </td>
                                 </tr>
@@ -62,7 +63,7 @@
             }
             else if (Staff.ShowCourses && !Courses.Any())
             {
-                <p>No Courses to show</p>
+                <p style="font-size:10px">No Courses to show</p>
             }
         }
         else
@@ -70,5 +71,5 @@
             <h5 style="margin:0px"><span style="color:red">&#10007;</span></h5>
         }
     </td>
-    <td class="text-center" @onclick="StaffDetailsPage"><i style="color:dimgray" class="grow fas fa-eye"></i></td>
+    <td style="@Highlighted" class="text-center" @onclick="StaffDetailsPage"><i style="color:dimgray" class="grow fas fa-eye"></i></td>
 </tr>

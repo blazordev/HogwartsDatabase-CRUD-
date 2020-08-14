@@ -24,7 +24,7 @@ namespace Hogwarts.Client.Components
         }
         public string Highlighted
         {
-            get { return Staff.IsChecked ? "font-weight:bold; color:dimgray" : ""; }
+            get { return Staff.IsChecked ? "background-color:#ffede3 !important;" : ""; }
             set { _highlighted = value; }
         }
         [Inject] CourseDataService CourseDataService { get; set; }

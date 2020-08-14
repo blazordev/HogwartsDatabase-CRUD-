@@ -192,6 +192,10 @@ app {
         background-color: #E5F3Ff;
     }
 
+    tr.rowhighlight {
+        background-color: #f0f8ff;   
+    }
+
     .lds-ripple {
         display: inline-block;
         position: relative;

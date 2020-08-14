@@ -3,7 +3,7 @@
     <div class="form-group">
         <table class="course-table table table-bordered table-striped table-sm table-hover table-responsive-sm">
             <thead>
-                <tr>
+                <tr style="height:17px">
                     <th>
                         @(Staff.Courses.Count() == 1 ? "Course" : "Courses")
                     </th>
@@ -14,7 +14,7 @@
             <tbody>
                 @foreach (var course in Staff.Courses)
                 {
-                    <tr style="height:7px">
+                    <tr style="height:17px">
                         <td>
                             @course.Name
                         </td>
