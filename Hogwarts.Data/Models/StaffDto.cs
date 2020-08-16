@@ -17,7 +17,7 @@ namespace Hogwarts.Data.Models
         public Gender Gender { get; set; }
         public bool IsChecked { get; set; } = false;
         public bool ShowRoles { get; set; } = false;
-        public bool EditModeIsOn { get; set; } = false;
+        public bool EditModeIsOn { get; set; }
         public bool ShowCourses { get; set; } = false;
         public List<RoleDto> Roles { get; set; } = new List<RoleDto>();
         public HouseDto House { get; set; }

@@ -36,7 +36,7 @@ namespace Hogwarts.Client.Pages
                 ToggleAllChecked();
             }
         }
-        public bool AllAreChecked { get; set; } = false;
+
 
         public bool Show { get; set; }
 
@@ -82,7 +82,6 @@ namespace Hogwarts.Client.Pages
         public void ToggleAllChecked()
         {
             FilteredStaff.ConvertAll(s => s.IsChecked = FirstIsChecked);
-            AllAreChecked = !AllAreChecked;
             StateHasChanged();
         }
         public void Add()
@@ -90,7 +89,7 @@ namespace Hogwarts.Client.Pages
             AddStaff.ShowModal();
             FirstIsChecked = false;
             FilteredStaff.ConvertAll(s => s.IsChecked = false);
-            AllAreChecked = false;
+
         }
         public void EditSelected()
         {
@@ -105,16 +104,17 @@ namespace Hogwarts.Client.Pages
             FirstIsChecked = false;
             FilteredStaff.ConvertAll(s => s.IsChecked = false);
             FilteredStaff.ConvertAll(s => s.EditModeIsOn = false);
-            AllAreChecked = false;
+
         }
+
         public async Task CancelSelected()
         {
-            Reset();
             if (FilteredStaff.Any(fs => fs.EditModeIsOn))
-            {                
+            {
                 Staff = await StaffDataService.GetAllStaffAsync();
                 StateHasChanged();
-            } 
+            }
+            Reset();
         }
         public void DeleteSelected()
         {
@@ -126,11 +126,19 @@ namespace Hogwarts.Client.Pages
         }
         public async Task SaveSelected()
         {
-            SelectedStaff = Staff.Where(s => s.IsChecked);
-            await StaffDataService.UpdateStaffCollection(SelectedStaff);
-            FirstIsChecked = false;
-            FilteredStaff.ConvertAll(s => s.IsChecked = false); //just for visual purposes
-            Staff = await StaffDataService.GetAllStaffAsync();
+            //if any selected
+            if (Staff.Any(s => s.IsChecked))
+            {
+                Reset();
+            }
+            //if any are potentially edited
+            var staffInEditMode = Staff.Where(s => s.EditModeIsOn);
+            if (staffInEditMode.Count() > 0)
+            {
+                await StaffDataService.UpdateStaffCollection(staffInEditMode);
+                Staff = await StaffDataService.GetAllStaffAsync();
+                StateHasChanged();
+            }
         }
         public async Task ConfirmDelete()
         {
@@ -138,7 +146,6 @@ namespace Hogwarts.Client.Pages
             await StaffDataService.DeleteStaffCollection(staffToDelete);
             Staff = await StaffDataService.GetAllStaffAsync();
             Confirmation.Hide();
-            AllAreChecked = false;
             FirstIsChecked = false;
             SelectedStaff = null;
             StateHasChanged();
@@ -149,7 +156,7 @@ namespace Hogwarts.Client.Pages
             SelectedStaff = null;
             FirstIsChecked = false;
             FilteredStaff.ConvertAll(s => s.IsChecked = false);
-            AllAreChecked = false;
+            //reset any unsaved changes in memory
             Staff = await StaffDataService.GetAllStaffAsync();
             StateHasChanged();
         }
@@ -162,13 +169,8 @@ namespace Hogwarts.Client.Pages
             StateHasChanged();
             Console.WriteLine("Added");
         }
-        public async Task ExitEditMode(StaffDto staff)
-        {
-            staff.IsChecked = false;
-            staff.EditModeIsOn = false;
-            Staff = await StaffDataService.GetAllStaffAsync();
-            StateHasChanged();
-        }
+        
+       
 
     }
 }

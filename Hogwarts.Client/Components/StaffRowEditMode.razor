@@ -1,7 +1,7 @@
 ﻿<tr style="padding: 0px; padding-bottom:-2px; color: #DCDCDC" @key="Staff.Id">
     <td style="background-color: @backgroundColor; color: #DCDCDC" class="table-checkbox-row">
-        <label class="table-checkbox-label" style="margin-right:-17px !important">
-            <input type="checkbox" @bind="Staff.IsChecked" @onclick="@(() => OnExitEditMode.InvokeAsync(Staff))" />
+        <label class="table-checkbox-label" style="margin-right:-17px !important; ">
+            <input type="checkbox" checked="checked" disabled= "disabled" />
             <span class="table-checkbox-span"></span>
         </label>
     </td>

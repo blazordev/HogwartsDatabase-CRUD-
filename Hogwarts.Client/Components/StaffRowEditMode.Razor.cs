@@ -12,6 +12,6 @@ namespace Hogwarts.Client.Components
     {
         [Parameter] public StaffDto Staff { get; set; }
         public string backgroundColor = "#ffede3";
-        [Parameter] public EventCallback<StaffDto> OnExitEditMode { get; set; }
+        
     }
 }

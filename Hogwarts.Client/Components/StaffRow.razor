@@ -1,7 +1,9 @@
 ﻿
+@*tr highlight isnt working (css conflict) have to do every td*@
 <tr style="@Highlighted" @key="Staff.Id" @onclick="() => Staff.IsChecked = !Staff.IsChecked">
     <td style="@Highlighted" class="table-checkbox-row">
         <label class="table-checkbox-label">
+            @*error when using bind*@
             <input type="checkbox" @onclick="() => Staff.IsChecked = !Staff.IsChecked" checked="@Staff.IsChecked" />
             <span class="table-checkbox-span"></span>
         </label>

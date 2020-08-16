@@ -476,8 +476,8 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     }
 
     [type="checkbox"]:checked:disabled + span:before {
-        border-right: 2px solid #26a69a;
-        border-bottom: 2px solid #26a69a;
+        border-right: 2px solid #DCDCDC;
+        border-bottom: 2px solid #DCDCDC;
         
     }
 
@@ -664,6 +664,33 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     -webkit-box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
     -moz-box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
     box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
+}
+.tableFixHead {
+    overflow-y: auto;
+    height: 550px;
+}
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        z-index: 100;        
+    }
+table {
+    border-collapse: collapse;
+    width: 100%;    
+}
+
+th, td {
+    padding: 8px 16px;
+}
+
+th {
+    background: white;
+}
+.label {
+    color:dimgray !important;
+    border: thin;
+    border-color: dimgray;
 }
 
 
