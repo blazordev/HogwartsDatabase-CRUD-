@@ -129,7 +129,8 @@ namespace Hogwarts.Client.Pages
             //if any selected
             if (Staff.Any(s => s.IsChecked))
             {
-                Reset();
+                FirstIsChecked = false;
+                FilteredStaff.ConvertAll(s => s.IsChecked = false);
             }
             //if any are potentially edited
             var staffInEditMode = Staff.Where(s => s.EditModeIsOn);

@@ -5,38 +5,38 @@
     {
         if (Staff.Gender == Data.Gender.Female)
         {
-            <div class="shallow-shadow label gradient">HEADMISTRESS</div>
+            <div class="shallow-shadow label">HEADMISTRESS</div>
         }
         else
         {
-            <div class="shallow-shadow label gradient">HEADMASTER</div>
+            <div class="shallow-shadow label">HEADMASTER</div>
         }
     }
     else if (role.Id == 2)
     {
         if (Staff.Gender == Data.Gender.Female)
         {
-            <div class="shallow-shadow label gradient">DEPUTY HEADMISTRESS</div>
+            <div class="shallow-shadow label">DEPUTY HEADMISTRESS</div>
         }
         else
         {
-            <div class="shallow-shadow label gradient">DEPUTY HEADMASTER</div>
+            <div class="shallow-shadow label">DEPUTY HEADMASTER</div>
         }
     }
     else if (role.Id == 4)
     {
         if (Staff.Gender == Data.Gender.Female)
         {
-            <div class="shallow-shadow label gradient">MATRON</div>
+            <div class="shallow-shadow label">MATRON</div>
         }
         else
         {
-            <div class="shallow-shadow label gradient">PATRON</div>
+            <div class="shallow-shadow label">PATRON</div>
         }
     }
     else
     {
-        <div class="shallow-shadow label gradient">@role.Name.ToUpper()</div>
+        <div class="shallow-shadow label">@role.Name.ToUpper()</div>
 
     }
 }

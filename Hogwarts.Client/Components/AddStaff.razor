@@ -18,14 +18,16 @@
                 <div class="modal-body">
                     <EditForm Model="@Staff" OnValidSubmit="@OnSubmit">
                         <DataAnnotationsValidator />
-                        <ValidationSummary></ValidationSummary>
+                        <span class="help-block">
+                            <ValidationSummary></ValidationSummary>
+                        </span>
                         <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group" style="padding-right:0px">
+                            <div class="col-md-6" style="padding-right:0px">
+                                <div class="form-group">
                                     <InputText @bind-Value="@Staff.FirstName" placeholder="First Name" type="text" class="form-control form-control-sm"></InputText>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" style="padding-left:0px">
                                 <div class="form-group">
                                     <InputText @bind-Value="@Staff.MiddleNames" placeholder="(Middle Names)" type="text" class="form-control form-control-sm"></InputText>
                                 </div>

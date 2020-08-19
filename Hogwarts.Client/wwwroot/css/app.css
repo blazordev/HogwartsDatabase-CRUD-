@@ -1,15 +1,16 @@
 ﻿@import url('/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: #fafbff;
-    color: darkgray !important;
-    
+    color: #505050
 }
 
 a, .btn-link {
     color: #0366d6;
 }
+
+
 
 .btn-primary {
     color: #fff;
@@ -23,11 +24,6 @@ app {
     flex-direction: column;
 }
 
-.top-row {
-    height: 3.5rem;
-    display: flex;
-    align-items: center;
-}
 
 .main {
     flex: 1;
@@ -39,18 +35,10 @@ app {
         justify-content: flex-end;
     }
 
-        .main .top-row > a, .main .top-row .btn-link {
-            white-space: nowrap;
-            margin-left: 1.5rem;
-        }
-
-        .main .top-row a:first-child {
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    width:80px !important;
 }
 
 
@@ -62,13 +50,14 @@ app {
     .sidebar .oi {
         width: 2rem;
         font-size: 1.1rem;
-        vertical-align: text-top;
+        vertical-align: text-bottom;
         top: -2px;
     }
 
     .sidebar .nav-item {
         font-size: 0.9rem;
         padding-bottom: 0.5rem;
+        width: 80px !important;
     }
 
         .sidebar .nav-item:first-of-type {
@@ -110,9 +99,7 @@ app {
     outline: 1px solid #26b050;
 }
 
-.invalid {
-    outline: 1px solid red;
-}
+
 
 .validation-message {
     color: red;
@@ -195,7 +182,7 @@ app {
     }
 
     tr.rowhighlight {
-        background-color: #f0f8ff;   
+        background-color: #f0f8ff;
     }
 
     .lds-ripple {
@@ -207,7 +194,7 @@ app {
 
         .lds-ripple div {
             position: absolute;
-            border: 4px solid rgba(0,0,0,0.4);
+            border: 4px solid lightgray;
             opacity: 1;
             border-radius: 50%;
             animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
@@ -253,12 +240,21 @@ app {
         background: none;
         border: none;
         padding: 0px;
+        padding-bottom: 1px;
         cursor: pointer;
     }
 
         .delete-label:hover {
             color: white;
         }
+
+    .clickable:hover {
+        color: white;
+    }
+
+    button i {
+        color: dimgray;
+    }
 
     .label {
         display: inline-block;
@@ -270,24 +266,37 @@ app {
         margin: 0px;
         font-weight: 500;
         font-size: smaller;
+        border: 1px solid gray;
     }
 
-    .table, .badge, .btn-toolbar, .btn-primary {
+    .table, .btn-toolbar, .btn-primary {
         background-color: #E7ECF0;
         border: #E7ECF0;
-        color: black;
+        color: #505050;
     }
 
-    .form-control.invalid {
-        border-bottom-color: #f7b541;
-        border-width: thick;
+    .badge {
+        background-image: linear-gradient(315deg, #bbf0f3 0%, #f6d285 74%) !important;
+        color: dimgray;
+    }
+
+    .form-control-sm.invalid {
+        border: 0 !important;
+    }
+
+    .form-control-sm.valid {
+        border: 0 !important;
     }
 
     .validation-message {
         width: 100%;
         margin-top: .25rem;
         font-size: small;
-        color: #f7b541;
+        color: #d95656;
+    }
+
+    .help-block ul {
+        list-style-type: none;
     }
 
     #course-table > tbody > tr > td {
@@ -298,7 +307,6 @@ app {
 }
 
 .btn {
-  
 }
 
 
@@ -323,7 +331,6 @@ app {
 .btn:focus {
     outline: none;
     box-shadow: none;
- 
 }
 
 .button {
@@ -478,7 +485,6 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     [type="checkbox"]:checked:disabled + span:before {
         border-right: 2px solid #DCDCDC;
         border-bottom: 2px solid #DCDCDC;
-        
     }
 
     /* Indeterminate checkbox */
@@ -625,9 +631,10 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     color: #fff;
     text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
 }*/
-.btn{
-     color:dimgray
+.btn {
+    color: dimgray
 }
+
 #wrapper .text {
     position: relative;
     bottom: 30px;
@@ -639,32 +646,45 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     visibility: visible;
 }
 
+
+table tbody tr {
+}
+
+    table tbody tr:hover {
+        border-bottom: 3px solid lightblue;
+    }
+
 .grow {
     transition: all .2s ease-in-out;
 }
 
     .grow:hover {
-        transform: scale(1.1);
+        transform: scale(1.2);
     }
+
 
 .badge {
     box-shadow: 0 4px 8px 0 #E7ECF0, 0 6px 20px 0 #E7ECF0 !important;
     text-align: center;
 }
+
 .modal-body {
     max-height: calc(100vh - 210px);
     overflow-y: auto;
 }
+
 .deep-shadow {
     width: 250px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
 }
+
 .shallow-shadow {
     -webkit-box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
     -moz-box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
     box-shadow: -1px -2px 41px 22px rgba(0,0,0,0.1);
 }
+
 .tableFixHead {
     overflow-y: auto;
     height: 550px;
@@ -673,11 +693,12 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
     .tableFixHead thead th {
         position: sticky;
         top: 0;
-        z-index: 100;        
+        z-index: 100;
     }
+
 table {
     border-collapse: collapse;
-    width: 100%;    
+    width: 100%;
 }
 
 th, td {
@@ -687,12 +708,9 @@ th, td {
 th {
     background: white;
 }
+
 .label {
-    color:dimgray !important;
+    color: dimgray !important;
     border: thin;
     border-color: dimgray;
 }
-
-
-
-

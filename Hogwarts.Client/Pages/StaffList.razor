@@ -17,8 +17,8 @@ else
         <button style="margin-right:8px;" class="btn btn-sm"><span><i class="fas fa-file-export"></i></span> Export</button>
 
         <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Search Name" type="text">
-        <select class="input-group-sm form-control inline-form" @onchange="RoleSelected">
-            <option value="0" selected>Positions Held</option>
+        <select class="input-group-sm form-control" @onchange="RoleSelected">
+            <option value="0" selected>All Positions</option>
             @foreach (var role in Roles)
             {
                 <option value="@role.Id">@role.Name</option>
