@@ -313,19 +313,20 @@ app {
 
 .table-checkbox-row {
     padding: 0px !important;
-    padding-bottom: -20px !important;
+      
 }
 
 .table-checkbox-label {
     height: 7px !important;
-    margin-right: -25px !important;
-    margin-left: 6px !important;
+    margin-right: -28px !important;
+    margin-left: 10px !important;
     margin-bottom: -60px !important;
     margin-top: 3px !important;
 }
 
 .table-checkbox-span {
     margin-bottom: -5px !important;
+    
 }
 
 .btn:focus {
@@ -647,12 +648,6 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 }
 
 
-table tbody tr {
-}
-
-    table tbody tr:hover {
-        border-bottom: 3px solid lightblue;
-    }
 
 .grow {
     transition: all .2s ease-in-out;

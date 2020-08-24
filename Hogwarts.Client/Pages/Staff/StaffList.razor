@@ -1,13 +1,16 @@
-﻿@page "/staffList"
+﻿@page "/faculty"
 
 
 @if (Staff == null)
 {
-    <div class="offset-5"><div class="lds-ripple"><div></div><div></div></div></div>
+    <div style="vertical-align:middle"><div class="lds-ripple"><div></div><div></div></div></div>
 }
 else
 {
-<div class="card" style="padding:10px">
+<div class="card">
+    <div class="card-header">
+        <h6>Faculty</h6>
+    </div>
     <div class="custom-control-inline">
         <button @onclick="Add" class="btn btn-sm"><span><i class="fas fa-plus"></i></span> Add</button>
         <button @onclick="EditSelected" class="btn btn-sm"><span><i class="fas fa-edit"></i></span> Edit</button>

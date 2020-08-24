@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Hogwarts.Data\Hogwarts.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Students\" />
+  </ItemGroup>
+
 </Project>

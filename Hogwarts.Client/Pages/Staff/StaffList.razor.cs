@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Hogwarts.Client.Components;
 using System.Threading;
 
-namespace Hogwarts.Client.Pages
+namespace Hogwarts.Client.Pages.Staff
 {
     public partial class StaffList
     {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Client.Pages
+namespace Hogwarts.Client.Pages.Staff
 {
     public partial class StaffDetails
     {

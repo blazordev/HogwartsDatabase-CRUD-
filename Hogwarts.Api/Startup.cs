@@ -37,7 +37,7 @@ namespace Hogwarts.Api
             {
                 options.AddPolicy("myPolicy", builder =>
                                   {
-                                      builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                                      builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod().WithExposedHeaders("X-Pagination"); 
                                   });
             });
             services.AddDbContext<HogwartsDbContext>(options =>
