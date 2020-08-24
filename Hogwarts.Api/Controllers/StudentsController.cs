@@ -10,11 +10,12 @@ using Hogwarts.Data;
 using Hogwarts.Api.Services;
 using AutoMapper;
 using Hogwarts.Data.Models;
-using Hogwarts.Api.ResourceParameters;
+using Hogwarts.Data.ResourceParameters;
 using Microsoft.AspNetCore.JsonPatch;
 using Hogwarts.Api.Helpers;
 using System.Text.Json;
 using Hogwarts.Api.Services.Interfaces;
+
 
 namespace Hogwarts.Api.Controllers
 {
@@ -46,14 +47,14 @@ namespace Hogwarts.Api.Controllers
                 CreateStudentsResourceUri(studentsResourceParameters,
                 ResourceUriType.NextPage) : null;
 
-            var paginationMetadata = new
+            var paginationMetadata = new PaginationMetadata
             {
-                totalCount = studentsFromRepo.TotalCount,
-                pageSize = studentsFromRepo.PageSize,
-                currentPage = studentsFromRepo.CurrentPage,
-                totalPages = studentsFromRepo.TotalPages,
-                previousPageLink,
-                nextPageLink
+                TotalCount = studentsFromRepo.TotalCount,
+                PageSize = studentsFromRepo.PageSize,
+                CurrentPage = studentsFromRepo.CurrentPage,
+                TotalPages = studentsFromRepo.TotalPages,
+                PreviousPageLink = previousPageLink,
+                NextPageLink = nextPageLink
             };
 
             Response.Headers.Add("X-Pagination",
@@ -144,7 +145,7 @@ namespace Hogwarts.Api.Controllers
                       {
                           pageNumber = studentsResourceParameters.PageNumber - 1,
                           pageSize = studentsResourceParameters.PageSize,
-                          mainCategory = studentsResourceParameters.HouseName,
+                          houseId = studentsResourceParameters.HouseId,
                           searchQuery = studentsResourceParameters.SearchQuery
                       });
                 case ResourceUriType.NextPage:
@@ -153,7 +154,7 @@ namespace Hogwarts.Api.Controllers
                       {
                           pageNumber = studentsResourceParameters.PageNumber + 1,
                           pageSize = studentsResourceParameters.PageSize,
-                          mainCategory = studentsResourceParameters.HouseName,
+                          houseId = studentsResourceParameters.HouseId,
                           searchQuery = studentsResourceParameters.SearchQuery
                       });
 
@@ -163,7 +164,7 @@ namespace Hogwarts.Api.Controllers
                     {
                         pageNumber = studentsResourceParameters.PageNumber,
                         pageSize = studentsResourceParameters.PageSize,
-                        mainCategory = studentsResourceParameters.HouseName,
+                        houseId = studentsResourceParameters.HouseId,
                         searchQuery = studentsResourceParameters.SearchQuery
                     });
             }

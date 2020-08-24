@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Api.ResourceParameters
+namespace Hogwarts.Data.ResourceParameters
 {
     public class StudentsResourceParameters
     {
-        const int maxPageSize = 100;
-        public string HouseName { get; set; }
+        const int maxPageSize = 1000;
+        public int HouseId { get; set; }
         public bool IncludeHouse { get; set; } = true;
         public string SearchQuery { get; set; }
         public int PageNumber { get; set; } = 1;
 
-        private int _pageSize = 100;
+        private int _pageSize = 3;
         public int PageSize
         {
             get => _pageSize;

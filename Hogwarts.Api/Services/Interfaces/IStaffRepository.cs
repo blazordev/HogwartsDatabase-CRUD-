@@ -1,5 +1,5 @@
 ﻿using Hogwarts.Api.Helpers;
-using Hogwarts.Api.ResourceParameters;
+using Hogwarts.Data.ResourceParameters;
 using Hogwarts.Data;
 using Hogwarts.Data.Models;
 using System;

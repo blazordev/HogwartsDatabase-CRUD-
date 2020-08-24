@@ -14,6 +14,8 @@ namespace Hogwarts.Data.Models
         public string LastName { get; set; }
         public string ImageLink { get; set; }
         public string HouseName { get; set; }
+        public bool IsChecked { get; set; } = false;
+        
         
         
         

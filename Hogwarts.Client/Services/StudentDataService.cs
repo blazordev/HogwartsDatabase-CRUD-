@@ -1,4 +1,7 @@
-﻿using Hogwarts.Data.Models;
+﻿using Hogwarts.Client.Helpers;
+using Hogwarts.Data.Models;
+using Hogwarts.Data.ResourceParameters;
+using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +21,33 @@ namespace Hogwarts.Client.Services
             _httpClient = httpClient;
         }
 
-        public async Task<IEnumerable<StudentDto>> GetAllStudentsAsync()
+        public async Task<PagingResponse<StudentDto>> GetAllStudentsAsync(StudentsResourceParameters studentParameters)
         {
-            return await JsonSerializer.DeserializeAsync<IEnumerable<StudentDto>>
-                (await _httpClient.GetStreamAsync($"api/students"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+            var queryStringParam = new Dictionary<string, string>
+            {
+                ["SearchQuery"] = studentParameters.SearchQuery ?? "",
+                ["HouseId"] = studentParameters.HouseId.ToString(),
+                ["PageNumber"] = studentParameters.PageNumber.ToString()
+            };
+            var response = await _httpClient.GetAsync(QueryHelpers.AddQueryString($"{ _httpClient.BaseAddress}api/students", queryStringParam));
+            var content = await response.Content.ReadAsStringAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                Console.WriteLine(response.Content);
+            }
+            var pagingResponse = new PagingResponse<StudentDto>
+            {
+                Items = JsonSerializer.Deserialize<List<StudentDto>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }),
+                MetaData = JsonSerializer.Deserialize<PaginationMetadata>(response.Headers.GetValues("X-Pagination").First(), new JsonSerializerOptions { PropertyNameCaseInsensitive = true })
+            };
+
+            return pagingResponse;
         }
+        //public async Task<IEnumerable<StudentDto>> GetAllStudentsAsync()
+        //{
+        //    return await JsonSerializer.DeserializeAsync<IEnumerable<StudentDto>>
+        //        (await _httpClient.GetStreamAsync($"api/students"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+        //}
 
         public async Task<StudentDto> GetStudentByIdAsync(int studentId)
         {

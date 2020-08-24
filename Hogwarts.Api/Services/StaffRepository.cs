@@ -1,7 +1,7 @@
 ﻿using Hogwarts.Api.DbContexts;
 using Hogwarts.Api.Helpers;
 using Hogwarts.Data.Models;
-using Hogwarts.Api.ResourceParameters;
+
 using Hogwarts.Api.Services.Interfaces;
 using Hogwarts.Data;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Hogwarts.Data.ResourceParameters;
 
 namespace Hogwarts.Api.Services
 {
