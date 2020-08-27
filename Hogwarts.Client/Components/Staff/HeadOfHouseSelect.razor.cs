@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Client.Components
+namespace Hogwarts.Client.Components.Staff
 {
     public partial class HeadOfHouseSelect
     {
@@ -20,7 +20,7 @@ namespace Hogwarts.Client.Components
         }
         public void SelectHouse(ChangeEventArgs e)
         {
-            if (int.TryParse((string)e.Value, out var index) && index >= 0)
+            if (int.TryParse((string)e.Value, out var index))
             {
                 AddHouse.InvokeAsync(Houses[index]);
             }

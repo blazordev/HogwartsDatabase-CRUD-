@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Client.Components
+namespace Hogwarts.Client.Components.Staff
 {
     public partial class AddStaff 
     {

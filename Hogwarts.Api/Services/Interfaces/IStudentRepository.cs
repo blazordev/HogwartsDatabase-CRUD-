@@ -11,7 +11,7 @@ namespace Hogwarts.Api.Services.Interfaces
     public interface IStudentRepository
     {
         public Task<bool> StudentExistAsync(int studentId);
-        public PagedList<Student> GetStudents(
+        public PagedList<Student> GetAllStudentsAsync(
             StudentsResourceParameters studentResourceParameters);
         public Task<IEnumerable<Student>> GetStudentsAsync(IEnumerable<int> studentIds);
         public Task<Student> GetStudentByIdAsync(int studentId);
@@ -20,6 +20,6 @@ namespace Hogwarts.Api.Services.Interfaces
         public void DeleteManyStudents(IEnumerable<Student> students);
         public void UpdateStudent(Student student);
         public Task<bool> SaveAsync();
-        
+        public Task<List<Student>> GetAllStudentsAsyncForFile();
     }
 }

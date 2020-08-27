@@ -14,6 +14,7 @@ namespace Hogwarts.Client.Services
 {
     public class StudentDataService
     {
+
         private readonly HttpClient _httpClient;
 
         public StudentDataService(HttpClient httpClient)
@@ -55,7 +56,7 @@ namespace Hogwarts.Client.Services
                 (await _httpClient.GetStreamAsync($"api/students/{studentId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<StudentDto> AddStudentAsync(StudentForCreationDto student)
+        public async Task<StudentDto> AddStudentAsync(StudentDto student)
         {
             var studentJson =
                 new StringContent(JsonSerializer.Serialize(student), Encoding.UTF8, "application/json");
@@ -68,5 +69,32 @@ namespace Hogwarts.Client.Services
             }
             return null;
         }
+
+        public async Task DeleteStudentCollection(string studentIds)
+        {
+            await _httpClient.DeleteAsync($"api/studentCollections/({studentIds})");
+        }
+
+        public async Task<string> UpdateStudentCollection(IEnumerable<StudentDto> studentCollection)
+        {
+            var studentCollectionJson =
+                new StringContent(JsonSerializer.Serialize(studentCollection), Encoding.UTF8, "application/json");
+
+            var response = await _httpClient.PutAsync($"api/studentCollections", studentCollectionJson);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+
+            return null;
+        }
+        public async Task<byte[]> Download()
+        {
+            var response = await _httpClient.GetAsync("api/files");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsByteArrayAsync();
+        }
     }
 }
+

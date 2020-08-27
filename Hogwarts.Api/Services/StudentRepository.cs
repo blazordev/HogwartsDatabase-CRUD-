@@ -31,7 +31,12 @@ namespace Hogwarts.Api.Services
         {
             return await _context.Students.ToListAsync();
         }
-        public PagedList<Student> GetStudents(
+        public async Task<List<Student>> GetAllStudentsAsyncForFile()
+        {
+            return await _context.Students.OrderBy(s => s.FirstName)
+                .OrderBy(s => s.LastName).Include(s => s.House).ToListAsync();
+        }
+        public PagedList<Student> GetAllStudentsAsync(
             StudentsResourceParameters studentResourceParameters)
         {
             if (studentResourceParameters == null)
@@ -42,7 +47,7 @@ namespace Hogwarts.Api.Services
             var collection = _context.Students as IQueryable<Student>;
             if (studentResourceParameters.HouseId != 0)
             {
-                collection = collection.Where(s => s.House.Id == studentResourceParameters.HouseId);
+                collection = collection.Where(s => s.HouseId == studentResourceParameters.HouseId);
             }
             if (!String.IsNullOrWhiteSpace(studentResourceParameters.SearchQuery))
             {

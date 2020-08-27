@@ -7,7 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Hogwarts.Client.Components
+namespace Hogwarts.Client.Components.Staff
 {
     public partial class RolesOutput
     {

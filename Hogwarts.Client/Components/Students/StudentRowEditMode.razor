@@ -1,0 +1,21 @@
+﻿
+<tr style="padding: 0px; padding-bottom:-2px; color: #DCDCDC" @key="Student.Id">
+    <td style="background-color: @backgroundColor; color: #DCDCDC" class="table-checkbox-row">
+        <label class="table-checkbox-label" style="margin-right:-17px !important; ">
+            <input type="checkbox" checked="checked" disabled="disabled" />
+            <span class="table-checkbox-span"></span>
+        </label>
+    </td>
+    <td style="background-color: @backgroundColor" class="text-sm-center">@Student.Id</td>
+    <td style="background-color: @backgroundColor; padding:0px"><input style="margin:0px; margin-top:3.3px; margin-left:5px; border:none" type="text" @bind="@Student.FirstName" /> <input style="margin:0px; margin-top:3.3px; border:none" @bind="@Student.MiddleNames" placeholder="Middle Names"></td>
+    <td style="background-color: @backgroundColor;  padding:0px"><input style="margin:0px; margin-top:3.3px; margin-left:5px; border:none" type="text" @bind="@Student.LastName" /></td>
+    <td style="background-color: @backgroundColor">
+        <select style="border:none" @bind="Student.HouseId">
+            @foreach (var house in Houses)
+            {
+                <option value="@house.Id" selected="@(house.Id == Student.HouseId)">@house.Name</option>
+            }
+        </select>
+    </td>
+</tr>
+

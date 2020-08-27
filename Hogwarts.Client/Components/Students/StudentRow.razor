@@ -1,0 +1,14 @@
+﻿@*tr highlight isnt working (css conflict?) have to do every td*@
+<tr @key="Student.Id" @onclick="() => Student.IsChecked = !Student.IsChecked">
+    <td style="@Highlighted" class="table-checkbox-row">
+        <label class="table-checkbox-label">
+            @*error when using bind*@
+            <input type="checkbox" @onclick="() => Student.IsChecked = !Student.IsChecked" checked="@Student.IsChecked" />
+            <span class="table-checkbox-span"></span>
+        </label>
+    </td>
+    <td style="@Highlighted" class="text-sm-center">@Student.Id</td>
+    <td style="@Highlighted"><span class="ml-1">@Student.FirstName @Student.MiddleNames</span> </td>
+    <td style="@Highlighted"><span class="ml-1">@Student.LastName</span> </td>
+    <td style="@Highlighted"><span class="ml-1">@Student.House.Name</span> </td>
+</tr>

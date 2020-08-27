@@ -12,7 +12,7 @@ namespace Hogwarts.Api.Profiles
     {
         public HouseProfile()
         {
-            CreateMap<House, HouseDto>();                
+            CreateMap<House, HouseDto>().ReverseMap();                
         }
 
     }

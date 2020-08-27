@@ -53,7 +53,7 @@ namespace Hogwarts.Api.Controllers
         // POST: api/StudentCollections
         [HttpPost]
         public async Task<ActionResult<IEnumerable<StudentDto>>> CreateStudentCollection(
-            IEnumerable<StudentForCreationDto> studentCollection)
+            IEnumerable<StudentDto> studentCollection)
         {
             var studentEntities = _mapper.Map<IEnumerable<Student>>(studentCollection);
             foreach (var student in studentEntities)
@@ -68,12 +68,7 @@ namespace Hogwarts.Api.Controllers
                 new { ids = idsAsString },
                 studentCollectionToReturn);
         }
-        [HttpOptions]
-        public ActionResult GetAuthorCollectionsOptions()
-        {
-            Response.Headers.Add("Allow", "GET,OPTIONS,POST");
-            return Ok();
-        }
+        
         [HttpDelete("({ids})")]
         public async Task<ActionResult> DeleteStudentCollection(
             [FromRoute]
@@ -98,6 +93,26 @@ namespace Hogwarts.Api.Controllers
             await _repo.SaveAsync();
             return NoContent();
 
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateStudentCollection([FromBody] IEnumerable<StudentDto> studentCollection)
+        {
+            if(studentCollection == null || studentCollection.Count() == 0)
+            {
+                return BadRequest();
+            }            
+            foreach (var student in studentCollection)
+            {
+                var studentToUpdate = await _repo.GetStudentByIdAsync(student.Id);
+                if(studentToUpdate == null)
+                {
+                    return NotFound();
+                }
+                _mapper.Map(student, studentToUpdate);
+            }
+            await _repo.SaveAsync();
+            return Ok("Update Successful");
         }
     }
 }

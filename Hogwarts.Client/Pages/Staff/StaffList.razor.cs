@@ -9,6 +9,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Hogwarts.Client.Components;
 using System.Threading;
+using Hogwarts.Client.Components.Staff;
 
 namespace Hogwarts.Client.Pages.Staff
 {
@@ -16,8 +17,6 @@ namespace Hogwarts.Client.Pages.Staff
     {
         [Inject] StaffDataService StaffDataService { get; set; }
         [Inject] RolesDataService RoleDataService { get; set; }
-        [Inject] NavigationManager NavigationManager { get; set; }
-        [Inject] CourseDataService CourseDataService { get; set; }
         public bool EditMode { get; set; } = false;
         public int Index { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();

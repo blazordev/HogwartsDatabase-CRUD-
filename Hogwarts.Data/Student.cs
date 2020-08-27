@@ -17,7 +17,7 @@ namespace Hogwarts.Data
         public string LastName { get; set; }
         public string ImageLink { get; set; }
         public House House { get; set; }
-        [Required] public int HouseId { get; set; }
+        public int HouseId { get; set; }
 
     }
 }

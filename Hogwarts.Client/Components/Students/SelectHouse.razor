@@ -1,0 +1,7 @@
+﻿<select class="input-group-sm form-control col-md-3" @onchange="HouseSelected">
+    <option value="0" selected>All Houses</option>
+    @foreach (var house in Houses)
+    {
+        <option value="@house.Id">@house.Name</option>
+    }
+</select>

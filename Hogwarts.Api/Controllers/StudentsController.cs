@@ -37,7 +37,7 @@ namespace Hogwarts.Api.Controllers
         public IActionResult GetStudents(
             [FromQuery] StudentsResourceParameters studentsResourceParameters)
         {
-            var studentsFromRepo = _repo.GetStudents(studentsResourceParameters);
+            var studentsFromRepo = _repo.GetAllStudentsAsync(studentsResourceParameters);
 
             var previousPageLink = studentsFromRepo.HasPrevious ?
                 CreateStudentsResourceUri(studentsResourceParameters,
@@ -75,7 +75,7 @@ namespace Hogwarts.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<StudentDto>> CreateStudent(StudentForCreationDto student)
+        public async Task<ActionResult<StudentDto>> CreateStudent(StudentDto student)
         {
             var studentEntity = _mapper.Map<Student>(student);
             _repo.AddStudent(studentEntity);
@@ -88,7 +88,7 @@ namespace Hogwarts.Api.Controllers
         }
         [HttpPut("{studentId:int}")]
         public async Task<ActionResult<StudentDto>> UpdateStudent([FromRoute] int studentId,
-            [FromBody] StudentForEditDto student)
+            [FromBody] StudentDto student)
         {
             var studentEntityFromRepo = await _repo.GetStudentByIdAsync(studentId);
             if (studentEntityFromRepo == null) return NotFound();
@@ -101,14 +101,14 @@ namespace Hogwarts.Api.Controllers
 
         [HttpPatch("{studentId}")]
         public async Task<ActionResult<StudentDto>> PartiallyUpdateStudent(int studentId,
-            JsonPatchDocument<StudentForEditDto> patchDocument)
+            JsonPatchDocument<StudentDto> patchDocument)
         {
             var studentEntity = await _repo.GetStudentByIdAsync(studentId);
             if (studentEntity == null)
             {
                 return NotFound();
             }
-            var studentToPatch = _mapper.Map<StudentForEditDto>(studentEntity);
+            var studentToPatch = _mapper.Map<StudentDto>(studentEntity);
             patchDocument.ApplyTo(studentToPatch, ModelState);
             if (!ModelState.IsValid)
             {
