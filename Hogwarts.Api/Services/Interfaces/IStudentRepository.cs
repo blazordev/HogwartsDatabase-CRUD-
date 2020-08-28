@@ -19,7 +19,7 @@ namespace Hogwarts.Api.Services.Interfaces
         public void DeleteStudent(Student studentFromRepo);
         public void DeleteManyStudents(IEnumerable<Student> students);
         public void UpdateStudent(Student student);
-        public Task<bool> SaveAsync();
-        public Task<List<Student>> GetAllStudentsAsyncForFile();
+        public Task<bool> SaveAsync();      
+       public Task<IEnumerable<Student>> GetAllStudentsForFileAsync();
     }
 }

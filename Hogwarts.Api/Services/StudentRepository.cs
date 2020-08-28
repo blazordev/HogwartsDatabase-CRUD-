@@ -31,7 +31,7 @@ namespace Hogwarts.Api.Services
         {
             return await _context.Students.ToListAsync();
         }
-        public async Task<List<Student>> GetAllStudentsAsyncForFile()
+        public async Task<IEnumerable<Student>> GetAllStudentsForFileAsync()
         {
             return await _context.Students.OrderBy(s => s.FirstName)
                 .OrderBy(s => s.LastName).Include(s => s.House).ToListAsync();

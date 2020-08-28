@@ -8,7 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Hogwarts.Client.Services;
-
+using Hogwarts.Client.Services.ToastService;
 
 namespace Hogwarts.Client
 {
@@ -32,6 +32,8 @@ namespace Hogwarts.Client
             services.AddScoped<HouseDataService>();
             services.AddScoped<CourseDataService>();
             services.AddScoped<HouseHeadDataService>();
+            services.AddScoped<ToastService>();
+
         }
     }
 }

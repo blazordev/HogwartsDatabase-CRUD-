@@ -39,7 +39,15 @@ namespace Hogwarts.Api.Services
         {
             _context.Staff.RemoveRange(staffEntities);
         }
-        
+        public async Task<IEnumerable<Staff>> GetAllStaffForFileAsync()
+        {
+            return await _context.Staff
+                .OrderBy(s => s.LastName)
+                .ThenBy(s => s.FirstName)
+                .Include(s => s.StaffRoles)
+                .ThenInclude(sr => sr.Role)
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Staff>> GetAllStaffAsync(StaffResourceParameters staffResourceParameters)
         {
             var staffToReturn = _context.Staff as IQueryable<Staff>;

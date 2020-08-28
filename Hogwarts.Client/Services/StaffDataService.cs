@@ -80,6 +80,13 @@ namespace Hogwarts.Client.Services
 
             return null;
         }
+
+        public async Task<byte[]> Download()
+        {
+            var response = await _httpClient.GetAsync("api/files/staff");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsByteArrayAsync();
+        }
     }
 
 }

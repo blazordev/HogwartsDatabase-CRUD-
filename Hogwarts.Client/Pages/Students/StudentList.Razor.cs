@@ -17,7 +17,7 @@ namespace Hogwarts.Client.Pages.Students
 
         List<StudentDto> Students;
         [Inject] public StudentDataService StudentDataService { get; set; }
-
+        [Inject] public IJSRuntime jSRuntime { get; set; }
         public PaginationMetadata PaginationMetadata { get; set; } = new PaginationMetadata();
         private StudentsResourceParameters _studentParameters = new StudentsResourceParameters();
         [Inject] public HouseDataService HouseDataService { get; set; }
@@ -33,7 +33,7 @@ namespace Hogwarts.Client.Pages.Students
             }
         }
         List<HouseDto> Houses;
-        private object staffToConvert;
+        
         public Confirmation Confirmation { get; set; }
         protected async override Task OnInitializedAsync()
         {
@@ -152,12 +152,12 @@ namespace Hogwarts.Client.Pages.Students
 
         protected async Task DownloadFile()
         {
-            if (await JSRuntime.InvokeAsync<bool>("confirm", $"Do you want to Export?"))
+            if (await jSRuntime.InvokeAsync<bool>("confirm", $"Do you want to Export?"))
             {
                 IsDownloadStarted = 1;
                 var fileBytes = await StudentDataService.Download();
-                var fileName = $"MyReport{DateTime.Now.ToString("yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)}.xlsx";
-                await JSRuntime.InvokeAsync<object>("saveAsFile", fileName, Convert.ToBase64String(fileBytes));
+                var fileName = $"Students.xlsx";
+                await jSRuntime.InvokeAsync<object>("saveAsFile", fileName, Convert.ToBase64String(fileBytes));
                 IsDownloadStarted = 2;
             }
         }

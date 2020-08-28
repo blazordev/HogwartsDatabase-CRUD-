@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Hogwarts.Client.Components;
 using System.Threading;
 using Hogwarts.Client.Components.Staff;
+using Microsoft.JSInterop;
 
 namespace Hogwarts.Client.Pages.Staff
 {
@@ -17,6 +18,7 @@ namespace Hogwarts.Client.Pages.Staff
     {
         [Inject] StaffDataService StaffDataService { get; set; }
         [Inject] RolesDataService RoleDataService { get; set; }
+        [Inject] IJSRuntime jSRuntime { get; set; }
         public bool EditMode { get; set; } = false;
         public int Index { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
@@ -169,8 +171,21 @@ namespace Hogwarts.Client.Pages.Staff
             StateHasChanged();
             Console.WriteLine("Added");
         }
-        
-       
+        public int IsDownloadStarted { get; set; } = 0;
+
+        protected async Task DownloadFile()
+        {
+            if (await jSRuntime.InvokeAsync<bool>("confirm", $"Do you want to Export?"))
+            {
+                IsDownloadStarted = 1;
+                var fileBytes = await StaffDataService.Download();
+                var fileName = $"Faculty.xlsx";
+                await jSRuntime.InvokeAsync<object>("saveAsFile", fileName, Convert.ToBase64String(fileBytes));
+                IsDownloadStarted = 2;
+            }
+        }
+
+
 
     }
 }
