@@ -12,6 +12,8 @@ namespace Hogwarts.Client.Services
     public class StaffDataService
     {
         private readonly HttpClient _httpClient;
+        private JsonSerializerOptions jsonSerializerOprions =
+            new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
         public StaffDataService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -19,51 +21,55 @@ namespace Hogwarts.Client.Services
 
         public async Task<List<StaffDto>> GetAllStaffAsync()
         {
+            var response = await _httpClient.GetStreamAsync($"api/staff");
             return await JsonSerializer.DeserializeAsync<List<StaffDto>>
-                (await _httpClient.GetStreamAsync($"api/staff"),
-                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (response, jsonSerializerOprions);
         }
 
         public async Task<StaffDto> GetStaffByIdAsync(int staffId)
         {
+            var response = await _httpClient.GetStreamAsync($"api/staff/{staffId}");
             return await JsonSerializer.DeserializeAsync<StaffDto>
-                (await _httpClient.GetStreamAsync($"api/staff/{staffId}"),
-                new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
+                (response, jsonSerializerOprions);
         }
 
-        public async Task<StaffDto> AddStaff(StaffDto staff)
+        public async Task<string> AddStaff(StaffDto staff)
         {
-            var staffJson =
-                new StringContent(JsonSerializer.Serialize(staff), Encoding.UTF8, "application/json");
+            var staffJson = JsonSerializer.Serialize(staff);
+            var stringContent = new StringContent(staffJson, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/staff", stringContent);
 
-            var response = await _httpClient.PostAsync("api/staff", staffJson);
-
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                return await JsonSerializer.DeserializeAsync<StaffDto>(await response.Content.ReadAsStreamAsync());
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
+            return await response.Content.ReadAsStringAsync();
 
-            return null;
+
         }
 
         public async Task<StaffDto> UpdateStaff(StaffDto staff)
         {
-            var staffJson =
-                new StringContent(JsonSerializer.Serialize(staff), Encoding.UTF8, "application/json");
+            var staffJson = JsonSerializer.Serialize(staff);
+            var stringContent = new StringContent(staffJson, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PutAsync($"api/staff/{staff.Id}", stringContent);
 
-            var response = await _httpClient.PutAsync($"api/staff/{staff.Id}", staffJson);
-
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 return await JsonSerializer.DeserializeAsync<StaffDto>(await response.Content.ReadAsStreamAsync());
             }
 
-            return null;
+            throw new ApplicationException(await response.Content.ReadAsStringAsync());
         }
 
-        public async Task DeleteStaffCollection(string staffIds)
+        public async Task<string> DeleteStaffCollection(string staffIds)
         {
-            await _httpClient.DeleteAsync($"api/staffCollections/({staffIds})");
+           var response = await _httpClient.DeleteAsync($"api/staffCollections/({staffIds})");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            throw new ApplicationException(await response.Content.ReadAsStringAsync());
         }
 
         public async Task<string> UpdateStaffCollection(IEnumerable<StaffDto> staffCollection)
@@ -73,12 +79,12 @@ namespace Hogwarts.Client.Services
 
             var response = await _httpClient.PutAsync($"api/staffCollections", staffCollectionJson);
 
-            if (response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStringAsync();
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
             }
 
-            return null;
+            return await response.Content.ReadAsStringAsync();
         }
 
         public async Task<byte[]> Download()

@@ -38,7 +38,7 @@ app {
 
 .sidebar {
     background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-    width:80px !important;
+    width: 80px !important;
 }
 
 
@@ -74,7 +74,7 @@ app {
             height: 3rem;
             display: flex;
             align-items: center;
-            line-height: 3rem;
+            line-height: 2rem;
         }
 
             .sidebar .nav-item a.active {
@@ -280,12 +280,18 @@ app {
         color: dimgray;
     }
 
-    .form-control-sm.invalid {
-        border: 0 !important;
+
+    .valid {
+        outline: none !important;
     }
 
-    .form-control-sm.valid {
-        border: 0 !important;
+    .invalid {
+        outline: none !important;
+    }
+
+
+    select {
+        border: none !important;
     }
 
     .validation-message {
@@ -313,7 +319,6 @@ app {
 
 .table-checkbox-row {
     padding: 0px !important;
-      
 }
 
 .table-checkbox-label {
@@ -326,7 +331,6 @@ app {
 
 .table-checkbox-span {
     margin-bottom: -5px !important;
-    
 }
 
 .btn:focus {
@@ -412,7 +416,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 }
 
 [type="checkbox"] {
-    /* checkbox aspect*/ 
+    /* checkbox aspect*/
 }
 
     [type="checkbox"] + span:not(.lever) {
@@ -709,7 +713,8 @@ th {
     border: thin;
     border-color: dimgray;
 }
-h1,h2,h3,h4,h5,h6{
+
+h1, h2, h3, h4, h5, h6 {
     margin-bottom: -8px;
 }
 /*Toast*/
@@ -722,7 +727,7 @@ h1,h2,h3,h4,h5,h6{
     width: 25rem;
     top: 2rem;
     border-radius: .15rem;
-    left: 50%;
+    right: 2%;
 }
 
 .toast-icon {
@@ -730,7 +735,7 @@ h1,h2,h3,h4,h5,h6{
     flex-direction: column;
     justify-content: center;
     padding: 0 1rem;
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
 .toast-body {
@@ -749,11 +754,12 @@ h1,h2,h3,h4,h5,h6{
     flex-direction: row;
     animation: fadein 2s;
 }
+
 .fadeOut {
     display: flex;
     flex-direction: row;
     animation: fadeout 2s;
-    opacity:0;
+    opacity: 0;
 }
 
 @keyframes fadein {

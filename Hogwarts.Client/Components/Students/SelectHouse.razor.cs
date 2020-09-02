@@ -17,7 +17,7 @@ namespace Hogwarts.Client.Components.Students
         {
             Houses = await HouseDataService.GetAllHousesAsync();
         }
-        
+        [Parameter] public int Selection { get; set; }
         public void HouseSelected(ChangeEventArgs e)
         {
             if (int.TryParse((string)e.Value, out var houseId))

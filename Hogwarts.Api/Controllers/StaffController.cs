@@ -102,9 +102,7 @@ namespace Hogwarts.Api.Controllers
             //if all goes well
             await _staffRepo.SaveAsync();
             var staffWithRoles = await _staffRepo.GetStaffByIdAsync(staffEntity.Id);
-            return CreatedAtRoute("GetStaffMember",
-                new { staffId = createdStaffId },
-                _mapper.Map<StaffDto>(staffWithRoles));
+            return Ok("1 record added");
         }
 
         [HttpGet("{staffId}/courses")]

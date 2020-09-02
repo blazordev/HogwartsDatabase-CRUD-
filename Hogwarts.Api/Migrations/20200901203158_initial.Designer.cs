@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hogwarts.Api.Migrations
 {
     [DbContext(typeof(HogwartsDbContext))]
-    [Migration("20200814165140_initial")]
+    [Migration("20200901203158_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -42,7 +42,15 @@ namespace Hogwarts.Api.Controllers
             }
             _staffRepo.DeleteStaffCollection(staffEntities);
             await _staffRepo.SaveAsync();
-            return NoContent();
+            var count = staffEntities.Count();
+            if(count == 1)
+            {
+                return Ok($"{count} record deleted");
+            }
+            else
+            {
+                return Ok($"{count} records deleted");
+            }
         }
         [HttpPut]
         public async Task<ActionResult> UpdateStaffCollection([FromBody] IEnumerable<StaffDto> staffCollection)
@@ -61,7 +69,7 @@ namespace Hogwarts.Api.Controllers
                 _mapper.Map(staffItem, staffToUpdate);
             }
             await _staffRepo.SaveAsync();
-            return Ok("Update Successful");
+            return Ok("Update successful");
         }
     }
 }

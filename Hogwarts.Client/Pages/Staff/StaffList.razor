@@ -21,7 +21,7 @@ else
         </div>
         <div class="custom-control-inline">
             <input @bind-value="SearchTerm" @bind-value:event="oninput" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Auto-Search Name" type="text">
-            <select class="input-group-sm form-control col-md-4" @onchange="RoleSelected">
+            <select class="input-group-sm form-control col-md-4"@bind="@SelectedRole">
                 <option value="0" selected>All Positions</option>
                 @foreach (var role in Roles)
                 {

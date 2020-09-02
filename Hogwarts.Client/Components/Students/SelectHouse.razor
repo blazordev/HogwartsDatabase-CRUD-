@@ -1,4 +1,4 @@
-﻿<select class="input-group-sm form-control col-md-3" @onchange="HouseSelected">
+﻿<select class="input-group-sm form-control col-md-3" @bind="Selection">
     <option value="0" selected>All Houses</option>
     @foreach (var house in Houses)
     {

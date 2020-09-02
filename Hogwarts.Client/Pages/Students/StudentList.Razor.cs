@@ -1,4 +1,5 @@
 ﻿using Hogwarts.Client.Components;
+using Hogwarts.Client.Components.Students;
 using Hogwarts.Client.Services;
 using Hogwarts.Data.Models;
 using Hogwarts.Data.ResourceParameters;
@@ -14,7 +15,8 @@ namespace Hogwarts.Client.Pages.Students
 {
     public partial class StudentList
     {
-
+         
+        
         List<StudentDto> Students;
         [Inject] public StudentDataService StudentDataService { get; set; }
         [Inject] public IJSRuntime jSRuntime { get; set; }
@@ -22,6 +24,7 @@ namespace Hogwarts.Client.Pages.Students
         private StudentsResourceParameters _studentParameters = new StudentsResourceParameters();
         [Inject] public HouseDataService HouseDataService { get; set; }
         private bool _firstIsChecked;
+       
         IEnumerable<StudentDto> SelectedStudents = new List<StudentDto>();
         public bool FirstIsChecked
         {
@@ -33,7 +36,7 @@ namespace Hogwarts.Client.Pages.Students
             }
         }
         List<HouseDto> Houses;
-        
+
         public Confirmation Confirmation { get; set; }
         protected async override Task OnInitializedAsync()
         {
@@ -88,8 +91,13 @@ namespace Hogwarts.Client.Pages.Students
 
         public async Task CancelSelected()
         {
-            if (Students.Any(fs => fs.EditModeIsOn))
+            if (Students.Any(fs => fs.EditModeIsOn)
+            || _studentParameters.HouseId != 0
+            || _studentParameters.SearchQuery != "")
             {
+
+                _studentParameters.SearchQuery = "";
+                _studentParameters.HouseId = 0;
                 await GetStudents();
                 StateHasChanged();
             }

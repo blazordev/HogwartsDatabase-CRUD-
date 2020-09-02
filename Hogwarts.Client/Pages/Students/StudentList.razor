@@ -20,7 +20,13 @@ else
         </div>
         <div class="custom-control-inline">
             <input @bind="_studentParameters.SearchQuery" id="search" class="form-control input-group-sm mx-1 col-md-3 inline-form" placeholder="Name" type="text">
-            <SelectHouse OnSelect="OnHouseSelected"></SelectHouse>
+            <select class="input-group-sm form-control col-md-3" @bind="_studentParameters.HouseId">
+                <option value="0" selected>All Houses</option>
+                @foreach (var house in Houses)
+                {
+                    <option value="@house.Id">@house.Name</option>
+                }
+            </select>
             <button @onclick="PreformSearch" class="btn"><span><i class="fas fa-search"></i></span></button>
         </div>
 

@@ -11,6 +11,7 @@ using Hogwarts.Client.Components;
 using System.Threading;
 using Hogwarts.Client.Components.Staff;
 using Microsoft.JSInterop;
+using Hogwarts.Client.Services.ToastService;
 
 namespace Hogwarts.Client.Pages.Staff
 {
@@ -19,6 +20,7 @@ namespace Hogwarts.Client.Pages.Staff
         [Inject] StaffDataService StaffDataService { get; set; }
         [Inject] RolesDataService RoleDataService { get; set; }
         [Inject] IJSRuntime jSRuntime { get; set; }
+        [Inject] ToastService toastService { get; set; }
         public bool EditMode { get; set; } = false;
         public int Index { get; set; }
         public IEnumerable<RoleDto> Roles { get; set; } = new List<RoleDto>();
@@ -63,7 +65,7 @@ namespace Hogwarts.Client.Pages.Staff
             || s.LastName.ToLower().Contains(SearchTerm.ToLower()));
 
             //if a role is selected, filter the list further
-            staffList = selectedRole != 0 ? staffList.Where(s => s.Roles.Any(r => r.Id == selectedRole)) : staffList;
+            staffList = SelectedRole != 0 ? staffList.Where(s => s.Roles.Any(r => r.Id == SelectedRole)) : staffList;
             return staffList.ToList();
         }
         protected async override Task OnInitializedAsync()
@@ -71,15 +73,9 @@ namespace Hogwarts.Client.Pages.Staff
             Staff = await StaffDataService.GetAllStaffAsync();
             Roles = await RoleDataService.GetAllRolesAsync();
         }
-
-        public int selectedRole { get; set; }
-        public void RoleSelected(ChangeEventArgs e)
-        {
-            if (int.TryParse((string)e.Value, out var index))
-            {
-                selectedRole = index;
-            }
-        }
+        
+        public int SelectedRole { get; set; }
+        
         public void ToggleAllChecked()
         {
             FilteredStaff.ConvertAll(s => s.IsChecked = FirstIsChecked);
@@ -97,7 +93,6 @@ namespace Hogwarts.Client.Pages.Staff
             EditWasClicked = true;
             var staffToConvert = FilteredStaff.Where(s => s.IsChecked).ToList();
             staffToConvert.ConvertAll(s => s.EditModeIsOn = true);
-            Console.WriteLine("EditSelected");
             StateHasChanged();
         }
         public void Reset()
@@ -105,6 +100,8 @@ namespace Hogwarts.Client.Pages.Staff
             FirstIsChecked = false;
             FilteredStaff.ConvertAll(s => s.IsChecked = false);
             FilteredStaff.ConvertAll(s => s.EditModeIsOn = false);
+            SelectedRole = 0;
+            SearchTerm = "";
 
         }
 
@@ -137,20 +134,22 @@ namespace Hogwarts.Client.Pages.Staff
             var staffInEditMode = Staff.Where(s => s.EditModeIsOn);
             if (staffInEditMode.Count() > 0)
             {
-                await StaffDataService.UpdateStaffCollection(staffInEditMode);
+                var message = await StaffDataService.UpdateStaffCollection(staffInEditMode);
                 Staff = await StaffDataService.GetAllStaffAsync();
+                toastService.ShowToast(message, ToastLevel.Success);
                 StateHasChanged();
             }
         }
         public async Task ConfirmDelete()
         {
             string staffToDelete = string.Join(",", SelectedStaff.Select(s => s.Id));
-            await StaffDataService.DeleteStaffCollection(staffToDelete);
+            var message = await StaffDataService.DeleteStaffCollection(staffToDelete);
             Staff = await StaffDataService.GetAllStaffAsync();
             Confirmation.Hide();
             FirstIsChecked = false;
             SelectedStaff = null;
             StateHasChanged();
+            toastService.ShowToast(message, ToastLevel.Success);
         }
         public async Task Cancel()
         {
@@ -164,12 +163,12 @@ namespace Hogwarts.Client.Pages.Staff
         }
         public async Task SubmitAdd()
         {
-            await StaffDataService.AddStaff(AddStaff.Staff);
+            var message = await StaffDataService.AddStaff(AddStaff.Staff);
             Staff = await StaffDataService.GetAllStaffAsync();
             AddStaff.HideModal();
             AddStaff.Reset();
-            StateHasChanged();
-            Console.WriteLine("Added");
+            toastService.ShowToast(message, ToastLevel.Success);
+            StateHasChanged();            
         }
         public int IsDownloadStarted { get; set; } = 0;
 
