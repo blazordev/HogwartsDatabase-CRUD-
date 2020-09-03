@@ -20,7 +20,7 @@ namespace Hogwarts.Data.Models
         public bool EditModeIsOn { get; set; }
         public bool ShowCourses { get; set; } = false;
         public List<RoleDto> Roles { get; set; } = new List<RoleDto>();
-        public HouseDto House { get; set; }
+        public int HouseId { get; set; }
         public List<CourseDto> Courses { get; set; } = new List<CourseDto>();
 
 

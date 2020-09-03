@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Client.Components.Staff
 {
-    public partial class HeadOfHouseSelect
+    public partial class HouseSelect
     {
         public List<HouseDto> Houses { get; set; } = new List<HouseDto>();
-        [Parameter] public EventCallback<HouseDto> AddHouse { get; set; }
+        [Parameter] public EventCallback<int> AddHouse { get; set; }
         [Inject] HouseDataService HouseDataService { get; set; }
 
         protected async override Task OnInitializedAsync()
@@ -20,9 +20,9 @@ namespace Hogwarts.Client.Components.Staff
         }
         public void SelectHouse(ChangeEventArgs e)
         {
-            if (int.TryParse((string)e.Value, out var index))
+            if (int.TryParse((string)e.Value, out var houseId) && houseId != 0)
             {
-                AddHouse.InvokeAsync(Houses[index]);
+                AddHouse.InvokeAsync(houseId);
             }
         }
     }

@@ -62,7 +62,7 @@ namespace Hogwarts.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<StaffDto>> CreateStaff(StaffDto staff)
         {
-            if (staff.Roles.Any(r => r.Id == 6) && staff.House == null)//House head but no house selected
+            if (staff.Roles.Any(r => r.Id == 6) && staff.HouseId == 0)//House head but no house selected
             {
                 return BadRequest("House Head must specify which house");
             }
@@ -76,11 +76,11 @@ namespace Hogwarts.Api.Controllers
             {
                 _staffRepo.AssignRoleCollectionToStaff(createdStaffId, staff.Roles);
                 await _staffRepo.SaveAsync();
-                if (staff.House != null)
+                if (staff.HouseId != 0)
                 {
                     if (await _staffRepo.IsHeadOfHouseAsync(createdStaffId))
                     {
-                        _staffRepo.AddHouseToStaff(createdStaffId, staff.House.Id);
+                        _staffRepo.AddHouseToStaff(createdStaffId, staff.HouseId);
                     }
                     else
                     {

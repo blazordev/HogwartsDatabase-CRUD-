@@ -15,8 +15,8 @@ namespace Hogwarts.Client.Pages.Students
 {
     public partial class StudentList
     {
-         
-        
+
+
         List<StudentDto> Students;
         [Inject] public StudentDataService StudentDataService { get; set; }
         [Inject] public IJSRuntime jSRuntime { get; set; }
@@ -24,7 +24,7 @@ namespace Hogwarts.Client.Pages.Students
         private StudentsResourceParameters _studentParameters = new StudentsResourceParameters();
         [Inject] public HouseDataService HouseDataService { get; set; }
         private bool _firstIsChecked;
-       
+        public AddStudent AddStudent { get; set; }
         IEnumerable<StudentDto> SelectedStudents = new List<StudentDto>();
         public bool FirstIsChecked
         {
@@ -71,10 +71,9 @@ namespace Hogwarts.Client.Pages.Students
 
         public void Add()
         {
-            //AddStaff.ShowModal();
+            AddStudent.ShowModal();
             FirstIsChecked = false;
             Students.ConvertAll(s => s.IsChecked = false);
-
         }
         public void EditSelected()
         {
@@ -147,15 +146,13 @@ namespace Hogwarts.Client.Pages.Students
             //reset any unsaved changes in memory
             await GetStudents();
         }
-        //public async Task SubmitAdd()
-        //{
-        //    await StudentDataService.AddStudentAsync();
-        //    //Staff = await StaffDataService.GetAllStaffAsync();
-        //    //AddStaff.HideModal();
-        //    //AddStaff.Reset();
-        //    //StateHasChanged();
-        //    //Console.WriteLine("Added");
-        //}
+        public async Task SubmitAdd()
+        {
+            await StudentDataService.AddStudentAsync(AddStudent.Student);
+            await GetStudents();
+            AddStudent.HideModal();
+            AddStudent.Reset();
+        }
         public int IsDownloadStarted { get; set; } = 0;
 
         protected async Task DownloadFile()

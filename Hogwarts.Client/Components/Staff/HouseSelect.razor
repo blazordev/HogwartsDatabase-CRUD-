@@ -1,9 +1,9 @@
 ﻿<div class="form-group">
     <select @onchange="SelectHouse" class="form-control form-control-sm" style="margin-top:10px;">
-        <option value="-1" selected disabled>House</option>
+        <option value="0" selected disabled>House</option>
         @for (int i = 0; i < Houses.Count; i++)
         {
-            <option value="@i">@Houses[i].Name</option>
+            <option value="@Houses[i].Id">@Houses[i].Name</option>
         }
     </select>
 </div>

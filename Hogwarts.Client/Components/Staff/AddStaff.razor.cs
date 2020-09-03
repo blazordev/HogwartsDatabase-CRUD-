@@ -30,9 +30,9 @@ namespace Hogwarts.Client.Components.Staff
                 Staff.Roles.Add(role);
             }
         }
-        public void AddHouse(HouseDto house)
+        public void AddHouse(int houseId)
         {
-            Staff.House = house;
+            Staff.HouseId = houseId;
         }
        
         public void RemoveRole(int id)
@@ -45,7 +45,7 @@ namespace Hogwarts.Client.Components.Staff
             else if (id == 6)//head of house
             {
                 //reset
-                Staff.House = new HouseDto();
+                Staff.HouseId = 0;
             }
             Staff.Roles.RemoveAll(r => r.Id == id);
         }

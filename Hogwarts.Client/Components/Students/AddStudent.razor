@@ -1,0 +1,56 @@
+﻿@if (display)
+{
+    <div class="modal-backdrop show"></div>
+
+    <div class="modal fade show" id="exampleModal" tabindex="-1"
+         role="dialog" aria-labelledby="ExampleModalLabel"
+         aria-hidden="true" style="display:block">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">
+                        Add Student
+                    </h6>
+                    <button @onclick="Cancel" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@Student" OnValidSubmit="@OnSubmit">
+                        <DataAnnotationsValidator />
+                        <span class="help-block">
+                            <ValidationSummary></ValidationSummary>
+                        </span>
+                        <div class="row">
+                            <div class="col-md-6" style="padding-right:0px">
+                                <div class="form-group">
+                                    <InputText @bind-Value="@Student.FirstName" placeholder="First Name" type="text" class="form-control form-control-sm"></InputText>
+                                </div>
+                            </div>
+                            <div class="col-md-6" style="padding-left:0px">
+                                <div class="form-group">
+                                    <InputText @bind-Value="@Student.MiddleNames" placeholder="(Middle Names)" type="text" class="form-control form-control-sm"></InputText>
+                                </div>
+                            </div>
+                        </div>
+                        
+                            <div class="form-group">
+                                <InputText @bind-Value="@Student.LastName" placeholder="Last Name" type="text" class="form-control form-control-sm"></InputText>
+                            </div>
+                        
+                        <HouseSelect AddHouse="SelectHouse"></HouseSelect>
+                        <div class="modal-footer">
+                            <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                            <button @onclick="Cancel" class="btn btn btn-secondary">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+

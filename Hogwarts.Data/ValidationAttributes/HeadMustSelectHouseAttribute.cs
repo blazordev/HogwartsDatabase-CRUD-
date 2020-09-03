@@ -15,7 +15,7 @@ namespace Hogwarts.Data.ValidationAttributes
         {
             var staff = (StaffDto)validationContext.ObjectInstance;
 
-            if (staff.Roles.Any(r => r.Id == 6) && staff.House == null)
+            if (staff.Roles.Any(r => r.Id == 6) && staff.HouseId == 0)
             {
                 return new ValidationResult("House Head must select House",
                     new[] { nameof(StaffDto) });
