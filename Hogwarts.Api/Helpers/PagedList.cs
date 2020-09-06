@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http.Features;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Helpers
 {
-    public class PagedList<T>: List<T>
+    public class PagedList<T> : List<T>
     {
         public int CurrentPage { get; private set; }
-        public int TotalPages { get; private set; }
+        public int TotalPages { get; set; }
         public int PageSize { get; private set; }
         public int TotalCount { get; private set; }
         public bool HasPrevious => (CurrentPage > 1);
@@ -25,7 +26,17 @@ namespace Hogwarts.Api.Helpers
         public static PagedList<T> Create(IQueryable<T> source, int pageNumber, int pageSize)
         {
             var count = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            List<T> items;
+            var totalPages = (int)Math.Ceiling(count / (double)pageSize); 
+            if (pageNumber > totalPages)
+            {
+                //return last page
+                items = source.Skip(pageSize * (totalPages - 1)).ToList();
+            }
+            else
+            {
+                items = source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }

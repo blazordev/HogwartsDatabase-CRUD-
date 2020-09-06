@@ -91,7 +91,7 @@ namespace Hogwarts.Api.Controllers
             }
             _repo.DeleteManyStudents(studentEntities);
             await _repo.SaveAsync();
-            return NoContent();
+            return Ok("Delete Successful");
 
         }
 

@@ -1,6 +1,7 @@
 ﻿using Hogwarts.Client.Components;
 using Hogwarts.Client.Components.Students;
 using Hogwarts.Client.Services;
+using Hogwarts.Client.Services.ToastService;
 using Hogwarts.Data.Models;
 using Hogwarts.Data.ResourceParameters;
 using Microsoft.AspNetCore.Components;
@@ -23,6 +24,7 @@ namespace Hogwarts.Client.Pages.Students
         public PaginationMetadata PaginationMetadata { get; set; } = new PaginationMetadata();
         private StudentsResourceParameters _studentParameters = new StudentsResourceParameters();
         [Inject] public HouseDataService HouseDataService { get; set; }
+        [Inject] public ToastService ToastService { get; set; }
         private bool _firstIsChecked;
         public AddStudent AddStudent { get; set; }
         IEnumerable<StudentDto> SelectedStudents = new List<StudentDto>();
@@ -49,7 +51,7 @@ namespace Hogwarts.Client.Pages.Students
             await GetStudents();
         }
         private async Task GetStudents()
-        {
+        {            
             var response = await StudentDataService.GetAllStudentsAsync(_studentParameters);
             PaginationMetadata = response.MetaData;
             Students = response.Items;
@@ -122,20 +124,22 @@ namespace Hogwarts.Client.Pages.Students
             var studentsInEditMode = Students.Where(s => s.EditModeIsOn);
             if (studentsInEditMode.Count() > 0)
             {
-                await StudentDataService.UpdateStudentCollection(studentsInEditMode);
+                var message = await StudentDataService.UpdateStudentCollection(studentsInEditMode);
                 await GetStudents();
                 StateHasChanged();
+                ToastService.ShowToast(message, ToastLevel.Success);
             }
         }
         public async Task ConfirmDelete()
         {
             string studentsToDelete = string.Join(",", SelectedStudents.Select(s => s.Id));
-            await StudentDataService.DeleteStudentCollection(studentsToDelete);
+            var message = await StudentDataService.DeleteStudentCollection(studentsToDelete);
             await GetStudents();
+            ToastService.ShowToast(message, ToastLevel.Success);
             Confirmation.Hide();
             FirstIsChecked = false;
             SelectedStudents = null;
-            StateHasChanged();
+            StateHasChanged();            
         }
         public async Task Cancel()
         {
@@ -148,10 +152,11 @@ namespace Hogwarts.Client.Pages.Students
         }
         public async Task SubmitAdd()
         {
-            await StudentDataService.AddStudentAsync(AddStudent.Student);
+            var message = await StudentDataService.AddStudentAsync(AddStudent.Student);
             await GetStudents();
             AddStudent.HideModal();
             AddStudent.Reset();
+            ToastService.ShowToast(message, ToastLevel.Success);
         }
         public int IsDownloadStarted { get; set; } = 0;
 

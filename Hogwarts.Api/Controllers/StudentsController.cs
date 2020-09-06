@@ -82,8 +82,7 @@ namespace Hogwarts.Api.Controllers
             await _repo.SaveAsync();
             var studentWithHouseName = await _repo.GetStudentByIdAsync(studentEntity.Id);
             var studentToReturn = _mapper.Map<StudentDto>(studentWithHouseName);
-            return CreatedAtRoute("GetStudent", new { studentId = studentToReturn.Id },
-                studentToReturn);
+            return Ok("Student Added");
 
         }
         [HttpPut("{studentId:int}")]

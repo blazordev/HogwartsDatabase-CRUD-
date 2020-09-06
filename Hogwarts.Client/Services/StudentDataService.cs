@@ -57,23 +57,28 @@ namespace Hogwarts.Client.Services
                 (await _httpClient.GetStreamAsync($"api/students/{studentId}"), new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
         }
 
-        public async Task<StudentDto> AddStudentAsync(StudentDto student)
+        public async Task<string> AddStudentAsync(StudentDto student)
         {
-            var studentJson =
-                new StringContent(JsonSerializer.Serialize(student), Encoding.UTF8, "application/json");
+            var studentJson = new StringContent(
+                JsonSerializer.Serialize(student), Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync("api/students", studentJson);
 
             if (response.IsSuccessStatusCode)
             {
-                return await JsonSerializer.DeserializeAsync<StudentDto>(await response.Content.ReadAsStreamAsync());
+                return await response.Content.ReadAsStringAsync();
             }
             return null;
         }
 
-        public async Task DeleteStudentCollection(string studentIds)
+        public async Task<string> DeleteStudentCollection(string studentIds)
         {
-            await _httpClient.DeleteAsync($"api/studentCollections/({studentIds})");
+           var response = await _httpClient.DeleteAsync($"api/studentCollections/({studentIds})");
+            if(response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            return null;
         }
 
         public async Task<string> UpdateStudentCollection(IEnumerable<StudentDto> studentCollection)

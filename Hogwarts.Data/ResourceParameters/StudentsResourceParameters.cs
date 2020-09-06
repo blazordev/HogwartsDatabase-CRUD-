@@ -10,9 +10,8 @@ namespace Hogwarts.Data.ResourceParameters
         const int maxPageSize = 1000;
         public int HouseId { get; set; }
         public bool IncludeHouse { get; set; } = true;
-        public string SearchQuery { get; set; }
+        public string SearchQuery { get; set; }           
         public int PageNumber { get; set; } = 1;
-
         private int _pageSize = 3;
         public int PageSize
         {
