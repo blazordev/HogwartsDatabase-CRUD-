@@ -27,11 +27,11 @@ namespace Hogwarts.Api.Helpers
         {
             var count = source.Count();
             List<T> items;
-            var totalPages = (int)Math.Ceiling(count / (double)pageSize); 
-            if (pageNumber > totalPages)
+            var totalPages = (int)Math.Ceiling(count / (double)pageSize);
+            if (pageNumber > totalPages && totalPages > 0)
             {
                 //return last page
-                items = source.Skip(pageSize * (totalPages - 1)).ToList();
+                items = source.Skip(pageSize * (totalPages - 1)).Take(pageSize).ToList();
             }
             else
             {

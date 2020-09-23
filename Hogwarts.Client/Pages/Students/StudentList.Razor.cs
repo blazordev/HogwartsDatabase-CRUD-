@@ -16,8 +16,6 @@ namespace Hogwarts.Client.Pages.Students
 {
     public partial class StudentList
     {
-
-
         List<StudentDto> Students;
         [Inject] public StudentDataService StudentDataService { get; set; }
         [Inject] public IJSRuntime jSRuntime { get; set; }
@@ -64,6 +62,7 @@ namespace Hogwarts.Client.Pages.Students
         }
         public async Task PreformSearch()
         {
+            _studentParameters.PageNumber = 1;
             await GetStudents();
         }
         public void OnHouseSelected(int houseId)

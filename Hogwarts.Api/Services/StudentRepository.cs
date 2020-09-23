@@ -57,7 +57,8 @@ namespace Hogwarts.Api.Services
                 || s.LastName.ToLower().Contains(searchQuery));
             }
             if (studentResourceParameters.IncludeHouse) collection = collection.Include(s => s.House);
-            
+
+            collection = collection.OrderBy(c => c.FirstName).OrderBy(c => c.LastName);
             return PagedList<Student>.Create(collection,
                 studentResourceParameters.PageNumber,
                 studentResourceParameters.PageSize);

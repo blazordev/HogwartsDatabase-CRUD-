@@ -1,0 +1,95 @@
+﻿@page "/Courses"
+
+
+@if (Courses == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="container">
+        <div class="card-columns">
+            @foreach (var course in Courses)
+            {
+                <div class="card">
+                    <div class="card-header">
+                    </div>
+                    <div class="card-body">
+                        <h5>@course.Name</h5>  @if (!string.IsNullOrEmpty(course.ShortHandName))
+                        {
+                            <h5>(@course.ShortHandName)</h5>
+                        }
+                        <p>Level: @course.Level</p>
+                        <p>@course.Description</p>
+                        @foreach (var professor in course.Professors)
+                        {
+                            <p>Professor @professor.FirstName @professor.MiddleNames @professor.LastName</p>
+                        }
+                        <button @onclick="() => DeleteCourse(course.Id)" class="btn btn-sm">Delete</button>
+                    </div>
+                </div>
+
+            }
+        </div>
+    </div>
+
+}
+<button @onclick="Show" class="btn btn-block">Add Course</button>
+
+
+
+
+
+@if (display)
+{
+    <div class="modal-backdrop show"></div>
+
+    <div class="modal fade show" id="exampleModal" tabindex="-1"
+         role="dialog" aria-labelledby="ExampleModalLabel"
+         aria-hidden="true" style="display:block">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">
+                        Add Course
+                    </h6>
+                    <button @onclick="Cancel" class="close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@NewCourse" OnValidSubmit="@OnSubmit">
+                        <DataAnnotationsValidator />
+                        <span class="help-block">
+                            <ValidationSummary></ValidationSummary>
+                        </span>
+                        <div class="row">
+                            <div class="col-md-8" style="padding-right:0px">
+                                <div class="form-group">
+                                    <InputText @bind-Value="@NewCourse.Name" placeholder="Course Name" type="text" class="form-control form-control-sm"></InputText>
+                                </div>
+                            </div>
+                            <div class="col-md-4" style="padding-left:0px">
+                                <div class="form-group">
+                                    <InputText @bind-Value="@NewCourse.ShortHandName" placeholder="(Abbreviation)" type="text" class="form-control form-control-sm"></InputText>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <InputText @bind-Value="@NewCourse.Description" placeholder="Description" type="text" class="form-control form-control-sm"></InputText>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button name="submit" type="submit" class="btn btn-primary">Submit</button>
+                            <button @onclick="Cancel" class="btn btn btn-secondary">Cancel</button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+

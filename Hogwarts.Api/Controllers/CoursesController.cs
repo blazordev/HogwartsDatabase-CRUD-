@@ -44,13 +44,14 @@ namespace Hogwarts.Api.Controllers
             return Ok(_mapper.Map<CourseDto>(courseEntity));
         }
 
-        public async Task<ActionResult<CourseDto>> CreateCourse(CourseForCreationDto courseForCreation)
+        [HttpPost]
+        public async Task<ActionResult<CourseDto>> CreateCourse([FromBody] CourseDto course)
         {
-            var courseEntity = _mapper.Map<Course>(courseForCreation);
+            var courseEntity = _mapper.Map<Course>(course);
             _coursesRepo.Add(courseEntity);
             await _coursesRepo.SaveAsync();
             var courseToReturn = _mapper.Map<CourseDto>(courseEntity);
-            return CreatedAtRoute("GetCourse", new { staffId = courseToReturn.Id }, courseToReturn);
+            return Ok("Course Created Successfully");
         }
         [HttpPut("{courseId}")]
         public async Task<ActionResult<CourseDto>> EditCourse([FromRoute] int courseId, 
@@ -98,7 +99,7 @@ namespace Hogwarts.Api.Controllers
             }
             _coursesRepo.DeleteCourse(courseToDelete);
             await _coursesRepo.SaveAsync();
-            return NoContent();
+            return Ok("Course Deleted Successfully");
         }
 
     }

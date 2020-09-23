@@ -12,7 +12,7 @@ namespace Hogwarts.Data.ResourceParameters
         public bool IncludeHouse { get; set; } = true;
         public string SearchQuery { get; set; }           
         public int PageNumber { get; set; } = 1;
-        private int _pageSize = 3;
+        private int _pageSize = 16;
         public int PageSize
         {
             get => _pageSize;

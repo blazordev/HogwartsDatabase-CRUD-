@@ -8,14 +8,17 @@ using System.Threading.Tasks;
 
 namespace Hogwarts.Api.Profiles
 {
-    public class CourseProfile: Profile
+    public class CourseProfile : Profile
     {
         public CourseProfile()
         {
-            CreateMap<Course, CourseDto>();
-            CreateMap<CourseForCreationDto, Course>();
-            CreateMap<CourseForEditDto, Course>().ReverseMap();
-            
+            CreateMap<Course, CourseDto>()
+                .ForMember(
+                    dest => dest.Professors,
+                    opt => opt.MapFrom(src => src.StaffCourse.Select(cs => cs.Staff)))
+            .ReverseMap();
+
+
         }
     }
 }

@@ -714,9 +714,7 @@ th {
     border-color: dimgray;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    margin-bottom: -8px;
-}
+
 /*Toast*/
 .toast {
     display: none;
@@ -780,4 +778,8 @@ h1, h2, h3, h4, h5, h6 {
     to {
         opacity: 0;
     }
+}
+.head-icon {
+    margin-top: 18px;
+    color: #FF4500
 }

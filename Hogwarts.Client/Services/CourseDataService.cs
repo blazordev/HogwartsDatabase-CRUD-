@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -46,6 +47,28 @@ namespace Hogwarts.Client.Services
             }
 
             return null;
+        }
+
+        public async Task<string> AddCourseAsync(CourseDto course)
+        {
+            var courseJson = JsonSerializer.Serialize(course);
+            var stringContent = new StringContent(courseJson, Encoding.UTF8, "application/json");
+            var response = await _httpClient.PostAsync("api/Courses", stringContent);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApplicationException(await response.Content.ReadAsStringAsync());
+            }
+            return await response.Content.ReadAsStringAsync();
+        }
+        public async Task<string> DeleteCourseAsync(int courseId)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Courses/{courseId}");
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            throw new ApplicationException(await response.Content.ReadAsStringAsync());
         }
 
     }

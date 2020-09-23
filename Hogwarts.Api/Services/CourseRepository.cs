@@ -22,12 +22,15 @@ namespace Hogwarts.Api.Services
 
         public async Task<IEnumerable<Course>> GetCoursesAsync()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses
+                .Include(c => c.StaffCourse)
+                .ThenInclude(sc => sc.Staff)
+                .ToListAsync();
         }
 
         public async Task<Course> GetCourseByIdAsync(int courseId)
         {
-            if(String.IsNullOrWhiteSpace(courseId.ToString()))
+            if (String.IsNullOrWhiteSpace(courseId.ToString()))
             {
                 throw new ArgumentNullException(nameof(courseId));
             }
@@ -50,18 +53,18 @@ namespace Hogwarts.Api.Services
             }
             return await _context.Courses.AnyAsync(c => c.Id == courseId);
         }
-        
+
         public void UpdateCourse(Course course)
         {
             //no code needed for update in current repo
         }
-        
+
         public async Task<IEnumerable<Course>> GetCoursesForStaffmemberAsync(int staffId)
         {
             return await _context.StaffCourse
                 .Include(sc => sc.Course)
                 .Where(sc => sc.StaffId == staffId)
-                .Select(sc => sc.Course).ToListAsync();           
+                .Select(sc => sc.Course).ToListAsync();
 
         }
 
