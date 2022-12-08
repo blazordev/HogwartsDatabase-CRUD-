@@ -23,7 +23,7 @@
     <PackageReference Include="Syncfusion.Blazor" Version="18.1.0.59" />
     <PackageReference Include="Syncfusion.Blazor.PdfViewerServer.Windows" Version="18.1.0.59" />
     <PackageReference Include="Syncfusion.Blazor.WordProcessor" Version="18.1.0.59" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
